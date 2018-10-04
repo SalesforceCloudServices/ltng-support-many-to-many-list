@@ -45,14 +45,15 @@
                 </div>
             </header>
             </div>
-            <div class="slds-card__body slds-card__body_inner">Anything can go in the Card Body</div>
-            <lightning:recordForm
-                recordId="{!v.recordId}"
-                objectApiName="{!v.objectApiName}"
-                layoutType="Compact"
-                columns="{!v.numFormColumns}"
-                mode="readonly"
-            />
+            <div class="slds-card__body slds-card__body_inner">
+                <lightning:recordForm
+                    recordId="{!v.recordId}"
+                    objectApiName="{!v.objectApiName}"
+                    layoutType="Compact"
+                    columns="{!v.numFormColumns}"
+                    mode="readonly"
+                />
+            </div>
             <!--
             <footer class="slds-card__footer">
             <a class="slds-card__footer-action" href="javascript:void(0);">View All
