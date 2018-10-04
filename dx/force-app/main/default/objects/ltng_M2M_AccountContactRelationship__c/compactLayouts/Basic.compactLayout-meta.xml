@@ -5,6 +5,7 @@
     <fields>AccountId__c</fields>
     <fields>ContactId__c</fields>
     <fields>IsActive__c</fields>
+    <fields>IsDirect__c</fields>
     <fields>StartDate__c</fields>
     <fields>EndDate__c</fields>
     <label>Basic</label>

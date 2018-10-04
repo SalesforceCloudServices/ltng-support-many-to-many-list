@@ -41,7 +41,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Basic</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Relationship between a select M2M Contact and an M2M Account.
 

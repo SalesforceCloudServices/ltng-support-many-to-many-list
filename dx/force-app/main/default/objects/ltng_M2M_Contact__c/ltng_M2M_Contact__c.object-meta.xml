@@ -41,7 +41,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Basic</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Example Contact object for the Many to Many relationship demo.
 In this example, an Account can have many Contacts - just as Contacts can have relationships in many Accounts.
