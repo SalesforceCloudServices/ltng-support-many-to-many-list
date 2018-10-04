@@ -27,6 +27,7 @@
             <c:ltng_ManyToManyListTile
                 recordId="{!farChild}"
                 objectApiName="{!v.children.childSObjectType}"
+                objectApiLabel="{!v.children.childSObjectLabel}"
                 numFormColumns="{!v.numFormColumns}"
             />
         </aura:iteration>

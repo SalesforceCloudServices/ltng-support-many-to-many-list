@@ -92,14 +92,13 @@ public with sharing class ltng_ManyToManyListCtrl {
         public String childSObjectType;
         
         @AuraEnabled
-        public String childSObjectName;
+        public String childSObjectLabel;
 
         @AuraEnabled
         public Id[] childrenList;
 
         public ManyToManyChildrenList(){
             this.childrenList = new Id[]{};
-            this.childSObjectType = null;
         }
     }
 
@@ -184,7 +183,7 @@ public with sharing class ltng_ManyToManyListCtrl {
 
         results = new ManyToManyChildrenList();
         results.childSObjectType = targetObjectDescribe.getName();
-        results.childSObjectName = targetObjectDescribe.getLabel();
+        results.childSObjectLabel = targetObjectDescribe.getLabel();
 
         String farRelationshipRecordId;
         for(SObject farChildRelationship : farChildren){

@@ -10,6 +10,7 @@
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
     <aura:attribute name="objectApiName" type="String" />
+    <aura:attribute name="objectApiLabel" type="String" />
     <aura:attribute name="numFormColumns" type="Integer" />
     <!-- private attributes -->
     <aura:attribute name="recordName" type="String" default="" access="private" />
@@ -27,8 +28,8 @@
         />
         <lightning:button variant="Neutral"
             class="slds-m-top_medium"
-            label="Visit Record"
-            title="Visit Record"
+            label="{! 'Visit ' + v.objectApiLabel + ' Record'}"
+            title="{! 'Visit ' + v.objectApiLabel + ' Record'}"
             onclick="{!c.handleClick}"
         />
     </div>
