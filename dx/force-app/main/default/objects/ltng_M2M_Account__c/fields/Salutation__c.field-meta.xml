@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Salutation__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Honorific added to the name for use in letters, etc.</inlineHelpText>
+    <label>Salutation</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ms.</fullName>
+                <default>false</default>
+                <label>Ms.</label>
+            </value>
+            <value>
+                <fullName>Mrs.</fullName>
+                <default>false</default>
+                <label>Mrs.</label>
+            </value>
+            <value>
+                <fullName>Mr.</fullName>
+                <default>false</default>
+                <label>Mr.</label>
+            </value>
+            <value>
+                <fullName>Miss.</fullName>
+                <default>false</default>
+                <label>Miss.</label>
+            </value>
+            <value>
+                <fullName>Professor.</fullName>
+                <default>false</default>
+                <label>Professor.</label>
+            </value>
+            <value>
+                <fullName>Dr.</fullName>
+                <default>false</default>
+                <label>Dr.</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

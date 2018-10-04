@@ -4,7 +4,14 @@ Wait, what is this?
 
 This is meant to be a simple starting point for creating Lightning demo projects
 
+Account
+https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_account.htm
 
+AccountContactRelation
+https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_accountcontactrelation.htm
+
+Contact
+https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contact.htm
 
 # Structure of the project
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactId__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Contact that this relation is built to</inlineHelpText>
+    <label>M2M Contact</label>
+    <referenceTo>ltng_M2M_Contact__c</referenceTo>
+    <relationshipLabel>M2M AccountContactRelations</relationshipLabel>
+    <relationshipName>M2M_AccountContactRelations</relationshipName>
+    <relationshipOrder>1</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

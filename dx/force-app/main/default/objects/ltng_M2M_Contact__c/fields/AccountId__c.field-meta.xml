@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AccountId__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>The primary Account for this contact</inlineHelpText>
+    <label>Primary M2M Account</label>
+    <referenceTo>ltng_M2M_Account__c</referenceTo>
+    <relationshipLabel>M2M Contacts</relationshipLabel>
+    <relationshipName>M2M_Contacts</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
