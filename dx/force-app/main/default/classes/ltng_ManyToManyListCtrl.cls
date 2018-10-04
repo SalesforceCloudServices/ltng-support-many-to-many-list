@@ -17,56 +17,51 @@ public with sharing class ltng_ManyToManyListCtrl {
         return result;
     }
 
-    public class ManyToManyChildrenList {
-        @AuraEnabled
-        public String childSObjectType;
-
-        @AuraEnabled
-        public Id[] childrenList;
-
-        public ManyToManyChildrenList(){
-            this.childrenList = new Id[]{};
-            this.childSObjectType = null;
-        }
-    }
-
     /**
      * Description for method
      **/
     @AuraEnabled
-    public static ManyToManyChildRecord[] listChildren(Id recordId) {
+    public static ManyToManyChildrenList listChildren(Id recordId) {
         //-- start of code
 
-        ManyToManyChildRecord[] results = new ManyToManyChildRecord[]{};
+        ManyToManyChildrenList results = null;
 
         //-- name of the SObject from the given id
-        String sObjectTypeName = getObjectTypeFromId(recordId);
-        // System.debug('sObjectTypeName:' + sObjectTypeName);
+        ManyToManyChildrenList result = null;
+
+        Schema.DescribeSObjectResult recordObjectType = getObjectTypeFromId(recordId);
+        String sObjectApiName = recordObjectType.getName();
+        String sObjectLabel = recordObjectType.getLabel();
+        ObjectMapping manyToManyRelationship;
+        // System.debug('sObjectApiName:' + sObjectApiName);
         
         //-- @TODO: move to a separate function
         //-- which many to many relationship should we explore
-        ObjectMapping objectRelation = OBJECT_MAPS.get(sObjectTypeName);
-        // System.debug('objectRelation');System.debug(objectRelation);
+        
+        try {
+            //-- assume only a single relationship for now...
+            manyToManyRelationship = OBJECT_MAPS.get(sObjectApiName);
+            manyToManyRelationship = orientObjectMapping(manyToManyRelationship, sObjectApiName);
+        } catch(Exception err){
+            throw new AuraHandledException('Unable to find ManyToManyRelationship definition for ' + sObjectLabel + '. Please contact your administrator');
+        }
 
-        /*
-        String[] objectsToInvestigate = new String[]{
-            objectRelation.sourceObject,
-            objectRelation.targetObject,
-            objectRelation.junctionObject
-        };
-        */
+        //-- @INVARIANT - we have our relationships
+        //-- and have those relationships oriented to the current record (as the source)
+        // System.debug('manyToManyRelationship');System.debug(manyToManyRelationship);
 
-        results.addAll(
-            findManyToManyChildren(objectRelation, recordId)
-        );
+        //-- @TODO: should we include multiples?
+        //-- we cannot provide any arguments to the component
+        //-- to specify which relationship we want.
+        //-- so do we include a list of lists so they will all work?
 
-        /*
-        SObject[] expectedResults = [
-            SELECT Id, ContactId__c
-            FROM ltng_M2M_AccountContactRelationship__c
-            WHERE AccountId__c = :recordId
-        ];
-        */
+        //-- @TODO: include try / catch
+        //try {
+        results = findManyToManyChildren(manyToManyRelationship, recordId);
+        //} catch(Exception err){
+        // //-- message already captured from below so use that
+        // throw new AuraHandledException(err.getMessage());
+        //}
         
         //try {
         //} catch(Exception err){
@@ -91,40 +86,56 @@ public with sharing class ltng_ManyToManyListCtrl {
         }
     }
 
-    /** Represents a many-to-many child (from a record's viewpoint) */
-    public class ManyToManyChildRecord {
-        /** Represents the Id of the child record */
+    /** Represents a list of children */
+    public class ManyToManyChildrenList {
         @AuraEnabled
-        public String recordId;
+        public String childSObjectType;
+        
+        @AuraEnabled
+        public String childSObjectName;
 
-        /** The SObject (API) type of the child SObject */
         @AuraEnabled
-        public String sObjectName;
+        public Id[] childrenList;
+
+        public ManyToManyChildrenList(){
+            this.childrenList = new Id[]{};
+            this.childSObjectType = null;
+        }
     }
 
-    public static String getObjectTypeFromId(Id recordId){
+    ///** Represents a many-to-many child (from a record's viewpoint) */
+    //public class ManyToManyChildRecord {
+    //    /** Represents the Id of the child record */
+    //    @AuraEnabled
+    //    public String recordId;
+    //
+    //    /** The SObject (API) type of the child SObject */
+    //    @AuraEnabled
+    //    public String sObjectName;
+    //}
+
+    public static Schema.DescribeSObjectResult getObjectTypeFromId(Id recordId){
         Schema.SObjectType objectType = recordId.getSObjectType();
-        String result = String.valueOf(objectType);
-        return result;
+        return objectType.getDescribe();
     }
 
     /**
      * Determines if we are on the other side of the Many to Many relationship.
-     * @param objectRelation ObjectMapping
+     * @param manyToManyRelationship ObjectMapping
      * @param sObjectName String
      * @return ObjectMapping - if the sObjectName is the target, then flips the relationship (source <-> target)
      */
-    public static ObjectMapping orientObjectMapping(ObjectMapping objectRelation, String sObjectName){
+    public static ObjectMapping orientObjectMapping(ObjectMapping manyToManyRelationship, String sObjectName){
         ObjectMapping results;
 
-        if (objectRelation.sourceObject.equalsIgnoreCase(sObjectName)){
+        if (manyToManyRelationship.sourceObject.equalsIgnoreCase(sObjectName)){
             //-- we are already oriented
-            results = objectRelation;
+            results = manyToManyRelationship;
         } else {
             results = new ObjectMapping();
-            results.sourceObject = objectRelation.targetObject;
-            results.targetObject = objectRelation.sourceObject;
-            results.junctionObject = objectRelation.junctionObject;
+            results.sourceObject = manyToManyRelationship.targetObject;
+            results.targetObject = manyToManyRelationship.sourceObject;
+            results.junctionObject = manyToManyRelationship.junctionObject;
         }
 
         return results;
@@ -133,50 +144,58 @@ public with sharing class ltng_ManyToManyListCtrl {
     /**
      * Get a list of Many to Many Children for a given Many to Many relationship
      * for a particular record.
-     * @param objectRelation (ObjectMapping) - a description of a many to many relationship.
+     * @param manyToManyRelationship (ObjectMapping) - a description of a many to many relationship.
      * @param recordId (Id)
-     * @return ManyToManyChildRecord[] - collection of the child records from the perspective of recordId of a given Many to Many relationship.
+     * @return ManyToManyChildrenList - collection of the child records from the perspective of recordId of a given Many to Many relationship.
      **/
-    public static ManyToManyChildRecord[] findManyToManyChildren(ObjectMapping objectRelation, Id recordId){
-        ManyToManyChildRecord[] results = new ManyToManyChildRecord[]{};
+    public static ManyToManyChildrenList findManyToManyChildren(ObjectMapping manyToManyRelationship, Id recordId){
+        ManyToManyChildrenList results = null;
 
-        String sObjectTypeName = objectRelation.sourceObject;
+        String sObjectApiName = manyToManyRelationship.sourceObject;
 
         //-- get a describe for each of the types of objects.
-        Schema.DescribeSObjectResult sourceObjectDescribe = getSObjectDescription(objectRelation.sourceObject);
-        Schema.DescribeSObjectResult targetObjectDescribe = getSObjectDescription(objectRelation.targetObject);
-        Schema.DescribeSObjectResult junctionObjectDescribe = getSObjectDescription(objectRelation.junctionObject);
+        Schema.DescribeSObjectResult sourceObjectDescribe = getSObjectDescription(manyToManyRelationship.sourceObject);
+        Schema.DescribeSObjectResult targetObjectDescribe = getSObjectDescription(manyToManyRelationship.targetObject);
+        //Schema.DescribeSObjectResult junctionObjectDescribe = getSObjectDescription(manyToManyRelationship.junctionObject);
 
-        //Schema.ChildRelationship targetRelationship = getChildRelationshipFor(junctionObjectDescribe, objectRelation.junctionObject);
-        Schema.ChildRelationship targetRelationship = getChildRelationshipFor(targetObjectDescribe, objectRelation.junctionObject);
-        System.debug('targetRelationship:');System.debug(targetRelationship);
-
-        Schema.ChildRelationship sourceRelationship = getChildRelationshipFor(sourceObjectDescribe, objectRelation.junctionObject);
-        System.debug('sourceRelationship:');System.debug(sourceRelationship);
+        //Schema.ChildRelationship targetRelationship = getChildRelationshipFor(junctionObjectDescribe, manyToManyRelationship.junctionObject);
+        Schema.ChildRelationship targetRelationship = getChildRelationshipFor(targetObjectDescribe, manyToManyRelationship.junctionObject);
+        Schema.ChildRelationship sourceRelationship = getChildRelationshipFor(sourceObjectDescribe, manyToManyRelationship.junctionObject);
 
         String targetRelationshipField = String.valueOf(targetRelationship.getField());
         String sourceRelationshipField = String.valueOf(sourceRelationship.getField());
 
+        //-- @INVARIANT - we know the fields used to provide the relationship
+        // System.debug('Field used to join source to the junction object:' + sourceRelationshipField);
+        // System.debug('Field used to join target to the junction object:' + targetRelationshipField);
+
         String expectedSOQL = String.format(LIST_CHILDREN_QUERY,
-            new String[]{targetRelationshipField, objectRelation.junctionObject, sourceRelationshipField}
+            new String[]{targetRelationshipField, manyToManyRelationship.junctionObject, sourceRelationshipField}
         );
-        System.debug('SOQL to run:' + expectedSOQL);
+
+        // System.debug('SOQL to run:' + expectedSOQL);
         //-- for example: SELECT Id, ContactId__c FROM ltng_M2M_AccountContactRelationship__c WHERE AccountId__c = :recordId
 
         SObject[] farChildren = Database.query(expectedSOQL);
-        System.debug('farChildren'); System.debug(farChildren);
+        
+        //-- @INVARIANT - we have the list of all the children record ids
+        //-- from the far side of the many to many relationship
+        // System.debug('farChildren'); System.debug(farChildren);
 
-        String farRelationshipId;
-        ManyToManyChildRecord childRecord;
+        results = new ManyToManyChildrenList();
+        results.childSObjectType = targetObjectDescribe.getName();
+        results.childSObjectName = targetObjectDescribe.getLabel();
+
+        String farRelationshipRecordId;
         for(SObject farChildRelationship : farChildren){
-            farRelationshipId = String.valueOf(farChildRelationship.get(targetRelationshipField));
-            childRecord = new ManyToManyChildRecord();
-            childRecord.recordId = farRelationshipId;
-            childRecord.sObjectName = objectRelation.targetObject;
-            results.add(childRecord);
+            farRelationshipRecordId = String.valueOf(farChildRelationship.get(targetRelationshipField));
+            results.childrenList.add(farRelationshipRecordId);
         }
 
-        System.debug('results'); System.debug(results);
+        //-- @INVARIANT - we know information about the far side of the many to many relationship
+        //-- this includes the name of the object and label of the object on the far side
+        //-- and the list of children from this record's perspective
+        // System.debug('results'); System.debug(results);
 
         return(results);
     }
@@ -191,7 +210,6 @@ public with sharing class ltng_ManyToManyListCtrl {
         String childRelationSObject;
         for( Schema.ChildRelationship childRelation : sobjectDescribe.getChildRelationships() ){
             childRelationSObject = String.valueOf(childRelation.getChildSObject());
-            System.debug('childRelationSObject:' + childRelationSObject);
             if (childRelationSObject.equals(targetSObject)){
                 result = childRelation;
             }
