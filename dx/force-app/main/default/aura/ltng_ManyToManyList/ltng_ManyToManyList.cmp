@@ -12,24 +12,22 @@
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
     <!-- private attributes -->
+    <aura:attribute name="isDesktop" type="Boolean" access="private" />
+    <aura:attribute name="numFormColumns" type="Integer" default="2" access="private" />
     <aura:attribute name="children" type="Object" default="" access="private" />
     <!-- handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     <!-- events -->
     <!-- elements -->
     <aura:if isTrue="{!!v.children}">
-        <h1>Children List is empty</h1>
+        <h1>No children found yet.</h1>
     </aura:if>
     <aura:if isTrue="{!v.children}">
-        <h1>Children List is NOT empty</h1>
         <aura:iteration items="{!v.children.childrenList}" var="farChild" >
-            <div>Listing id: {!farChild} for {!v.children.childSObjectType}</div>
-            <lightning:recordForm
+            <c:ltng_ManyToManyListTile
                 recordId="{!farChild}"
                 objectApiName="{!v.children.childSObjectType}"
-                layoutType="Compact"
-                columns="1"
-                mode="readonly"
+                numFormColumns="{!v.numFormColumns}"
             />
         </aura:iteration>
     </aura:if>

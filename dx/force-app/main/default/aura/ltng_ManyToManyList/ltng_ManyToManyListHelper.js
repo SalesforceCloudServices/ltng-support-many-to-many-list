@@ -4,6 +4,17 @@
 		 */
 		initComponent : function(component, helper){
 			component.set('v.children', null);
+
+			var deviceType = $A.get("$Browser.formFactor");
+			var isDesktop = deviceType === "DESKTOP";
+			var numFormColumns = 2;
+			if (isDesktop){
+				numFormColumns = 2;
+			} else {
+				numFormColumns = 1;
+			}
+			component.set("v.isDesktop", isDesktop);
+			component.set("v.numFormColumns", numFormColumns);
 		},
 		
 		/**

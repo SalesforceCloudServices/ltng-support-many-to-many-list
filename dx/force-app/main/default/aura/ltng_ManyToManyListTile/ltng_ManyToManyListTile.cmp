@@ -1,0 +1,35 @@
+<!--
+/**
+* Tile used to display info for a specific child in the Many to Many List
+* @component: ltng_ManyToManyListTile
+**/
+-->
+<aura:component
+    access="global"
+>
+    <!-- attributes -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="objectApiName" type="String" />
+    <aura:attribute name="numFormColumns" type="Integer" />
+    <!-- private attributes -->
+    <aura:attribute name="recordName" type="String" default="" access="private" />
+    <!-- handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <!-- events -->
+    <!-- elements -->
+    <div class="slds-box slds-theme_default slds-m-bottom_medium">
+        <lightning:recordForm
+            recordId="{!v.recordId}"
+            objectApiName="{!v.objectApiName}"
+            layoutType="Compact"
+            columns="{!v.numFormColumns}"
+            mode="readonly"
+        />
+        <lightning:button variant="Neutral"
+            class="slds-m-top_medium"
+            label="Visit Record"
+            title="Visit Record"
+            onclick="{!c.handleClick}"
+        />
+    </div>
+</aura:component>
