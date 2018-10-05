@@ -5,7 +5,7 @@
 **/
 -->
 <aura:component
-    controller="ltng_ManyToManyListCtrl"
+    controller="ltng_ManyToManyCtrl"
     implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
     access="global"
 >
