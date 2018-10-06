@@ -287,6 +287,23 @@ public with sharing class ltng_ManyToManyCtrl {
         return(results);
     }
 
+    /**
+     * Save the ManyToMany Relationship record
+     **/
+    @AuraEnabled
+    public static ltng_M2M_Relationship__c saveM2MRelation(ltng_M2M_Relationship__c relation) {
+        ltng_M2M_Relationship__c results;
+        
+        try {
+            upsert relation;
+        } catch(Exception err){
+            throw new AuraHandledException('Exception occurred when processing: saveM2MRelation:' + err.getMessage());
+        }
+        
+        return(results);
+    }
+    
+
     /** @TODO: move to a class / sobject */
     private class ObjectMapping {
         public String sourceObject;

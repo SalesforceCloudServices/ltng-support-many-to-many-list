@@ -1,6 +1,6 @@
 ({
   init : function(component, event, helper){
-    console.info('Component initialized');
+    helper.log('Component initialized');
     
     //-- allow for defaulting while testing.
     //component.set('v.leftObjectApiName', 'ltng_M2M_Account__c');
@@ -19,25 +19,25 @@
     
     if( changeType === "ERROR" ){
       helper.displayError('RecordUpdate Error', component, event, helper);
-      console.error("error occurred");
-      debugger;
+      helper.log("error occurred");
+      //debugger;
     } else if( changeType === "LOADED" ){
-      console.info( "recordLoaded" );
+      helper.log( "recordLoaded" );
       helper.handleRecordLoaded(component, event, helper);
     } else if( changeType === "REMOVED" ){
       helper.displayError('RecordUpdate Removed', component, event, helper);
-      debugger;
+      //debugger;
     } else if( changeType === "CHANGED" ){
       //-- called when updated internally
-      //console.info( "record was changed" );
+      //helper.log( "record was changed" );
     } else {
       helper.displayError('Unexpected RecordUpdate:' + changeType, component, event, helper);
-      debugger;
+      //debugger;
     }
 	},
 	
 	handleLeftRightSelected : function(component, event, helper){
-		console.log('sObject was selected');
+		helper.log('sObject was selected');
 		var leftSObject = component.find('leftObjectSelector').get('v.value');
 		var rightSObject = component.find('rightObjectSelector').get('v.value');
 		
@@ -45,11 +45,16 @@
 	},
 
 	handleJunctionSelected : function(component, event, helper){
-    console.log('junction was selected');
+    helper.noop();
+
+    helper.log('junction was selected');
     var junctionSObject = component.find('junctionObjectSelector').get('v.value');
 
-    var junctionOptions = component.get('v.junctionList')
-    for (var junctionOption of junctionOptions) {
+    var junctionOptions = component.get('v.junctionList');
+    var junctionOption;
+    for (var i = 0; i < junctionOptions.length; i=i+1){
+      junctionOption = junctionOptions[i];
+      
       if (!junctionOption.junctionObjectOption){
 
       } else if (junctionOption.junctionObjectOption.optionApiName === junctionSObject){
@@ -62,7 +67,29 @@
 	},
   
   handleToggleHelpSection : function(component, event, helper){
+    helper.noop();
     var isExpanded = component.get('v.helpExpanded');
-    component.set('v.helpExpanded',!isExpanded);
+    component.set('v.helpExpanded', !isExpanded);
+  },
+
+  handleCancel : function(component, event, helper){
+    helper.noop();
+
+    var navigateEvent = $A.get("e.force:navigateToObjectHome");
+    navigateEvent.setParams({ "scope": component.get('v.sObjectName') });
+    navigateEvent.fire();
+  },
+
+  handleSave : function(component, event, helper){
+    helper.log("handling save");
+
+    var relationshipAlias = component.get('v.relationshipAlias');
+    var selectedJunctionOption = component.get('v.selectedJunctionOption');
+
+    if( !relationshipAlias || !selectedJunctionOption){
+      return;
+    }
+
+    helper.saveRecord(component, helper, relationshipAlias, selectedJunctionOption);
   }
 })

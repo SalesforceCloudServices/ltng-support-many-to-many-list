@@ -3,6 +3,8 @@
 	 * Initialize the component.
 	 */
 	initialize : function(component, helper){
+    helper.noop();
+
 		component.set('v.sobjectList', null);
 	},
 
@@ -10,19 +12,19 @@
    * performs a server side call
    * @param exampleRecordId (Id)
    **/
-  retrieveSObjectList : function(component, helper, recordId) {
+  retrieveSObjectList : function(component, helper) {
     var action = component.get('c.getListOfAllObjects');
     //action.setParams({ recordId: recordId });
     
     action.setCallback(this, function(response){
       var state = response.getState();
       if( state === 'SUCCESS' ){
-        console.info('action success');
+        helper.log('action success');
 				var results = response.getReturnValue();
         component.set('v.sobjectList', results);
         //component.set('v.junctionList', results);
       } else {
-        console.error('Error occurred from Action');
+        helper.log('Error occurred from Action');
         
         //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
         var errors = response.getError();
@@ -58,7 +60,7 @@
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						console.info('action success');
+						helper.log('action success');
             var results = response.getReturnValue();
             component.set('v.junctionList', results);
             
@@ -66,7 +68,7 @@
               component.set('v.selectedJunctionOption', results[0]);
             }
 				} else {
-						console.error('Error occurred from Action');
+						helper.log('Error occurred from Action');
 						
 						//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
 						var errors = response.getError();
@@ -78,17 +80,90 @@
   },
   
   /**
-   * Selecting the junction object, what are the standard objects we likely want.
+   * Save the ManyToMany Relationship Record.
+   * @param relationshipAlias (String) - the alias of the relationship (to show in the dropdown)
+   * @param selectedJunctionOption (ltng_ManyToManyCtrl.ManyToManyRelationOption) - the relationship information.
    */
+  saveRecord : function(component, helper, relationshipAlias, selectedJunctionOption){
+    
+    var relation = {
+      "Name": relationshipAlias,
+      "LeftObjectAPIName__c": selectedJunctionOption.leftObjectOption.optionApiName,
+      "JunctionLeftObjectRelationshipField__c": selectedJunctionOption.leftObjectJunctionField.optionApiName,
+      "JunctionObjectAPIName__c": selectedJunctionOption.junctionObjectOption.optionApiName,
+      "RightObjectAPIName__c": selectedJunctionOption.rightObjectOption.optionApiName,
+      "JunctionRightObjectRelationshipField__c": selectedJunctionOption.rightObjectJunctionField.optionApiName
+    };
+    
+    var action = component.get('c.saveM2MRelation');
+    action.setParams({ relation: relation });
+    
+    action.setCallback(this, function(response){
+        var state = response.getState();
+        if( state === 'SUCCESS' ){
+            helper.info('action success');
+            var results = response.getReturnValue();
+            helper.log(results);
+
+            helper.goBack(component, helper);
+        } else {
+            helper.error('Error occurred from Action');
+            
+            //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
+            var errors = response.getError();
+            helper.handleCallError(component, helper, state, errors);
+        }
+    });
+    //-- optionally set storable, abortable, background flags here
+    $A.enqueueAction(action);
+  },
+
+  /**
+   * Handles going back.
+   */
+  goBack : function(component, helper){
+    helper.noop();
+
+    var recordId = component.get('v.recordId');
+    var sObjectName = component.get('v.sObjectName');
+    var navigateEvent;
+
+    if (recordId) {
+      // Display popup confirmation to the user
+      var resultsToast = $A.get("e.force:showToast");
+      resultsToast.setParams({
+          "title": "Saved",
+          "message": "The record was updated."});
+      resultsToast.fire();
+
+      // Navigate back to the record view
+      navigateEvent = $A.get("e.force:navigateToSObject");
+      navigateEvent.setParams({ "recordId": recordId });
+      navigateEvent.fire();
+    } else {
+      navigateEvent = $A.get("e.force:navigateToObjectHome");
+      navigateEvent.setParams({ "scope": sObjectName });
+      navigateEvent.fire();
+    }
+  },
   
   /**
    * Called when the lightning data service loads records.
    **/
   handleRecordLoaded : function(component, event, helper) {
+    helper.noop();
+
+    var relationshipAlias = component.get('v.ticketRecord.Name');
 		var leftObjectApiName = component.get('v.ticketRecord.LeftObjectAPIName__c');
 		var rightObjectApiName = component.get('v.ticketRecord.RightObjectAPIName__c');
-		var junctionObjectApiName = component.get('v.ticketRecord.JunctionObjectAPIName__c');
-		
+    var junctionObjectApiName = component.get('v.ticketRecord.JunctionObjectAPIName__c');
+    
+    component.set('v.relationshipAlias', relationshipAlias);
+    component.set('v.leftObjectApiName', leftObjectApiName);
+    component.set('v.rightObjectApiName', rightObjectApiName);
+    component.set('v.junctionObjectApiName', junctionObjectApiName);
+
+    helper.retrieveJunctionObjects(component, helper, leftObjectApiName, rightObjectApiName);
   },
   
   /**
@@ -110,7 +185,7 @@
       helper.displayError('Unknown Response', 'Action failure');
   	}
   	
-  	console.error(errorMessages);
+  	helper.log(errorMessages);
   },
   
   /**
@@ -119,6 +194,8 @@
    * @param errorMsg (String)
    **/
   displayError: function(errorCode, component, event, helper){
+    helper.noop();
+
     var errorTitle = 'Error';
     var errorMsg = 'An error occurred: ' + errorCode + '. Please contact your System Administrator';
     
@@ -135,6 +212,8 @@
    * Handles when the save has completed
    **/
   handleSaveCompleted : function(component, event, helper) {
+    helper.noop();
+
     //-- send a toast message
     var resultsToast = $A.get('e.force:showToast');
     resultsToast.setParams({
@@ -148,5 +227,17 @@
     
     //-- close the dialog
     $A.get("e.force:closeQuickAction").fire();
+  },
+
+  noop : function(){},
+
+  log : function(msg){
+    console.log(msg);
+  },
+  info : function(msg){
+    console.info(msg);
+  },
+  error : function(msg){
+    console.error(msg);
   }
 })

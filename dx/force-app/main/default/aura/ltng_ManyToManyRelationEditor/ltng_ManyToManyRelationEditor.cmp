@@ -6,7 +6,7 @@
 -->
 <aura:component
     controller="ltng_ManyToManyCtrl"
-    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,lightning:actionOverride"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction,lightning:actionOverride"
     access="global"
 >
     <!-- attributes -->
@@ -100,7 +100,7 @@
                     <form class="slds-form--stacked">
                         <lightning:input aura:id="relationshipName" name="relationshipName" label="Relationship Alias"
                             required="true" value="{!v.relationshipAlias}"
-                            minlength="3" maxlength="20"
+                            minlength="3" maxlength="50"
                         />
                         <lightning:select aura:id="leftObjectSelector" name="leftObjectSelector" label="What is one object in Many to Many relationship?"
                             required="true"
@@ -187,8 +187,10 @@
     <!-- footer -->
     <div style="height: 180px;">
         <div class="slds-docked-form-footer">
-            <lightning:button label="Cancel" title="Cancel" variant="neutral" />
-            <lightning:button label="Save" title="Save" variant="brand" disabled="{!or(not(v.selectedJunctionOption),not(v.relationshipAlias))}" />
+            <lightning:button label="Cancel" title="Cancel" variant="neutral" onclick="{!c.handleCancel}" />
+            <lightning:button label="Save" title="Save" variant="brand" disabled="{!or(not(v.selectedJunctionOption),not(v.relationshipAlias))}"
+                onclick="{!c.handleSave}"
+            />
         </div>
     </div>
     <!--

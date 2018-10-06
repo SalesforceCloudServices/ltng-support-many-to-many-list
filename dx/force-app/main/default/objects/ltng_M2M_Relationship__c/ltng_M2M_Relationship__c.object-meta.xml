@@ -73,7 +73,23 @@ and the junction object - that relates the two.</description>
         <type>Text</type>
     </nameField>
     <pluralLabel>M2M Relationships</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>LeftObjectAPIName__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>JunctionObjectAPIName__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RightObjectAPIName__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>LeftObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>JunctionObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RightObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LeftObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>JunctionObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RightObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>LeftObjectAPIName__c</searchFilterFields>
+        <searchFilterFields>JunctionObjectAPIName__c</searchFilterFields>
+        <searchFilterFields>RightObjectAPIName__c</searchFilterFields>
+        <searchResultsAdditionalFields>LeftObjectAPIName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>JunctionObjectAPIName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RightObjectAPIName__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
