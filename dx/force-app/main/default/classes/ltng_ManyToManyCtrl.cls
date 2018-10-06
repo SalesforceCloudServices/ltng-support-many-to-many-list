@@ -5,6 +5,10 @@
  **/
 public with sharing class ltng_ManyToManyCtrl {
 
+    /** represents no selection **/
+    public static final String NO_SELECTION = '-No Selection-';
+    public static final String NO_SELECTION_VALUE = '';
+
     /** Templated query for finding children of a related record */
     public static final String LIST_CHILDREN_QUERY = 'SELECT Id, {0} FROM {1} WHERE {2} = :recordId';
 
@@ -23,8 +27,10 @@ public with sharing class ltng_ManyToManyCtrl {
      * List the SObjects available for start a Many to Many relationship definition
      */
     @AuraEnabled
-    public static SObjectOption[] getListOfAllObjects(){
-        SObjectOption[] results = new SObjectOption[]{};
+    public static ApiOption[] getListOfAllObjects(){
+        ApiOption[] results = new ApiOption[]{
+            new ApiOption()
+        };
 
         //-- for more please see:
         //-- https://developer.salesforce.com/docs/atlas.en-us.api_tooling.meta/api_tooling/tooling_api_objects_entitydefinition.htm
@@ -38,45 +44,82 @@ public with sharing class ltng_ManyToManyCtrl {
             ];
             System.debug('entities.length:' + entities.size());
             for(EntityDefinition entity : entities){
-                results.add(new SObjectOption(entity.MasterLabel, entity.QualifiedApiName));
+                results.add(new ApiOption(entity.MasterLabel, entity.QualifiedApiName));
             }
         } catch(Exception err){
             throw new AuraHandledException('Unable to access list of SObjects. Please contact your administrator');
         }
+
         return results;
     }
 
-    public class SObjectOption {
+    public class ApiOption {
         @AuraEnabled
-        public String sObjectLabel;
+        public String optionLabel;
 
         @AuraEnabled
-        public String sObjectApiName;
+        public String optionApiName;
 
-        public SObjectOption(String label, String apiName){
-            this.sObjectLabel = label;
-            this.sObjectApiName = apiName;
+        public ApiOption(){
+            this(NO_SELECTION, NO_SELECTION_VALUE);
+        }
+
+        public ApiOption(String label, String apiName){
+            this.optionLabel = label;
+            this.optionApiName = apiName;
+        }
+    }
+
+    public class ManyToManyRelationOption {
+        @AuraEnabled
+        public ApiOption leftObjectOption;
+
+        @AuraEnabled
+        public ApiOption rightObjectOption;
+
+        @AuraEnabled
+        public ApiOption junctionObjectOption;
+
+        @AuraEnabled
+        public ApiOption leftObjectJunctionField;
+
+        @AuraEnabled
+        public ApiOption rightObjectJunctionField;
+
+        @AuraEnabled
+        public String optionLabel;
+
+        @AuraEnabled
+        public String optionApiName;
+
+        public ManyToManyRelationOption(){
+            this(NO_SELECTION, NO_SELECTION_VALUE);
+        }
+
+        public ManyToManyRelationOption(String label, String apiName){
+            this.optionLabel = label;
+            this.optionApiName = apiName;
         }
     }
 
     /**
      * List the SObjects that have a child relationship with the selected object.
      * @param selectedSObject (String)
-     * @return SObjectOption[] - collection of SObjects that are child related to that object.
+     * @return ApiOption[] - collection of SObjects that are child related to that object.
      **/
     @AuraEnabled
-    public static SObjectOption[] getChildRelationships(String selectedSObject) {
-        SObjectOption[] results = new SObjectOption[]{};
+    public static ApiOption[] getChildRelationships(String selectedSObject) {
+        ApiOption[] results = new ApiOption[]{};
 
         Schema.DescribeSObjectResult sobjectDescribe = getSObjectDescription(selectedSObject);
 
-        Map<String,SObjectOption[]> potentialJunctionObjects = new Map<String,SObjectOption[]>();
+        Map<String,ApiOption[]> potentialJunctionObjects = new Map<String,ApiOption[]>();
         
         Schema.DescribeSObjectResult childDescribe;
         for( Schema.ChildRelationship childRelation : sobjectDescribe.getChildRelationships() ){
             childDescribe = childRelation.getChildSObject().getDescribe();
 
-            results.add(new SObjectOption(childDescribe.getLabel(), childDescribe.getName()));
+            results.add(new ApiOption(childDescribe.getLabel(), childDescribe.getName()));
         }
 
         //try {
@@ -86,6 +129,107 @@ public with sharing class ltng_ManyToManyCtrl {
         //}
         
         return(results);
+    }
+
+
+    @AuraEnabled
+    public static ManyToManyRelationOption[] getJunctionRelationships(String leftSObject, String rightSObject){
+        ManyToManyRelationOption[] results = new ManyToManyRelationOption[]{};
+        
+        Schema.DescribeSObjectResult leftObjectDescribe = getSObjectDescription(leftSObject);
+        Schema.DescribeSObjectResult rightObjectDescribe = getSObjectDescription(rightSObject);
+
+        Map<String,ApiOption> potentialJunctionObjects = new Map<String,ApiOption>();
+        Set<String> foundChildObjects = new Set<String>();
+        
+        Schema.DescribeSObjectResult childDescribe;
+        Schema.DescribeFieldResult fieldDescribe;
+        ManyToManyRelationOption m2mRelation;
+        ApiOption currentOption;
+        ApiOption currentFieldDescribe;
+        ApiOption targetFieldDescribe;
+        ManyToManyRelationOption currentRelationshipOption;
+
+        for( Schema.ChildRelationship childRelation : leftObjectDescribe.getChildRelationships() ){
+            childDescribe = childRelation.getChildSObject().getDescribe();
+            fieldDescribe = childRelation.getField().getDescribe();
+
+            /*
+            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
+                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
+            }
+            //System.debug(childDescribe);
+            System.debug('object.isAccessible:' + childDescribe.isAccessible());
+            System.debug('childRelation.getName:' + childDescribe.getName());
+            System.debug('fieldLabel:' + fieldDescribe.getName());
+            System.debug('isNamePointing:' + fieldDescribe.isNamePointing());
+            System.debug('getReferenceTo:' + fieldDescribe.getReferenceTo());
+
+            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
+                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
+            }
+            */
+
+            potentialJunctionObjects.put(childDescribe.getName(), new ApiOption(fieldDescribe.getLabel(), fieldDescribe.getName()));
+        }
+
+        for( Schema.ChildRelationship childRelation : rightObjectDescribe.getChildRelationships() ){
+            childDescribe = childRelation.getChildSObject().getDescribe();
+
+            //System.debug('childDescribe.getName:' + childDescribe.getName());
+            //foundChildObjects.add(childDescribe.getName());
+
+            //-- @TODO: Currently there is no known way to reduce the list
+            //-- so it doesn't include the 'System' objects like Attachment, EmailMessage, FeedItem
+            //-- without going through every field on each of those objects
+            //-- to ensure that they have relations to both of these objects.
+            //-- so for now, we will just ask the end user.
+
+            //-- only continue if the child relation was found in both objects
+            if (potentialJunctionObjects.containsKey(childDescribe.getName())) {
+                fieldDescribe = childRelation.getField().getDescribe();
+
+                //-- only continue if the field is different between the two
+                //-- as otherwise we are dealing with one of those ubiquitous objects
+                //-- like documents / emailTemplates etc.
+                //-- that cannot be weeded out in any other way
+
+                currentFieldDescribe = new ApiOption(fieldDescribe.getLabel(), fieldDescribe.getName());
+                targetFieldDescribe = potentialJunctionObjects.get(childDescribe.getName());
+                if(!currentFieldDescribe.optionApiName.equals(targetFieldDescribe.optionApiName)){
+                    currentOption = new ApiOption(childDescribe.getLabel(), childDescribe.getName());
+
+                    currentRelationshipOption = new ManyToManyRelationOption(currentOption.optionLabel, currentOption.optionApiName);
+                    currentRelationshipOption.junctionObjectOption = currentOption;
+                    currentRelationshipOption.leftObjectOption = new ApiOption(leftObjectDescribe.getLabel(), leftObjectDescribe.getName());
+                    currentRelationshipOption.rightObjectOption = new ApiOption(rightObjectDescribe.getLabel(), rightObjectDescribe.getName());
+
+                    
+                    currentRelationshipOption.leftObjectJunctionField = targetFieldDescribe;
+                    currentRelationshipOption.rightObjectJunctionField = currentFieldDescribe;
+
+                    results.add(currentRelationshipOption);
+                }
+            }
+        }
+
+        /*
+        System.debug('\n\n\n\n\n\n\n');
+        System.debug('expected keys');
+        for (String potentialKey : potentialJunctionObjects.keySet()) {
+            System.debug(potentialKey);
+        }
+        System.debug('found keys:');
+        for (String potentialKey2 : foundChildObjects) {
+            System.debug(potentialKey2);
+        }
+        */
+
+        if (results.size() > 1){
+            results.add(0,new ManyToManyRelationOption());
+        }
+        
+        return results;
     }
     
 
@@ -102,20 +246,20 @@ public with sharing class ltng_ManyToManyCtrl {
         ManyToManyChildrenList result = null;
 
         Schema.DescribeSObjectResult recordObjectType = getObjectTypeFromId(recordId);
-        String sObjectApiName = recordObjectType.getName();
-        String sObjectLabel = recordObjectType.getLabel();
+        String optionApiName = recordObjectType.getName();
+        String optionLabel = recordObjectType.getLabel();
         ObjectMapping manyToManyRelationship;
-        // System.debug('sObjectApiName:' + sObjectApiName);
+        // System.debug('optionApiName:' + optionApiName);
         
         //-- @TODO: move to a separate function
         //-- which many to many relationship should we explore
         
         try {
             //-- assume only a single relationship for now...
-            manyToManyRelationship = OBJECT_MAPS.get(sObjectApiName);
-            manyToManyRelationship = orientObjectMapping(manyToManyRelationship, sObjectApiName);
+            manyToManyRelationship = OBJECT_MAPS.get(optionApiName);
+            manyToManyRelationship = orientObjectMapping(manyToManyRelationship, optionApiName);
         } catch(Exception err){
-            throw new AuraHandledException('Unable to find ManyToManyRelationship definition for ' + sObjectLabel + '. Please contact your administrator');
+            throw new AuraHandledException('Unable to find ManyToManyRelationship definition for ' + optionLabel + '. Please contact your administrator');
         }
 
         //-- @INVARIANT - we have our relationships
@@ -222,7 +366,7 @@ public with sharing class ltng_ManyToManyCtrl {
     public static ManyToManyChildrenList findManyToManyChildren(ObjectMapping manyToManyRelationship, Id recordId){
         ManyToManyChildrenList results = null;
 
-        String sObjectApiName = manyToManyRelationship.sourceObject;
+        String optionApiName = manyToManyRelationship.sourceObject;
 
         //-- get a describe for each of the types of objects.
         Schema.DescribeSObjectResult sourceObjectDescribe = getSObjectDescription(manyToManyRelationship.sourceObject);

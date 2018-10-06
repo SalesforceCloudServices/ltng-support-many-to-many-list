@@ -19,7 +19,8 @@
       if( state === 'SUCCESS' ){
         console.info('action success');
 				var results = response.getReturnValue();
-				component.set('v.sobjectList', results);
+        component.set('v.sobjectList', results);
+        //component.set('v.junctionList', results);
       } else {
         console.error('Error occurred from Action');
         
@@ -28,23 +29,42 @@
         helper.handleCallError(component, helper, state, errors);
       }
     });
+
     //-- optionally set storable, abortable, background flags here
     $A.enqueueAction(action);
-	},
+  },
+  
+  
 	
 	/**
-	 * retrieveJunctionList
+	 * Selecting both the left and the right, what are the junction objects?
+   * @param leftSObject (String) - the api name of the left sobject
+   * @param rightSObject (String) - the api name of the right sobject
+   * @postcondition - if junction values were found, they are applied to junctionList attr.
 	 */
-	retrieveJunctionObjects : function(component, helper, selectedSObject){
-		var action = component.get('c.getChildRelationships');
-		action.setParams({ selectedSObject: selectedSObject });
+	retrieveJunctionObjects : function(component, helper, leftSObject, rightSObject){
+
+    if (!leftSObject || !rightSObject) {
+      //-- we need both to continue.
+      return;
+    }
+
+		var action = component.get('c.getJunctionRelationships');
+    action.setParams({ leftSObject: leftSObject, rightSObject: rightSObject });
+    
+    component.set('v.junctionList', null);
+    component.set('v.selectedJunctionOption', null);
 
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
 						console.info('action success');
-						var results = response.getReturnValue();
-						component.set('v.junctionList', results);
+            var results = response.getReturnValue();
+            component.set('v.junctionList', results);
+            
+            if (results && results.length === 1){
+              component.set('v.selectedJunctionOption', results[0]);
+            }
 				} else {
 						console.error('Error occurred from Action');
 						
@@ -55,7 +75,11 @@
 		});
 		//-- optionally set storable, abortable, background flags here
 		$A.enqueueAction(action);
-	},
+  },
+  
+  /**
+   * Selecting the junction object, what are the standard objects we likely want.
+   */
   
   /**
    * Called when the lightning data service loads records.
