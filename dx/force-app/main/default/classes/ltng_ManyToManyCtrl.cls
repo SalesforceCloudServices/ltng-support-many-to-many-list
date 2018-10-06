@@ -231,7 +231,114 @@ public with sharing class ltng_ManyToManyCtrl {
         
         return results;
     }
+
     
+    /**
+     * Provide the list of ManyToMany Relationships available.
+     * @param recordId (Id)
+     * @return ltng_M2M_Relationship__c[] - list of the available relationships.
+     **/
+    /**
+     * Description for method
+     **/
+    @AuraEnabled
+    public static ltng_M2M_Relationship__c[] listAvailableRelationships(Id recordId) {
+        ltng_M2M_Relationship__c[] results;
+
+        if (recordId == null) {
+            return results;
+        }
+
+        //-- name of the SObject from the given id
+        Schema.DescribeSObjectResult recordObjectType = getObjectTypeFromId(recordId);
+        String objectApiName = recordObjectType.getName();
+        String objectLabel = recordObjectType.getLabel();
+        
+        try {
+            results = [
+                SELECT Id, Name
+                FROM ltng_M2M_Relationship__c
+                WHERE LeftObjectAPIName__c = :objectApiName OR RightObjectAPIName__c = :objectApiName
+            ];
+        } catch(Exception err){
+            throw new AuraHandledException('Exception occurred when processing: listAvailableRelationships');
+        }
+        
+        return(results);
+    }
+    
+        
+
+    /**
+     * List the children available for a specific record.
+     **/
+    @AuraEnabled
+    public static ManyToManyChildrenList listChildren2(Id recordId, Id relationshipId) {
+        //-- start of code
+        ManyToManyChildrenList results = null;
+
+        if (recordId == null) {
+            return results;
+        }
+
+        //-- name of the SObject from the given id
+        Schema.DescribeSObjectResult recordObjectType = getObjectTypeFromId(recordId);
+        String objectApiName = recordObjectType.getName();
+        String objectLabel = recordObjectType.getLabel();
+        ltng_M2M_Relationship__c[] manyToManyRelationships;
+        ltng_M2M_Relationship__c manyToManyRelationship;
+        // System.debug('objectApiName:' + objectApiName);
+        
+        manyToManyRelationship = [
+            SELECT Id, Name, JunctionObjectAPIName__c,
+                LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c,
+                RightObjectAPIName__c, JunctionRightObjectRelationshipField__c
+            FROM ltng_M2M_Relationship__c
+            WHERE Id = :relationshipId OR
+                (LeftObjectAPIName__c = :objectApiName OR RightObjectAPIName__c = :objectApiName)
+            LIMIT 1
+        ];
+
+        manyToManyRelationship = orientRelationship(manyToManyRelationship, objectApiName);
+
+        String targetRelationshipField = manyToManyRelationship.JunctionRightObjectRelationshipField__c;
+        String sourceRelationshipField = manyToManyRelationship.JunctionLeftObjectRelationshipField__c;
+        String junctionObjectApiName = manyToManyRelationship.JunctionObjectAPIName__c;
+
+        String expectedSOQL = String.format(LIST_CHILDREN_QUERY,
+            new String[]{targetRelationshipField, junctionObjectApiName, sourceRelationshipField}
+        );
+
+        System.debug('SOQL to run:' + expectedSOQL);
+        //-- for example: SELECT Id, ContactId__c FROM ltng_M2M_AccountContactRelationship__c WHERE AccountId__c = :recordId
+        
+        //-- @INVARIANT - we have the list of all the children record ids
+        //-- from the far side of the many to many relationship
+        // System.debug('farChildren'); System.debug(farChildren);
+
+        Schema.DescribeSObjectResult targetObjectDescribe = getSObjectDescription(manyToManyRelationship.RightObjectAPIName__c);
+
+        results = new ManyToManyChildrenList();
+        results.childSObjectType = targetObjectDescribe.getName();
+        results.childSObjectLabel = targetObjectDescribe.getLabel();
+
+        SObject[] farChildren = Database.query(expectedSOQL);
+
+        String farRelationshipRecordId;
+        for(SObject farChildRelationship : farChildren){
+            farRelationshipRecordId = String.valueOf(farChildRelationship.get(targetRelationshipField));
+            results.childrenList.add(farRelationshipRecordId);
+        }
+
+        //-- @INVARIANT - we know information about the far side of the many to many relationship
+        //-- this includes the name of the object and label of the object on the far side
+        //-- and the list of children from this record's perspective
+        // System.debug('results'); System.debug(results);
+
+        return(results);
+    }
+    
+        
 
     /**
      * List the children available for a specific record.
@@ -239,12 +346,13 @@ public with sharing class ltng_ManyToManyCtrl {
     @AuraEnabled
     public static ManyToManyChildrenList listChildren(Id recordId) {
         //-- start of code
-
         ManyToManyChildrenList results = null;
 
-        //-- name of the SObject from the given id
-        ManyToManyChildrenList result = null;
+        if (recordId == null) {
+            return results;
+        }
 
+        //-- name of the SObject from the given id
         Schema.DescribeSObjectResult recordObjectType = getObjectTypeFromId(recordId);
         String optionApiName = recordObjectType.getName();
         String optionLabel = recordObjectType.getLabel();
@@ -368,6 +476,28 @@ public with sharing class ltng_ManyToManyCtrl {
             results.sourceObject = manyToManyRelationship.targetObject;
             results.targetObject = manyToManyRelationship.sourceObject;
             results.junctionObject = manyToManyRelationship.junctionObject;
+        }
+
+        return results;
+    }
+
+    public static ltng_M2M_Relationship__c orientRelationship(ltng_M2M_Relationship__c relationship, String sObjectApiName){
+        ltng_M2M_Relationship__c results;
+        ltng_M2M_Relationship__c relationshipClone;
+
+        if (relationship.LeftObjectAPIName__c.equalsIgnoreCase(sObjectApiName)) {
+            results = relationship;
+        } else {
+            System.debug('relationship is out of alignment');
+            relationshipClone = relationship.clone(false, false, false, false);
+            System.debug('relationshipClone'); System.debug(relationshipClone);
+
+            relationship.LeftObjectAPIName__c = relationshipClone.RightObjectAPIName__c;
+            relationship.JunctionLeftObjectRelationshipField__c = relationshipClone.JunctionRightObjectRelationshipField__c;
+
+            relationship.RightObjectAPIName__c = relationshipClone.LeftObjectAPIName__c;
+            relationship.JunctionRightObjectRelationshipField__c = relationshipClone.JunctionLeftObjectRelationshipField__c;
+            results = relationship;
         }
 
         return results;

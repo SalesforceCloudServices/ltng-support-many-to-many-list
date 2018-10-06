@@ -16,14 +16,49 @@
 			component.set("v.isDesktop", isDesktop);
 			component.set("v.numFormColumns", numFormColumns);
 		},
+
+		/**
+		 * Determines the relationships available for the list.
+		 * @param recordId (Id)
+		 */
+		loadRelationships : function(component, helper, recordId){
+			var action = component.get('c.listAvailableRelationships');
+			action.setParams({ recordId: recordId });
+
+			component.set('v.relationships',null);
+			
+			action.setCallback(this, function(response){
+					var state = response.getState();
+					if( state === 'SUCCESS' ){
+							console.info('action success');
+							var results = response.getReturnValue();
+							
+							if (results && results.length > 0) {
+								component.set('v.relationships', results);
+								
+								helper.loadChildren(component, helper, recordId, results[0].Id);
+							} else {
+								component.set('v.relationships',null);
+							}
+					} else {
+							console.error('Error occurred from Action');
+							
+							//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
+							var errors = response.getError();
+							helper.handleCallError(component, helper, state, errors);
+					}
+			});
+			//-- optionally set storable, abortable, background flags here
+			$A.enqueueAction(action);
+		},
 		
 		/**
 		 * performs a server side call
 		 * @param exampleRecordId (Id)
 		 **/
-		loadChildren : function(component, helper, recordId) {
-				var action = component.get('c.listChildren');
-				action.setParams({ recordId: recordId });
+		loadChildren : function(component, helper, recordId, relationshipId) {
+				var action = component.get('c.listChildren2');
+				action.setParams({ recordId: recordId, relationshipId: relationshipId });
 				
 				action.setCallback(this, function(response){
 						var state = response.getState();
