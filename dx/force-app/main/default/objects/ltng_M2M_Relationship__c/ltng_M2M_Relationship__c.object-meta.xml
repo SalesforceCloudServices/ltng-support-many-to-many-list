@@ -18,7 +18,10 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>Edit</actionName>
-        <type>Default</type>
+        <content>ltng_ManyToManyRelationEditor</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>LightningComponent</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>List</actionName>
@@ -26,7 +29,10 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <type>Default</type>
+        <content>ltng_ManyToManyRelationEditor</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>LightningComponent</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>SaveEdit</actionName>
@@ -63,9 +69,8 @@ and the junction object - that relates the two.</description>
     <enableStreamingApi>true</enableStreamingApi>
     <label>M2M Relationship</label>
     <nameField>
-        <displayFormat>MMR-{00000}</displayFormat>
         <label>M2M Relationship Name</label>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>M2M Relationships</pluralLabel>
     <searchLayouts/>

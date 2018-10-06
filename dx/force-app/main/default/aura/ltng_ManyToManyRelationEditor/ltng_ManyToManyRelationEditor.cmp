@@ -28,6 +28,7 @@
     <aura:attribute name="junctionList" type="Object[]" access="private" />
     <aura:attribute name="selectedJunctionOption" type="Object" access="private" />
 
+    <aura:attribute name="relationshipAlias" type="String" access="private" />
     <aura:attribute name="leftObjectApiName" type="String" access="private" />
     <aura:attribute name="rightObjectApiName" type="String" access="private" />
     <aura:attribute name="junctionObjectApiName" type="String" access="private" />
@@ -62,10 +63,31 @@
                 <span class="slds-truncate slds-m-left_medium" title="Help">Help</span>
             </button>
         </h3>
-        <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+        <div aria-hidden="false" class="slds-section__content help-content" id="expando-unique-id">
             <div class="slds-box slds-theme_default">
-                <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra augue.</p>
+                <p>A <b>One-to-Many relationship</b> is when one type record can relate to multiples of another type of record.</p>
+                
+                <p>For example: a Book can have many Pages.<br />
+                    In this case, a single Page can&apos;t belong to more than one Book, otherwise it would be hard to read.</p>
+                
+                <p>A <b>Many-to-Many relationship</b> is when the relationship isn&apos;t exclusive.</p>
+
+                <p>For example a Class can have many Students, but Students will likely take more than one Class.</p>
+
+                <p>A <b>CRM example of a Many-to-Many Relationship</b> would be: you can have Opportunities with more than one Product,
+                    but that same Product can be used in other Opportunities.</p>
+
+                <p>In this case, we use a <b>Junction Object</b> to link them: an OpportunityProduct - aka. OpportunityLineItem.</p>
+
+                <p>This special object references both the Opportunity along with the Product,
+                    and contains information that would apply only for this instance of a Product on this Opportunity.
+                    Such as the Number of Products to be ordered.</p>
+                
+                <hr />
+
+                <p>What you define here is not to create the relationship, but simply that this relationship is special to you -
+                    and that you want to make it easy to navigate between the two objects quickly.
+                </p>
             </div>
         </div>
     </div>
@@ -76,7 +98,11 @@
             <lightning:layoutItem padding="around-small" size="6">
                 <div aria-labelledby="m2m-relation-form">
                     <form class="slds-form--stacked">
-                        <lightning:select aura:id="leftObjectSelector" name="leftObjectSelector" label="Which object starts the Many to Many relationship?"
+                        <lightning:input aura:id="relationshipName" name="relationshipName" label="Relationship Alias"
+                            required="true" value="{!v.relationshipAlias}"
+                            minlength="3" maxlength="20"
+                        />
+                        <lightning:select aura:id="leftObjectSelector" name="leftObjectSelector" label="What is one object in Many to Many relationship?"
                             required="true"
                             onchange="{!c.handleLeftRightSelected}"
                         >
@@ -87,7 +113,7 @@
                                 ></option>
                             </aura:iteration>
                         </lightning:select>
-                        <lightning:select aura:id="rightObjectSelector" name="rightObjectSelector" label="Which object ends the Many to Many relationship?"
+                        <lightning:select aura:id="rightObjectSelector" name="rightObjectSelector" label="What is the other object in the Many to Many relationship?"
                             required="true"
                             onchange="{!c.handleLeftRightSelected}"
                         >
@@ -162,7 +188,7 @@
     <div style="height: 180px;">
         <div class="slds-docked-form-footer">
             <lightning:button label="Cancel" title="Cancel" variant="neutral" />
-            <lightning:button label="Save" title="Save" variant="brand" />
+            <lightning:button label="Save" title="Save" variant="brand" disabled="{!or(not(v.selectedJunctionOption),not(v.relationshipAlias))}" />
         </div>
     </div>
     <!--
