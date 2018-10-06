@@ -51,16 +51,9 @@
     var junctionSObject = component.find('junctionObjectSelector').get('v.value');
 
     var junctionOptions = component.get('v.junctionList');
-    var junctionOption;
-    for (var i = 0; i < junctionOptions.length; i=i+1){
-      junctionOption = junctionOptions[i];
-      
-      if (!junctionOption.junctionObjectOption){
-
-      } else if (junctionOption.junctionObjectOption.optionApiName === junctionSObject){
-        component.set('v.selectedJunctionOption', junctionOption);
-        return;
-      }
+    var junctionOption = helper.findJunction(component, helper, junctionSObject);
+    if (junctionOption) {
+      component.set('v.selectedJunctionOption', junctionOption);
     }
     
     return;

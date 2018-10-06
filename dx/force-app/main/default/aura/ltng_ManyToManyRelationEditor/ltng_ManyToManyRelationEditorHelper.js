@@ -44,7 +44,7 @@
    * @param rightSObject (String) - the api name of the right sobject
    * @postcondition - if junction values were found, they are applied to junctionList attr.
 	 */
-	retrieveJunctionObjects : function(component, helper, leftSObject, rightSObject){
+	retrieveJunctionObjects : function(component, helper, leftSObject, rightSObject, preSelectedJunction){
 
     if (!leftSObject || !rightSObject) {
       //-- we need both to continue.
@@ -66,6 +66,11 @@
             
             if (results && results.length === 1){
               component.set('v.selectedJunctionOption', results[0]);
+            } else if(preSelectedJunction && results.length > 0){
+              var defaultedJunction = helper.findJunction(component, helper, preSelectedJunction);
+              if (defaultedJunction){
+                component.set('v.selectedJunctionOption', defaultedJunction);
+              }
             }
 				} else {
 						helper.log('Error occurred from Action');
@@ -77,6 +82,26 @@
 		});
 		//-- optionally set storable, abortable, background flags here
 		$A.enqueueAction(action);
+  },
+
+  /**
+   * Finds a junction within the list of junctions by the optionApiName
+   * @param optionApiName
+   */
+  findJunction : function(component, helper, optionApiName){
+    var junctionOptions = component.get('v.junctionList');
+
+    if (junctionOptions && junctionOptions.length > 0) {
+      var junctionOption;
+      for (var i = 0; i < junctionOptions.length; i=i+1) {
+        junctionOption = junctionOptions[i];
+        if (junctionOption.optionApiName === optionApiName) {
+          return junctionOption;
+        }
+      }
+    }
+
+    return null;
   },
   
   /**
@@ -94,6 +119,11 @@
       "RightObjectAPIName__c": selectedJunctionOption.rightObjectOption.optionApiName,
       "JunctionRightObjectRelationshipField__c": selectedJunctionOption.rightObjectJunctionField.optionApiName
     };
+
+    var recordId = component.get('v.recordId');
+    if (recordId) {
+      relation.Id = recordId;
+    }
     
     var action = component.get('c.saveM2MRelation');
     action.setParams({ relation: relation });
@@ -153,17 +183,17 @@
   handleRecordLoaded : function(component, event, helper) {
     helper.noop();
 
-    var relationshipAlias = component.get('v.ticketRecord.Name');
-		var leftObjectApiName = component.get('v.ticketRecord.LeftObjectAPIName__c');
-		var rightObjectApiName = component.get('v.ticketRecord.RightObjectAPIName__c');
-    var junctionObjectApiName = component.get('v.ticketRecord.JunctionObjectAPIName__c');
+    var relationshipAlias = component.get('v.currentRelationship.Name');
+		var leftObjectApiName = component.get('v.currentRelationship.LeftObjectAPIName__c');
+		var rightObjectApiName = component.get('v.currentRelationship.RightObjectAPIName__c');
+    var junctionObjectApiName = component.get('v.currentRelationship.JunctionObjectAPIName__c');
     
     component.set('v.relationshipAlias', relationshipAlias);
     component.set('v.leftObjectApiName', leftObjectApiName);
     component.set('v.rightObjectApiName', rightObjectApiName);
     component.set('v.junctionObjectApiName', junctionObjectApiName);
 
-    helper.retrieveJunctionObjects(component, helper, leftObjectApiName, rightObjectApiName);
+    helper.retrieveJunctionObjects(component, helper, leftObjectApiName, rightObjectApiName, junctionObjectApiName);
   },
   
   /**
