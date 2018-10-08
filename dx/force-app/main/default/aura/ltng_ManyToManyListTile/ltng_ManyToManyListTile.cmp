@@ -9,9 +9,13 @@
 >
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="junctionId" type="String" />
     <aura:attribute name="objectApiName" type="String" />
     <aura:attribute name="objectLabel" type="String" />
+    <aura:attribute name="junctionApiName" type="String" />
+    <aura:attribute name="junctionLabel" type="String" />
     <aura:attribute name="numFormColumns" type="Integer" />
+    <aura:attribute name="includeJunctionButtons" type="Boolean" />
     <!-- private attributes -->
     <aura:attribute name="recordName" type="String" default="" access="private" />
     <!-- handlers -->
@@ -61,10 +65,16 @@
             </div>
             <footer class="slds-card__footer">
                 <lightning:button variant="Neutral"
-                    class=""
+                    class="slds-m-bottom_medium"
                     label="{! 'Visit ' + v.objectLabel + ' Record'}"
                     title="{! 'Visit ' + v.objectLabel + ' Record'}"
-                    onclick="{!c.handleClick}"
+                    onclick="{!c.handleObjectClick}"
+                />
+                <lightning:button variant="Neutral"
+                    class="{! if(v.includeJunctionButtons,'','slds-hide') + ' slds-m-bottom_medium'}"
+                    label="{! 'Visit ' + v.junctionLabel + ' Record'}"
+                    title="{! 'Visit ' + v.junctionLabel + ' Record'}"
+                    onclick="{!c.handleJunctionClick}"
                 />
             </footer>
         </article>

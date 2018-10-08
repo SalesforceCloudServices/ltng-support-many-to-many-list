@@ -11,6 +11,7 @@
 >
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="includeJunctionButtons" type="Boolean" default="true" />
     <!-- private attributes -->
     <aura:attribute name="isDesktop" type="Boolean" access="private" />
     <aura:attribute name="numFormColumns" type="Integer" default="2" access="private" />
@@ -52,9 +53,13 @@
         -->
         <aura:iteration items="{!v.children.childrenList}" var="farChild" >
             <c:ltng_ManyToManyListTile
-                recordId="{!farChild}"
+                recordId="{!farChild.childId}"
+                junctionId="{!farChild.junctionId}"
+                includeJunctionButtons="{!v.includeJunctionButtons}"
                 objectApiName="{!v.children.childSObjectType}"
                 objectLabel="{!v.children.childSObjectLabel}"
+                junctionApiName="{!v.children.junctionSObjectType}"
+                junctionLabel="{!v.children.junctionSObjectLabel}"
                 numFormColumns="{!v.numFormColumns}"
             />
         </aura:iteration>
