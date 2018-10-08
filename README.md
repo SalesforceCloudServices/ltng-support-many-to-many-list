@@ -13,6 +13,15 @@ https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_r
 Contact
 https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contact.htm
 
+--
+
+support allowing for multiple ways to sort
+
+https://developer.salesforce.com/docs/component-library/bundle/lightning:dualListbox/example#lightningcomponentdemo:exampleDualListboxMinMaxValues
+
+or even explicitly selecting the fields to show.
+
+
 # Structure of the project
 
 * doc - documentation resources
