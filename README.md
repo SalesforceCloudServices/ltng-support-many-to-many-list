@@ -21,6 +21,11 @@ https://developer.salesforce.com/docs/component-library/bundle/lightning:dualLis
 
 or even explicitly selecting the fields to show.
 
+--
+
+diff files using hex
+https://superuser.com/a/1251397
+
 
 # Structure of the project
 
