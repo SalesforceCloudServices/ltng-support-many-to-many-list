@@ -15,6 +15,50 @@ public with sharing class ltng_AdvManyToManyCtrl {
     /** Standard SObject Id field */
     public static final String ID_FIELD = 'Id';
 
+    //-- errors to show
+    //-- @TODO: move to custom setting
+
+    /** represents the error if the user is unable to get a list of sObjects */
+    public static final String ERROR_CANNOT_LIST_SOBJECTS = 'Unable to access list of SObjects. Please contact your administrator';
+    
+    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+    //-- Methods for Retrieving Children
+    //-- @TODO: separate to separate class
+    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
+    /**
+     * List the SObjects available for start a Many to Many relationship definition
+     */
+    @AuraEnabled
+    public static SObjectApiOption[] getListOfAllObjects(){
+        SObjectApiOption[] results = new SObjectApiOption[]{
+            new SObjectApiOption()
+        };
+
+        //-- for more please see:
+        //-- https://developer.salesforce.com/docs/atlas.en-us.api_tooling.meta/api_tooling/tooling_api_objects_entitydefinition.htm
+
+        try {
+            EntityDefinition[] entities = [
+                SELECT MasterLabel, QualifiedApiName
+                FROM EntityDefinition
+                WHERE IsRetrieveable = true
+                order by MasterLabel
+            ];
+            for(EntityDefinition entity : entities){
+                results.add(new SObjectApiOption(entity.MasterLabel, entity.QualifiedApiName));
+            }
+        } catch(Exception err){
+            throw new AuraHandledException(ERROR_CANNOT_LIST_SOBJECTS);
+        }
+
+        //-- @POSTCONDITION: results includes a list of all SObjects we can choose from
+        //-- with the API and Labels - available for selecting in a list.
+        // System.debug('allSobjects available:' + results.size());
+        // System.debug('allSobject options:' + results);
+
+        return results;
+    }
 
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
     //-- Internal Classes used for communication
