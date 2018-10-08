@@ -72,7 +72,7 @@
                 
                 <p>A <b>Many-to-Many relationship</b> is when the relationship isn&apos;t exclusive.</p>
 
-                <p>For example a Class can have many Students, but Students will likely take more than one Class.</p>
+                <p>For example a Book can have many Authors, but an Author may also have written many Books.</p>
 
                 <p>A <b>CRM example of a Many-to-Many Relationship</b> would be: you can have Opportunities with more than one Product,
                     but that same Product can be used in other Opportunities.</p>
