@@ -9,23 +9,18 @@
 	},
 
   /**
-   * performs a server side call
-   * @param exampleRecordId (Id)
+   * Retrieve the list of SObjects - for choosing either the left and right objects.
    **/
   retrieveSObjectList : function(component, helper) {
     var action = component.get('c.getListOfAllObjects');
-    //action.setParams({ recordId: recordId });
     
     action.setCallback(this, function(response){
       var state = response.getState();
       if( state === 'SUCCESS' ){
-        helper.log('action success');
+        //helper.log('action success');
 				var results = response.getReturnValue();
         component.set('v.sobjectList', results);
-        //component.set('v.junctionList', results);
       } else {
-        helper.log('Error occurred from Action');
-        
         //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
         var errors = response.getError();
         helper.handleCallError(component, helper, state, errors);
@@ -54,27 +49,29 @@
 		var action = component.get('c.getJunctionRelationships');
     action.setParams({ leftSObject: leftSObject, rightSObject: rightSObject });
     
+    //-- clear out the list of junctions until we have the results.
     component.set('v.junctionList', null);
     component.set('v.selectedJunctionOption', null);
 
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						helper.log('action success');
+						//helper.log('action success');
             var results = response.getReturnValue();
             component.set('v.junctionList', results);
             
             if (results && results.length === 1){
+              //-- we have only one result, so we pre-select it
               component.set('v.selectedJunctionOption', results[0]);
             } else if(preSelectedJunction && results.length > 0){
+
+              //-- look to see if the pre-selected junction can be found and select it.
               var defaultedJunction = helper.findJunction(component, helper, preSelectedJunction);
               if (defaultedJunction){
                 component.set('v.selectedJunctionOption', defaultedJunction);
               }
             }
 				} else {
-						helper.log('Error occurred from Action');
-						
 						//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
 						var errors = response.getError();
 						helper.handleCallError(component, helper, state, errors);
@@ -85,17 +82,17 @@
   },
 
   /**
-   * Finds a junction within the list of junctions by the optionApiName
-   * @param optionApiName
+   * Finds a junction within the list of junctions by the apiName
+   * @param apiName
    */
-  findJunction : function(component, helper, optionApiName){
+  findJunction : function(component, helper, apiName){
     var junctionOptions = component.get('v.junctionList');
 
     if (junctionOptions && junctionOptions.length > 0) {
       var junctionOption;
       for (var i = 0; i < junctionOptions.length; i=i+1) {
         junctionOption = junctionOptions[i];
-        if (junctionOption.optionApiName === optionApiName) {
+        if (junctionOption.optionApiName === apiName) {
           return junctionOption;
         }
       }
@@ -120,6 +117,7 @@
       "JunctionRightObjectRelationshipField__c": selectedJunctionOption.rightObjectJunctionField.optionApiName
     };
 
+    //-- only assign the record if on an edit
     var recordId = component.get('v.recordId');
     if (recordId) {
       relation.Id = recordId;
@@ -131,14 +129,19 @@
     action.setCallback(this, function(response){
         var state = response.getState();
         if( state === 'SUCCESS' ){
-            helper.info('action success');
-            var results = response.getReturnValue();
-            helper.log(results);
+            //helper.info('action success');
+            //var results = response.getReturnValue();
+            //helper.log(results);
+
+            // Display popup confirmation to the user
+            var resultsToast = $A.get("e.force:showToast");
+            resultsToast.setParams({
+                "title": "Saved",
+                "message": "The record was updated."});
+            resultsToast.fire();
 
             helper.goBack(component, helper);
         } else {
-            helper.error('Error occurred from Action');
-            
             //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
             var errors = response.getError();
             helper.handleCallError(component, helper, state, errors);
@@ -148,8 +151,12 @@
     $A.enqueueAction(action);
   },
 
+  //--  -	-	-	-	-	-	-	-	-	-
+  //-- internal methods
+  //--  -	-	-	-	-	-	-	-	-	-
+
   /**
-   * Handles going back.
+   * Goes back to the previous page.
    */
   goBack : function(component, helper){
     helper.noop();
@@ -159,13 +166,6 @@
     var navigateEvent;
 
     if (recordId) {
-      // Display popup confirmation to the user
-      var resultsToast = $A.get("e.force:showToast");
-      resultsToast.setParams({
-          "title": "Saved",
-          "message": "The record was updated."});
-      resultsToast.fire();
-
       // Navigate back to the record view
       navigateEvent = $A.get("e.force:navigateToSObject");
       navigateEvent.setParams({ "recordId": recordId });
@@ -238,29 +238,15 @@
     resultsToast.fire();
   },
   
-  /**
-   * Handles when the save has completed
-   **/
-  handleSaveCompleted : function(component, event, helper) {
-    helper.noop();
-
-    //-- send a toast message
-    var resultsToast = $A.get('e.force:showToast');
-    resultsToast.setParams({
-      'title': 'Saved',
-      'message': 'The record was saved'
-    });
-    resultsToast.fire();
-    
-    //-- refresh the standard detail
-    $A.get('e.force:refreshView').fire();
-    
-    //-- close the dialog
-    $A.get("e.force:closeQuickAction").fire();
-  },
+  //-- convenience methods
 
   noop : function(){},
 
+  log : function(){},
+  info : function(){},
+  error : function(){}
+
+  /*
   log : function(msg){
     console.log(msg);
   },
@@ -270,4 +256,5 @@
   error : function(msg){
     console.error(msg);
   }
+  */
 })
