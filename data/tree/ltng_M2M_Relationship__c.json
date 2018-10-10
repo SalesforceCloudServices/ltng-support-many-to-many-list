@@ -1,0 +1,28 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "ltng_M2M_Relationship__c",
+                "referenceId": "ltng_M2M_Relationship__cRef1"
+            },
+            "JunctionLeftObjectRelationshipField__c": "ContactId__c",
+            "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
+            "JunctionRightObjectRelationshipField__c": "AccountId__c",
+            "LeftObjectAPIName__c": "ltng_M2M_Contact__c",
+            "Name": "Contact Accounts",
+            "RightObjectAPIName__c": "ltng_M2M_Account__c"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Relationship__c",
+                "referenceId": "ltng_M2M_Relationship__cRef3"
+            },
+            "JunctionLeftObjectRelationshipField__c": "AccountId__c",
+            "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
+            "JunctionRightObjectRelationshipField__c": "ContactId__c",
+            "LeftObjectAPIName__c": "ltng_M2M_Account__c",
+            "Name": "Account Contacts",
+            "RightObjectAPIName__c": "ltng_M2M_Contact__c"
+        }
+    ]
+}

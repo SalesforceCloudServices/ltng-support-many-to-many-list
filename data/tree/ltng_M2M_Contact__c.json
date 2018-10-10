@@ -1,0 +1,106 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef1"
+            },
+            "Department__c": "Finance",
+            "DoNotCall__c": false,
+            "FirstName__c": "Arthur",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "Song",
+            "MailingAddress__c": "3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA",
+            "Name": "Mr. Arthur Song",
+            "Phone__c": "(772) 555-5429",
+            "Salutation__c": "Mr.",
+            "Title__c": "Financial Controller"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef2"
+            },
+            "Department__c": "Legal",
+            "DoNotCall__c": false,
+            "FirstName__c": "Chris",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "Friedman",
+            "MailingAddress__c": "3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA",
+            "Name": "Mr. Chris Friedman",
+            "Phone__c": "(227) 555-9079",
+            "Salutation__c": "Mr.",
+            "Title__c": "General Counsel"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef3"
+            },
+            "Department__c": "Legal",
+            "DoNotCall__c": false,
+            "FirstName__c": "Billy",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "Mack",
+            "MailingAddress__c": "310 Henry St\r\nNew York, NY 10002\r\nUSA",
+            "Name": "Ms. Billy Mack",
+            "Phone__c": "(206) 555-4966",
+            "Salutation__c": "Ms.",
+            "Title__c": "General Counsel"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef4"
+            },
+            "Department__c": "Exec",
+            "DoNotCall__c": false,
+            "FirstName__c": "Brenda",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "McClure",
+            "MailingAddress__c": "3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA",
+            "Name": "Ms. Brenda McClure",
+            "Phone__c": "(415) 555-4922",
+            "Salutation__c": "Ms.",
+            "Title__c": "SVP of Strategy"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef5"
+            },
+            "Department__c": "Ops",
+            "DoNotCall__c": false,
+            "FirstName__c": "Bill",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "Martin",
+            "MailingAddress__c": "310 Henry St\r\nNew York, NY 10002\r\nUSA",
+            "Name": "Mr. Bill Martin",
+            "Phone__c": "(673) 555-2802",
+            "Salutation__c": "Mr.",
+            "Title__c": "Operations Manager"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Contact__c",
+                "referenceId": "ltng_M2M_Contact__cRef6"
+            },
+            "Department__c": "Sales",
+            "DoNotCall__c": false,
+            "FirstName__c": "Bree",
+            "HasOptedOutOfEmail__c": false,
+            "HasOptedOutOfFax__c": false,
+            "LastName__c": "Reitz",
+            "MailingAddress__c": "2852 Bagley Circle\r\nSan Francisco, CA 94167\r\nUSA",
+            "Name": "Ms. Bree Reitz",
+            "Phone__c": "(453) 555-6139",
+            "Salutation__c": "Ms.",
+            "Title__c": "Head of Partner Relations"
+        }
+    ]
+}

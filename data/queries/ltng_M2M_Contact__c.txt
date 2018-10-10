@@ -1,0 +1,2 @@
+select AccountId__c, AssistantName__c, AssistantPhone__c, Birthdate__c, Department__c, Description__c, DoNotCall__c, Email__c, Fax__c, FirstName__c, HasOptedOutOfEmail__c, HasOptedOutOfFax__c, HomePhone__c, LastName__c, MailingAddress__c, MiddleName__c, Name, OtherAddress__c, OwnerId, Phone__c, Salutation__c, Title__c from ltng_M2M_Contact__c
+

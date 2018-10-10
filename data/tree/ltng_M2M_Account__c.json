@@ -1,0 +1,41 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "ltng_M2M_Account__c",
+                "referenceId": "ltng_M2M_Account__cRef1"
+            },
+            "AnnualRevenue__c": 600000000,
+            "BillingAddress__c": "3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA",
+            "HasOptedOutOfEmail__c": false,
+            "Industry__c": "Manufacturing",
+            "Name": "Vand Enterprises, Inc.",
+            "NumberOfEmployees__c": 2000,
+            "Phone__c": "(674) 555-0153",
+            "ShippingAddress__c": "3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA",
+            "Site__c": "www.vandenterprise.com",
+            "SystemModstamp": "2018-10-04T05:04:22.000+0000",
+            "Type__c": "Customer",
+            "Website__c": "www.vandenterprise.com"
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Account__c",
+                "referenceId": "ltng_M2M_Account__cRef2"
+            },
+            "AnnualRevenue__c": 10000000,
+            "BillingAddress__c": "310 Henry St\r\nNew York, NY 10002\r\nUSA",
+            "HasOptedOutOfEmail__c": false,
+            "Industry__c": "Communications",
+            "Name": "Datanet, Inc. Main Branch",
+            "NumberOfEmployees__c": 400,
+            "Phone__c": "(678) 555-0153",
+            "Rating__c": "Warm",
+            "ShippingAddress__c": "310 Henry St\r\nNew York, NY 10002\r\nUSA",
+            "Site__c": "Main Branch",
+            "SystemModstamp": "2018-10-04T05:02:45.000+0000",
+            "Type__c": "Customer",
+            "Website__c": "www.datamart.com"
+        }
+    ]
+}

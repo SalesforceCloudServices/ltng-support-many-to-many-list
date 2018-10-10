@@ -37,7 +37,10 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
      * API Name of the Object to create.
      *	(Although not required, it is fairly common to create objects in setup)
      **/
-    global static final String CHILD_SOBJECT_NAME  = 'YOUR_SOBJECT_API_NAME';
+    global static final String ACCOUNT_SOBJECT_NAME  = 'ltng_M2M_Account__c';
+    global static final String CONTACT_SOBJECT_NAME  = 'ltng_M2M_Contact__c';
+    global static final String JUNCTION_SOBJECT_NAME  = 'ltng_M2M_AccountContactRelationship__c';
+    global static final String RELATION_SOBJECT_NAME  = 'ltng_M2M_Relationship__c';
     
     //-- @CHANGE: replace YOUR_RECORD_TYPE_NAME with the RecordType Developer Name
     //--	of the objects you will create - (if objects / record types are used)
@@ -190,41 +193,280 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
 		//-- @CHANGE: implement the records to be created
 		//--	(the following is an example set of code)
 		
-		/*
-        YOUR_SOBJECT_API_NAME[] baseRecords = new YOUR_SOBJECT_API_NAME[]{};
-        YOUR_SOBJECT_API_NAME baseRecord;
+        ltng_M2M_Account__c[] accountRecords = new ltng_M2M_Account__c[]{};
+        ltng_M2M_Contact__c[] contactRecords = new ltng_M2M_Contact__c[]{};
+        ltng_M2M_AccountContactRelationship__c[] junctionRecords = new ltng_M2M_AccountContactRelationship__c[]{};
+        ltng_M2M_Relationship__c[] relationshipRecords = new ltng_M2M_Relationship__c[]{};
         
-		baseRecord = new YOUR_SOBJECT_API_NAME(
-			Example_Value__c = 1000
-		);
-		
-		OR
-		
-		baseRecord = new YOUR_SOBJECT_API_NAME(
-			Example_Value__c = 1000,
-			recordTypeId = recordTypeMap.get(RT_NAME) or other RecordTypeNames...
-		);
+        accountRecords.add(new ltng_M2M_Account__c(
+            AnnualRevenue__c = 600000000,
+            BillingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
+            HasOptedOutOfEmail__c = false,
+            Industry__c = 'Manufacturing',
+            Name = 'Vand Enterprises, Inc.',
+            NumberOfEmployees__c = 2000,
+            Phone__c = '(674) 555-0153',
+            ShippingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
+            Site__c = 'www.vandenterprise.com',
+            Type__c = 'Customer',
+            Website__c = 'www.vandenterprise.com'
+        ));
         
-        baseRecords.add(baseRecord);
+        accountRecords.add(new ltng_M2M_Account__c(
+            AnnualRevenue__c = 10000000,
+            BillingAddress__c = '310 Henry St\r\nNew York, NY 10002\r\nUSA',
+            HasOptedOutOfEmail__c = false,
+            Industry__c = 'Communications',
+            Name = 'Datanet, Inc. Main Branch',
+            NumberOfEmployees__c = 400,
+            Phone__c = '(678) 555-0153',
+            Rating__c = 'Warm',
+            ShippingAddress__c = '310 Henry St\r\nNew York, NY 10002\r\nUSA',
+            Site__c = 'Main Branch',
+            Type__c = 'Customer',
+            Website__c = 'www.datamart.com'
+        ));
         
-        OR
+        //-- Contacts
         
-        baseRecords.add(new YOUR_SOBJECT_API_NAME(...));
-        ...
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Finance',
+            DoNotCall__c = false,
+            FirstName__c = 'Arthur',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'Song',
+            MailingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
+            Name = 'Mr. Arthur Song',
+            Phone__c = '(772) 555-5429',
+            Salutation__c = 'Mr.',
+            Title__c = 'Financial Controller'
+        ));
+        
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Legal',
+            DoNotCall__c = false,
+            FirstName__c = 'Chris',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'Friedman',
+            MailingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
+            Name = 'Mr. Chris Friedman',
+            Phone__c = '(227) 555-9079',
+            Salutation__c = 'Mr.',
+            Title__c = 'General Counsel'
+        ));
+        
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Legal',
+            DoNotCall__c = false,
+            FirstName__c = 'Billy',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'Mack',
+            MailingAddress__c = '310 Henry St\r\nNew York, NY 10002\r\nUSA',
+            Name = 'Ms. Billy Mack',
+            Phone__c = '(206) 555-4966',
+            Salutation__c = 'Ms.',
+            Title__c = 'General Counsel'
+        ));
+        
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Exec',
+            DoNotCall__c = false,
+            FirstName__c = 'Brenda',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'McClure',
+            MailingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
+            Name = 'Ms. Brenda McClure',
+            Phone__c = '(415) 555-4922',
+            Salutation__c = 'Ms.',
+            Title__c = 'SVP of Strategy'
+        ));
+        
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Ops',
+            DoNotCall__c = false,
+            FirstName__c = 'Bill',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'Martin',
+            MailingAddress__c = '310 Henry St\r\nNew York, NY 10002\r\nUSA',
+            Name = 'Mr. Bill Martin',
+            Phone__c = '(673) 555-2802',
+            Salutation__c = 'Mr.',
+            Title__c = 'Operations Manager'
+        ));
+        
+        contactRecords.add(new ltng_M2M_Contact__c(
+            Department__c = 'Sales',
+            DoNotCall__c = false,
+            FirstName__c = 'Bree',
+            HasOptedOutOfEmail__c = false,
+            HasOptedOutOfFax__c = false,
+            LastName__c = 'Reitz',
+            MailingAddress__c = '2852 Bagley Circle\r\nSan Francisco, CA 94167\r\nUSA',
+            Name = 'Ms. Bree Reitz',
+            Phone__c = '(453) 555-6139',
+            Salutation__c = 'Ms.',
+            Title__c = 'Head of Partner Relations'
+        ));
+        
+        //-- AccountContactRelation / Junction
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Influencer',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Influencer',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Influencer',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Decision Maker',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Decision Maker',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Influencer',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Business User;Decision Maker',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+        	EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Influencer',
+			StartDate__c = null
+        ));
+        
+        junctionRecords.add(new ltng_M2M_AccountContactRelationship__c(
+			EndDate__c = null,
+			IsActive__c = false,
+			Roles__c = 'Executive Sponsor',
+			StartDate__c = null
+        ));
+        
+        //-- relationships
+        
+        relationshipRecords.add(new ltng_M2M_Relationship__c(
+            JunctionLeftObjectRelationshipField__c = 'AccountId__c',
+            JunctionObjectAPIName__c = 'ltng_M2M_AccountContactRelationship__c',
+            JunctionRightObjectRelationshipField__c = 'ContactId__c',
+            LeftObjectAPIName__c = 'ltng_M2M_Account__c',
+            Name = 'Account Contacts',
+            RightObjectAPIName__c = 'ltng_M2M_Contact__c'
+        ));
+        
+        relationshipRecords.add(new ltng_M2M_Relationship__c(
+            JunctionLeftObjectRelationshipField__c = 'ContactId__c',
+            JunctionObjectAPIName__c = 'ltng_M2M_AccountContactRelationship__c',
+            JunctionRightObjectRelationshipField__c = 'AccountId__c',
+            LeftObjectAPIName__c = 'ltng_M2M_Contact__c',
+            Name = 'Contact Accounts',
+            RightObjectAPIName__c = 'ltng_M2M_Account__c'
+        ));
         
         //-- finally add in the records
         
         try {
-            insert baseRecords;
+            insert accountRecords;
+            //step.seeMore = baseRecords[0].Id;
+        } catch( Exception err){
+            step.errMsg = 'error occurred while creating example account records';
+            step.devErrMsg = err.getMessage();
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            insert contactRecords;
+            //step.seeMore = baseRecords[0].Id;
+        } catch( Exception err){
+            step.errMsg = 'error occurred while creating example contact records';
+            step.devErrMsg = err.getMessage();
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            insert relationshipRecords;
+            //step.seeMore = baseRecords[0].Id;
+        } catch( Exception err){
+            step.errMsg = 'error occurred while creating m2m relationship records';
+            step.devErrMsg = err.getMessage();
+            System.debug(step.errMsg);
+        }
+        
+        //-- assign junction records
+        
+        junctionRecords[0].AccountId__c = accountRecords[0].Id; // vand
+        junctionRecords[0].ContactId__c = contactRecords[3].Id; // brenda
+        
+        junctionRecords[1].AccountId__c = accountRecords[0].Id; // vand
+        junctionRecords[1].ContactId__c = contactRecords[5].Id; // bree
+        
+        junctionRecords[2].AccountId__c = accountRecords[1].Id; // datanet
+        junctionRecords[2].ContactId__c = contactRecords[2].Id; // billy mack
+        
+        junctionRecords[3].AccountId__c = accountRecords[0].Id; // vand
+        junctionRecords[3].ContactId__c = contactRecords[3].Id; // brenda
+        
+        junctionRecords[4].AccountId__c = accountRecords[0].Id; // vand
+        junctionRecords[4].ContactId__c = contactRecords[0].Id; // arthur
+        
+        junctionRecords[5].AccountId__c = accountRecords[0].Id; // vand
+        junctionRecords[5].ContactId__c = contactRecords[1].Id; // friedman
+        
+        junctionRecords[6].AccountId__c = accountRecords[1].Id; // datanet
+        junctionRecords[6].ContactId__c = contactRecords[4].Id; // martin
+        
+        junctionRecords[7].AccountId__c = accountRecords[1].Id; // datanet
+        junctionRecords[7].ContactId__c = contactRecords[1].Id; // friedman
+        
+        junctionRecords[8].AccountId__c = accountRecords[1].Id; // datanet
+        junctionRecords[8].ContactId__c = contactRecords[5].Id; // bree
 
+        System.debug('junctionRecords');
+        System.debug(junctionRecords);
+        
+        try {
+            insert junctionRecords;
             //step.seeMore = baseRecords[0].Id;
         } catch( Exception err){
             step.errMsg = 'error occurred while creating base records';
             step.devErrMsg = err.getMessage();
             System.debug(step.errMsg);
         }
-        */
-        
 
         step.markCompleted();
         return(step);
@@ -331,48 +573,6 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             System.debug('ERROR - could not assign user to permission set');
             System.debug(err.getMessage());
         }
-    }
-    
-    
-    /**
-	 * Determine the URL to send people to so they can assign the PermissionSet
-	 * the recordTypes needed.
-	 * 
-	 * <p>Only needed if objects are created and there are Record Types.
-	 * 	(As there is a bug where PermissionSet assignments to RecordTypes
-	 * 	currently do not deploy correctly in Unlocked Packages
-	 * 	- but work fine with Salesforce CLI: force:source:push)
-	 * </p>
-	**/
-    @AuraEnabled
-    global static String getMissingPermissionSetRedirection(){
-        String results = null;
-        String tempStr = null;
-        String newResult = null;
-        
-        try {
-            PermissionSet targetPS = [
-                SELECT Id, Name
-                FROM PermissionSet
-                WHERE Name = :PERMISSION_SET_NAME
-                LIMIT 1
-            ];
-
-            EntityDefinition targetObject = [
-                SELECT DeveloperName, DurableId
-                FROM EntityDefinition 
-                WHERE DeveloperName = :CHILD_SOBJECT_NAME
-            ];
-
-            tempStr = '/' + targetPS.Id + '?s=EntityPermissions&o=' + targetObject.DurableId;
-            newResult = '/one/one.app#/setup/PermSets/page?address=' + EncodingUtil.urlEncode(tempStr,'UTF-8');
-            
-            results = newResult;
-        } catch(Exception err){
-            results = DEFAULT_MISSING_PERMISSION_URL;
-        }
-
-        return results;
     }
     
     

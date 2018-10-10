@@ -1,0 +1,2 @@
+select JunctionLeftObjectRelationshipField__c, JunctionObjectAPIName__c, JunctionRightObjectRelationshipField__c, LeftObjectAPIName__c, Name, RightObjectAPIName__c from ltng_M2M_Relationship__c
+

@@ -1,0 +1,1 @@
+select AccountId__r.Name, ContactId__r.Name, EndDate__c, IsActive__c, IsDirect__c, Name, Roles__c, StartDate__c from ltng_M2M_AccountContactRelationship__c
