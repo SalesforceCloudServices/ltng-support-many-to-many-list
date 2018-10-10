@@ -4,20 +4,10 @@
 		},
 
 		handleObjectClick : function(component, event, helper){
-			var recordId = component.get('v.recordId');
-			var event = $A.get('e.force:navigateToSObject');
-			event.setParams({
-				recordId: recordId
-			});
-			event.fire();
+			helper.navigateToRecord(component, helper);
 		},
 
 		handleJunctionClick : function(component, event, helper){
-			var recordId = component.get('v.junctionId');
-			var event = $A.get('e.force:navigateToSObject');
-			event.setParams({
-				recordId: recordId
-			});
-			event.fire();
+			helper.navigateToJunction(component, helper);
 		}
 })

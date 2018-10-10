@@ -3,8 +3,12 @@
 	 * Initialize the component
 	 */
 	initComponent : function(component, helper){
+		helper.noop();
+
+		//-- clear the children
 		component.set('v.children', null);
 
+		//-- determine the type of device and number of columns to show the compact layouts in.
 		var deviceType = $A.get("$Browser.formFactor");
 		var isDesktop = deviceType === "DESKTOP";
 		var numFormColumns = 2;
@@ -25,12 +29,12 @@
 		var action = component.get('c.listAvailableRelationships');
 		action.setParams({ recordId: recordId });
 
-		component.set('v.relationships',null);
+		component.set('v.relationships', null);
 		
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						console.info('action success');
+						//helper.log('action success');
 						var results = response.getReturnValue();
 						
 						if (results && results.length > 0) {
@@ -38,11 +42,9 @@
 							
 							helper.loadChildren(component, helper, recordId, results[0].Id);
 						} else {
-							component.set('v.relationships',null);
+							component.set('v.relationships', null);
 						}
 				} else {
-						console.error('Error occurred from Action');
-						
 						//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
 						var errors = response.getError();
 						helper.handleCallError(component, helper, state, errors);
@@ -63,12 +65,10 @@
 			action.setCallback(this, function(response){
 					var state = response.getState();
 					if( state === 'SUCCESS' ){
-							console.info('action success');
+							//console.info('action success');
 							var results = response.getReturnValue();
 							component.set('v.children', results);
 					} else {
-							console.error('Error occurred from Action');
-							
 							//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
 							var errors = response.getError();
 							helper.handleCallError(component, helper, state, errors);
@@ -97,7 +97,7 @@
 			helper.displayError('Unknown Response', 'Action failure');
 		}
 		
-		console.error(errorMessages);
+		helper.error(errorMessages);
 	},
 	
 	/**
@@ -106,15 +106,22 @@
 	 * @param errorMsg (String)
 	 **/
 	displayError: function(errorCode, component, event, helper){
-			var errorTitle = 'Error';
-			var errorMsg = 'An error occurred: ' + errorCode + '. Please contact your System Administrator';
-			
-			//-- send a toast message
-			var resultsToast = $A.get('e.force:showToast');
-			resultsToast.setParams({
-					'title': errorTitle,
-					'message': errorMsg
-			});
-			resultsToast.fire();
-	}
+		helper.noop();
+		var errorTitle = 'Error';
+		var errorMsg = 'An error occurred: ' + errorCode + '. Please contact your System Administrator';
+		
+		//-- send a toast message
+		var resultsToast = $A.get('e.force:showToast');
+		resultsToast.setParams({
+				'title': errorTitle,
+				'message': errorMsg
+		});
+		resultsToast.fire();
+	},
+
+	//-- convenience methods
+	noop : function(){},
+	log : function(){},
+	info : function(){},
+	error : function(){}
 })
