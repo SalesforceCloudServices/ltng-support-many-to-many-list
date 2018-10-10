@@ -3,7 +3,7 @@
     <description>List the far children for the accounts.</description>
     <height>500</height>
     <label>Far Children</label>
-    <lightningComponent>ltng_ManyToManyList</lightningComponent>
+    <lightningComponent>ltng_AdvManyToManyList</lightningComponent>
     <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <type>LightningComponent</type>
     <width>-100</width>

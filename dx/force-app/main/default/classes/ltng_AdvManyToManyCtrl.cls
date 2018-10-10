@@ -172,6 +172,132 @@ public with sharing class ltng_AdvManyToManyCtrl {
         return results;
     }
 
+    /**
+     * Determines the list of junction objects currently used for linking two objects together.
+     * <p>This includes fields and other relation information</p>
+     * <p>Note, this does not require that the junction object fields
+     * are exactly the sObjects, only as long as the fields that relate
+     * are not the same. (This weeds out standard objects like EmailTemplate, document, etc)</p>
+     * @param leftSObject (String)
+     * @param rightSObject (String)
+     * @ return ManyToManyRelationOption[] - collection of relations (and related fields) that link those two objects.
+     *  */    
+    @AuraEnabled
+    public static ManyToManyRelationOption[] getJunctionRelationships(String leftSObject, String rightSObject){
+        ManyToManyRelationOption[] results = new ManyToManyRelationOption[]{};
+        
+        Schema.DescribeSObjectResult leftObjectDescribe = getSObjectDescription(leftSObject);
+        Schema.DescribeSObjectResult rightObjectDescribe = getSObjectDescription(rightSObject);
+
+        Map<String,ApiOption> potentialJunctionObjects = new Map<String,ApiOption>();
+        Set<String> foundChildObjects = new Set<String>();
+        
+        Schema.DescribeSObjectResult childDescribe;
+        Schema.DescribeFieldResult fieldDescribe;
+        ManyToManyRelationOption m2mRelation;
+        ApiOption currentOption;
+        ApiOption currentFieldDescribe;
+        ApiOption targetFieldDescribe;
+        ManyToManyRelationOption currentRelationshipOption;
+
+        for( Schema.ChildRelationship childRelation : leftObjectDescribe.getChildRelationships() ){
+            childDescribe = childRelation.getChildSObject().getDescribe();
+            fieldDescribe = childRelation.getField().getDescribe();
+
+            /*
+            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
+                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
+            }
+            //System.debug(childDescribe);
+            System.debug('object.isAccessible:' + childDescribe.isAccessible());
+            System.debug('childRelation.getName:' + childDescribe.getName());
+            System.debug('fieldLabel:' + fieldDescribe.getName());
+            System.debug('isNamePointing:' + fieldDescribe.isNamePointing());
+            System.debug('getReferenceTo:' + fieldDescribe.getReferenceTo());
+
+            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
+                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
+            }
+            */
+
+            potentialJunctionObjects.put(childDescribe.getName(), new ApiOption(fieldDescribe.getLabel(), fieldDescribe.getName()));
+        }
+
+        for( Schema.ChildRelationship childRelation : rightObjectDescribe.getChildRelationships() ){
+            childDescribe = childRelation.getChildSObject().getDescribe();
+
+            //System.debug('childDescribe.getName:' + childDescribe.getName());
+            //foundChildObjects.add(childDescribe.getName());
+
+            //-- @TODO: Currently there is no known way to reduce the list
+            //-- so it doesn't include the 'System' objects like Attachment, EmailMessage, FeedItem
+            //-- without going through every field on each of those objects
+            //-- to ensure that they have relations to both of these objects.
+            //-- so for now, we will just ask the end user.
+
+            //-- only continue if the child relation was found in both objects
+            if (potentialJunctionObjects.containsKey(childDescribe.getName())) {
+                fieldDescribe = childRelation.getField().getDescribe();
+
+                //-- only continue if the field is different between the two
+                //-- as otherwise we are dealing with one of those ubiquitous objects
+                //-- like documents / emailTemplates etc.
+                //-- that cannot be weeded out in any other way
+
+                currentFieldDescribe = new ApiOption(fieldDescribe.getLabel(), fieldDescribe.getName());
+                targetFieldDescribe = potentialJunctionObjects.get(childDescribe.getName());
+                if(!currentFieldDescribe.optionApiName.equals(targetFieldDescribe.optionApiName)){
+                    currentOption = new ApiOption(childDescribe.getLabel(), childDescribe.getName());
+
+                    currentRelationshipOption = new ManyToManyRelationOption(currentOption.optionLabel, currentOption.optionApiName);
+                    currentRelationshipOption.junctionObjectOption = currentOption;
+                    currentRelationshipOption.leftObjectOption = new ApiOption(leftObjectDescribe.getLabel(), leftObjectDescribe.getName());
+                    currentRelationshipOption.rightObjectOption = new ApiOption(rightObjectDescribe.getLabel(), rightObjectDescribe.getName());
+
+                    
+                    currentRelationshipOption.leftObjectJunctionField = targetFieldDescribe;
+                    currentRelationshipOption.rightObjectJunctionField = currentFieldDescribe;
+
+                    results.add(currentRelationshipOption);
+                }
+            }
+        }
+
+        /*
+        System.debug('\n\n\n\n\n\n\n');
+        System.debug('expected keys');
+        for (String potentialKey : potentialJunctionObjects.keySet()) {
+            System.debug(potentialKey);
+        }
+        System.debug('found keys:');
+        for (String potentialKey2 : foundChildObjects) {
+            System.debug(potentialKey2);
+        }
+        */
+
+        if (results.size() > 1){
+            results.add(0,new ManyToManyRelationOption());
+        }
+        
+        return results;
+    }
+
+    /**
+     * Save the ManyToMany Relationship record
+     **/
+    @AuraEnabled
+    public static ltng_M2M_Relationship__c saveM2MRelation(ltng_M2M_Relationship__c relation) {
+        ltng_M2M_Relationship__c results;
+        
+        try {
+            upsert relation;
+        } catch(Exception err){
+            throw new AuraHandledException('Exception occurred when processing: saveM2MRelation:' + err.getMessage());
+        }
+        
+        return(results);
+    }
+
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
     //-- Internal Classes used for communication
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
