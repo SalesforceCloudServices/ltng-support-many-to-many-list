@@ -99,22 +99,55 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         //-- @CHANGE: implement how to delete all records
         //-- 	(the following is an example set of code)
         
-        /*
-        SObject[] recordsToDelete = null;
         try {
-            recordsToDelete = [
+            delete [
                 SELECT Id
-                FROM YOUR_SOBJECT_API_NAME
+                FROM ltng_M2M_Account__c
             ];
-            
-            delete recordsToDelete;
         } catch(Exception err){
-            step.errMsg = 'Error occurred while attempting to delete all base records';
+            step.errMsg = 'Error occurred while attempting to delete all m2m accounts';
             step.devErrMsg = err.getMessage();
             //-- do nothing for now.
             System.debug(step.errMsg);
         }
-        */
+        
+        try {
+            delete [
+                SELECT Id
+                FROM ltng_M2M_Contact__c
+            ];
+        } catch(Exception err){
+            step.errMsg = 'Error occurred while attempting to delete all m2m contacts';
+            step.devErrMsg = err.getMessage();
+            //-- do nothing for now.
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            //-- should be empty
+            delete [
+                SELECT Id
+                FROM ltng_M2M_AccountContactRelationship__c
+            ];
+        } catch(Exception err){
+            step.errMsg = 'Error occurred while attempting to delete all m2m AccountContactRelations';
+            step.devErrMsg = err.getMessage();
+            //-- do nothing for now.
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            //-- should be empty
+            delete [
+                SELECT Id
+                FROM ltng_M2M_Relationship__c
+            ];
+        } catch(Exception err){
+            step.errMsg = 'Error occurred while attempting to delete all m2m relationships';
+            step.devErrMsg = err.getMessage();
+            //-- do nothing for now.
+            System.debug(step.errMsg);
+        }
         
         step.markCompleted();
         return(step);
