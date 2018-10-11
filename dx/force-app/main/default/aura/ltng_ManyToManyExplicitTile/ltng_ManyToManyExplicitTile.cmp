@@ -10,18 +10,59 @@
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
     <aura:attribute name="junctionId" type="String" />
+
+    <aura:attribute name="numFormColumns" type="Integer" />
+    <aura:attribute name="includeJunctionButtons" type="Boolean" />
+
+    <aura:attribute name="childrenRelationship" type="Object" />
+    
     <aura:attribute name="objectApiName" type="String" />
     <aura:attribute name="objectLabel" type="String" />
     <aura:attribute name="junctionApiName" type="String" />
     <aura:attribute name="junctionLabel" type="String" />
-    <aura:attribute name="numFormColumns" type="Integer" />
-    <aura:attribute name="includeJunctionButtons" type="Boolean" />
     <!-- private attributes -->
     <aura:attribute name="objectFields" type="String[]" default="Name,ProductCode" access="private" />
     <!-- handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     <!-- events -->
     <!-- elements -->
+
+    <!--
+    {
+        "childrenList": [
+            {
+            "childId": "a0256000001KS6vAAG",
+            "junctionId": "a0056000001aU6wAAE"
+            },
+            {
+            "childId": "a0256000001KS6sAAG",
+            "junctionId": "a0056000001aU6xAAE"
+            },
+            {
+            "childId": "a0256000001KS6wAAG",
+            "junctionId": "a0056000001aU6yAAE"
+            },
+            {
+            "childId": "a0256000001KS6tAAG",
+            "junctionId": "a0056000001aU6sAAE"
+            }
+        ],
+        "childSObjectLabel": "M2M Contact",
+        "childSObjectType": "ltng_M2M_Contact__c",
+        "junctionLayoutType": "COMPACT",
+        "junctionObjectUsesCompactLayout": true,
+        "junctionSObjectLabel": "M2M AccountContactRelation",
+        "junctionSObjectType": "ltng_M2M_AccountContactRelationship__c",
+        "leftLayoutType": "COMPACT",
+        "leftObjectUsesCompactLayout": true,
+        "rightLayoutType": "COMPACT",
+        "rightObjectUsesCompactLayout": true,
+        "showJunctionObject": true,
+        "showLeftObject": true,
+        "showRightObject": true
+    }
+    -->
+
     <article class="slds-card many-many-tile">
         <div class="slds-card__header slds-grid">
         <header class="slds-media slds-media_center slds-has-flexi-truncate">
@@ -41,46 +82,62 @@
         </header>
         </div>
         <div class="slds-card__body slds-card__body_inner">
-            <!--
-            <lightning:recordForm
-                recordId="{!v.recordId}"
-                objectApiName="{!v.objectApiName}"
-                fields="{#v.objectFields}"
-                columns="{#v.numFormColumns}"
-                mode="readonly"
-            />
-            -->
-            <!--
-            <lightning:recordForm
-                recordId="{!v.junctionId}"
-                objectApiName="{!v.junctionApiName}"
-                layoutType="Compact"
-                columns="{#v.numFormColumns}"
-                mode="view"
-            />
-            -->
+            something - showLeft: {!v.childrenRelationship.showLeftObject} - showJunction: {!v.childrenRelationship.showJunctionObject}
             <lightning:accordion aura:id="contentAccordion" activeSectionName="junction">
-                <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
-                    <lightning:recordForm
-                        recordId="{!v.junctionId}"
-                        objectApiName="{!v.junctionApiName}"
-                        layoutType="Compact"
-                        columns="{#v.numFormColumns}"
-                        mode="view"
-                    />
-                </lightning:accordionSection>
-                <lightning:accordionSection name="child" label="{#v.objectLabel}">
-                    <lightning:recordForm
-                        recordId="{!v.recordId}"
-                        objectApiName="{!v.objectApiName}"
-                        layoutType="Compact"
-                        columns="{#v.numFormColumns}"
-                        mode="view"
-                    />
-                </lightning:accordionSection>
+                <aura:if isTrue="{!v.childrenRelationship.showLeftObject}">
+                    <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
+                        show left <br />
+                        recordId="{!v.junctionId}" <br />
+                        objectApiName="{!v.junctionApiName}" <br />
+                        layoutType="{#v.childrenRelationship.leftLayoutType}" <br />
+                        fields="{#v.childrenRelationship.leftObjectFields}" <br />
+                        columns="{#v.numFormColumns}" <br />
+                        mode="view" <br />
+                        <lightning:recordForm
+                            recordId="{!v.junctionId}"
+                            objectApiName="{!v.junctionApiName}"
+                            layoutType="Compact"
+                            columns="2"
+                            mode="readonly"
+                        />
+                    </lightning:accordionSection>
+                </aura:if>
+                <aura:if isTrue="{!v.childrenRelationship.showJunctionObject}">
+                    <lightning:accordionSection name="child" label="{#v.objectLabel}">
+                        show junction
+                    </lightning:accordionSection>
+                </aura:if>
             </lightning:accordion>
-            <!-- 
-                fields="AccountId__c, ContactId__c" -->
+            <!--
+            <lightning:accordion aura:id="contentAccordion" activeSectionName="junction">
+                <aura:if isTrue="{!v.childrenRelationship.showLeftObject}">
+                    showLeft Object
+                    <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
+                        <lightning:recordForm
+                            recordId="{!v.junctionId}"
+                            objectApiName="{!v.junctionApiName}"
+                            layoutType="{#v.childrenRelationship.leftLayoutType}"
+                            fields="{#v.childrenRelationship.leftObjectFields}"
+                            columns="{#v.numFormColumns}"
+                            mode="view"
+                        />
+                    </lightning:accordionSection>
+                </aura:if>
+                <aura:if isTrue="{!v.childrenRelationship.showJunctionObject}">
+                    showJunction Object
+                    <lightning:accordionSection name="child" label="{#v.objectLabel}">
+                        <lightning:recordForm
+                            recordId="{!v.recordId}"
+                            objectApiName="{!v.objectApiName}"
+                            layoutType="{#v.childrenRelationship.junctionLayoutType}"
+                            fields="{#v.childrenRelationship.junctionObjectFields}"
+                            columns="{#v.numFormColumns}"
+                            mode="view"
+                        />
+                    </lightning:accordionSection>
+                </aura:if>
+            </lightning:accordion>
+            -->
         </div>
         <footer class="slds-card__footer">
             <lightning:button variant="Neutral"

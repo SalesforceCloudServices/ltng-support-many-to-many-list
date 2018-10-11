@@ -56,11 +56,14 @@
                 recordId="{!farChild.childId}"
                 junctionId="{!farChild.junctionId}"
                 includeJunctionButtons="{!v.includeJunctionButtons}"
+                numFormColumns="{!v.numFormColumns}"
+                
+                childrenRelationship="{!v.children}"
+
                 objectApiName="{!v.children.childSObjectType}"
                 objectLabel="{!v.children.childSObjectLabel}"
                 junctionApiName="{!v.children.junctionSObjectType}"
                 junctionLabel="{!v.children.junctionSObjectLabel}"
-                numFormColumns="{!v.numFormColumns}"
             />
         </aura:iteration>
     </aura:if>
