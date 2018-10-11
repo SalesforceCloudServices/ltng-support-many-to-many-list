@@ -3,7 +3,7 @@
     <fullName>JunctionObjectSpecificFields__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>The individual fields to show if the compact layout is not shown.
-(Note, the compact layout will be shown if blank)</inlineHelpText>
+(Note, the record is not shown if not using compact layout and no fields selected)</inlineHelpText>
     <label>Junction Object Specific Fields</label>
     <length>32768</length>
     <trackTrending>false</trackTrending>
