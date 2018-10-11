@@ -55,12 +55,12 @@
         "junctionObjectUsesCompactLayout": true,
         "junctionSObjectLabel": "M2M AccountContactRelation",
         "junctionSObjectType": "ltng_M2M_AccountContactRelationship__c",
-        "leftLayoutType": "COMPACT",
-        "leftObjectUsesCompactLayout": true,
+        "rightLayoutType": "COMPACT",
+        "rightObjectUsesCompactLayout": true,
         "rightLayoutType": "COMPACT",
         "rightObjectUsesCompactLayout": true,
         "showJunctionObject": true,
-        "showLeftObject": true,
+        "showRightObject": true,
         "showRightObject": true
     }
     -->
@@ -84,7 +84,6 @@
         </header>
         </div>
         <div class="slds-card__body slds-card__body_inner">
-            something - showLeft: {!v.childrenRelationship.showLeftObject} - showJunction: {!v.childrenRelationship.showJunctionObject}
             <lightning:accordion aura:id="contentAccordion" activeSectionName="junction">
                 <aura:if isTrue="{!v.childrenRelationship.showJunctionObject}">
                     <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
@@ -116,22 +115,22 @@
                         </footer>
                     </lightning:accordionSection>
                 </aura:if>
-                <aura:if isTrue="{!v.childrenRelationship.showLeftObject}">
+                <aura:if isTrue="{!v.childrenRelationship.showRightObject}">
                     <lightning:accordionSection name="child" label="{#v.objectLabel}">
-                        <aura:if isTrue="{!v.childrenRelationship.leftLayoutType}">
+                        <aura:if isTrue="{!v.childrenRelationship.rightLayoutType}">
                             <lightning:recordForm
                                 recordId="{!v.recordId}"
                                 objectApiName="{!v.objectApiName}"
-                                layoutType="{!v.childrenRelationship.leftLayoutType}"
+                                layoutType="{!v.childrenRelationship.rightLayoutType}"
                                 columns="{#v.numFormColumns}"
                                 mode="view"
                             />
                         </aura:if>
-                        <aura:if isTrue="{!not(v.childrenRelationship.leftLayoutType)}">
+                        <aura:if isTrue="{!not(v.childrenRelationship.rightLayoutType)}">
                             <lightning:recordForm
                                 recordId="{!v.recordId}"
                                 objectApiName="{!v.objectApiName}"
-                                fields="{!v.childrenRelationship.leftObjectFields}"
+                                fields="{!v.childrenRelationship.rightObjectFields}"
                                 columns="{#v.numFormColumns}"
                                 mode="view"
                             />
@@ -149,14 +148,14 @@
             </lightning:accordion>
             <!--
             <lightning:accordion aura:id="contentAccordion" activeSectionName="junction">
-                <aura:if isTrue="{!v.childrenRelationship.showLeftObject}">
-                    showLeft Object
+                <aura:if isTrue="{!v.childrenRelationship.showRightObject}">
+                    showRight Object
                     <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
                         <lightning:recordForm
                             recordId="{!v.junctionId}"
                             objectApiName="{!v.junctionApiName}"
-                            layoutType="{#v.childrenRelationship.leftLayoutType}"
-                            fields="{#v.childrenRelationship.leftObjectFields}"
+                            layoutType="{#v.childrenRelationship.rightLayoutType}"
+                            fields="{#v.childrenRelationship.rightObjectFields}"
                             columns="{#v.numFormColumns}"
                             mode="view"
                         />
