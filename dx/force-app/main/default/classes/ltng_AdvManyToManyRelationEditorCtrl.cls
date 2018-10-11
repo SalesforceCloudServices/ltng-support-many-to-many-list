@@ -165,6 +165,10 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
         return(results);
     }
 
+    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+    //-- Internal Classes used for communication
+    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
     /**
      * Represents an SObject option
      **/
@@ -190,10 +194,6 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
             super(label, apiName);
         }
     }
-
-    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
-    //-- Internal Classes used for communication
-    //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
     /**
      * Represents a Many to Many relationship
