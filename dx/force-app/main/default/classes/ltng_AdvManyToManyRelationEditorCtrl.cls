@@ -7,6 +7,9 @@
  * @class ltng_AdvManyToManyRelationEditorCtrl
  **/
 public class ltng_AdvManyToManyRelationEditorCtrl {
+
+    /** delimiter */
+    public static final String FIELD_DELIMITER = '-';
     
     /** represents the error if the user is unable to get a list of sObjects */
     public static final String ERROR_CANNOT_LIST_SOBJECTS = 'Unable to access list of SObjects. Please contact your administrator';
@@ -62,77 +65,79 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
         Schema.DescribeSObjectResult leftObjectDescribe = ltng_AdvManyToManyUtil.getSObjectDescription(leftSObject);
         Schema.DescribeSObjectResult rightObjectDescribe = ltng_AdvManyToManyUtil.getSObjectDescription(rightSObject);
 
-        Map<String,FieldApiOption> potentialJunctionObjects = new Map<String,FieldApiOption>();
+        Map<String,FieldApiOption[]> potentialJunctionFields = new Map<String,FieldApiOption[]>();
         Set<String> foundChildObjects = new Set<String>();
         
+        String sObjectName;
         Schema.DescribeSObjectResult childDescribe;
         Schema.DescribeFieldResult fieldDescribe;
         Schema.SObjectType[] fieldSObjectReferences;
-        ManyToManyRelationOption m2mRelation;
         SObjectApiOption currentJunction;
-        FieldApiOption currentFieldDescribe;
-        FieldApiOption targetFieldDescribe;
+        FieldApiOption[] matchingFieldOptions;
         ManyToManyRelationOption currentRelationshipOption;
 
         for( Schema.ChildRelationship childRelation : leftObjectDescribe.getChildRelationships() ){
             childDescribe = childRelation.getChildSObject().getDescribe();
             fieldDescribe = childRelation.getField().getDescribe();
+            fieldSObjectReferences = fieldDescribe.getReferenceTo();
 
-            /*
-            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
-                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
+            //-- only add it to the list if the field references a single object (Master-Detail/)
+            if(fieldSObjectReferences.size() == 1){
+                //-- there can be multiple fields that relate to this object
+                //-- like bill-to, ship-to, customerAuthorizedBy, etc.
+                sObjectName = childDescribe.getName();
+                if (!potentialJunctionFields.containsKey(sObjectName)) {
+                    potentialJunctionFields.put(sObjectName, new FieldApiOption[]{});
+                }
+
+                //-- we know the object name of the possible junction,
+                //-- and the field on the junction that points to the left object
+                //-- so add it to the list in case there are multiple
+                potentialJunctionFields.get(sObjectName).add(new FieldApiOption(fieldDescribe.getLabel(), fieldDescribe.getName()));
             }
-            //System.debug(childDescribe);
-            System.debug('object.isAccessible:' + childDescribe.isAccessible());
-            System.debug('childRelation.getName:' + childDescribe.getName());
-            System.debug('fieldLabel:' + fieldDescribe.getName());
-            System.debug('isNamePointing:' + fieldDescribe.isNamePointing());
-            System.debug('getReferenceTo:' + fieldDescribe.getReferenceTo());
-
-            if (childDescribe.getName() == 'ltng_M2M_AccountContactRelationship__c'){
-                System.debug('\n\n\n\nTHIS ONE\n\n\n\n\n');
-            }
-            */
-
-            potentialJunctionObjects.put(childDescribe.getName(), new FieldApiOption(fieldDescribe.getLabel(), fieldDescribe.getName()));
         }
 
         for( Schema.ChildRelationship childRelation : rightObjectDescribe.getChildRelationships() ){
             childDescribe = childRelation.getChildSObject().getDescribe();
 
-            //System.debug('childDescribe.getName:' + childDescribe.getName());
-            //foundChildObjects.add(childDescribe.getName());
-
-            //-- @TODO: Currently there is no known way to reduce the list
-            //-- so it doesn't include the 'System' objects like Attachment, EmailMessage, FeedItem
-            //-- without going through every field on each of those objects
-            //-- to ensure that they have relations to both of these objects.
-            //-- so for now, we will just ask the end user.
-
             //-- only continue if the child relation was found in both objects
-            if (potentialJunctionObjects.containsKey(childDescribe.getName())) {
+            if (potentialJunctionFields.containsKey(childDescribe.getName())) {
+                
+                //-- ensure that the relationship is not a polymorphic field
                 fieldDescribe = childRelation.getField().getDescribe();
+                fieldSObjectReferences = fieldDescribe.getReferenceTo();
 
-                //-- only continue if the field is different between the two
-                //-- as otherwise we are dealing with one of those ubiquitous objects
-                //-- like documents / emailTemplates etc.
-                //-- that cannot be weeded out in any other way
+                if (fieldSObjectReferences.size() == 1){
 
-                currentFieldDescribe = new FieldApiOption(fieldDescribe.getLabel(), fieldDescribe.getName());
-                targetFieldDescribe = potentialJunctionObjects.get(childDescribe.getName());
-                if(!currentFieldDescribe.optionApiName.equals(targetFieldDescribe.optionApiName)){
+                    //-- @TODO - move to a map of SObject,ManyToManyelationOption - to avoid for loop in for loop
+                    //-- however, tests show that the gains from moving out to avoid the for in a for loop
+                    //-- is worse in nearly all real-life tests
+                    //-- because the code is either uses expensive clones in most cases or difficult to read
+                    //-- so this has been de-prioritized for now.
+
                     currentJunction = new SObjectApiOption(childDescribe.getLabel(), childDescribe.getName());
+                    matchingFieldOptions = potentialJunctionFields.get(currentJunction.optionApiName);
+                    for (FieldApiOption leftJunctionField : matchingFieldOptions) {
 
-                    currentRelationshipOption = new ManyToManyRelationOption(currentJunction.optionLabel, currentJunction.optionApiName);
-                    currentRelationshipOption.junctionObjectOption = currentJunction;
-                    currentRelationshipOption.leftObjectOption = new SObjectApiOption(leftObjectDescribe.getLabel(), leftObjectDescribe.getName());
-                    currentRelationshipOption.rightObjectOption = new SObjectApiOption(rightObjectDescribe.getLabel(), rightObjectDescribe.getName());
+                        //-- we know that the object references both the left and right sObjects
+                        //-- and that the fields are different
+                        //-- so package it up as a valid option to choose.
 
-                    
-                    currentRelationshipOption.leftObjectJunctionField = targetFieldDescribe;
-                    currentRelationshipOption.rightObjectJunctionField = currentFieldDescribe;
+						currentRelationshipOption = new ManyToManyRelationOption(currentJunction.optionLabel, currentJunction.optionApiName);
+						currentRelationshipOption.junctionObjectOption = currentJunction;
+						currentRelationshipOption.leftObjectOption = new SObjectApiOption(leftObjectDescribe.getLabel(), leftObjectDescribe.getName());
+						currentRelationshipOption.rightObjectOption = new SObjectApiOption(rightObjectDescribe.getLabel(), rightObjectDescribe.getName());
+	
+						currentRelationshipOption.leftObjectJunctionField = leftJunctionField;
+						currentRelationshipOption.rightObjectJunctionField = new FieldApiOption(fieldDescribe.getLabel(), fieldDescribe.getName());
 
-                    results.add(currentRelationshipOption);
+                        //-- make a unique identifier
+                        currentRelationshipOption.optionApiName = currentRelationshipOption.junctionObjectOption.optionApiName + FIELD_DELIMITER +
+                            currentRelationshipOption.leftObjectJunctionField.optionApiName + FIELD_DELIMITER +
+                            currentRelationshipOption.rightObjectJunctionField.optionApiName;
+                        
+                        results.add(currentRelationshipOption);
+                    }
                 }
             }
         }
