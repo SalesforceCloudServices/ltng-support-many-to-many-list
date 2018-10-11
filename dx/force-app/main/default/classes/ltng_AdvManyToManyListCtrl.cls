@@ -109,15 +109,11 @@ public with sharing class ltng_AdvManyToManyListCtrl {
         results.junctionSObjectLabel = junctionObjectDescribe.getLabel();
 
         results.leftObjectUsesCompactLayout = manyToManyRelationship.LeftObjectUsesCompactLayout__c;
-        //results.leftObjectSpecificFields = manyToManyRelationship.LeftObjectSpecificFields__c;
+        results.leftObjectSpecificFields = manyToManyRelationship.LeftObjectSpecificFields__c;
         results.junctionObjectUsesCompactLayout = manyToManyRelationship.JunctionObjectUsesCompactLayout__c;
-        //results.junctionObjectSpecificFields = manyToManyRelationship.JunctionObjectSpecificFields__c;
+        results.junctionObjectSpecificFields = manyToManyRelationship.JunctionObjectSpecificFields__c;
         results.rightObjectUsesCompactLayout = manyToManyRelationship.RightObjectUsesCompactLayout__c;
-        //results.rightObjectSpecificFields = manyToManyRelationship.RightObjectSpecificFields__c;
-
-        results.showLeftObject = results.leftObjectUsesCompactLayout || !String.isEmpty(results.leftObjectSpecificFields);
-        results.showJunctionObject = results.junctionObjectUsesCompactLayout || !String.isEmpty(results.junctionObjectSpecificFields);
-        results.showRightObject = results.rightObjectUsesCompactLayout || !String.isEmpty(results.rightObjectSpecificFields);
+        results.rightObjectSpecificFields = manyToManyRelationship.RightObjectSpecificFields__c;
 
         results.leftLayoutType = results.leftObjectUsesCompactLayout ? LAYOUT_TYPE_COMPACT : LAYOUT_TYPE_BLANK;
         results.junctionLayoutType = results.junctionObjectUsesCompactLayout ? LAYOUT_TYPE_COMPACT : LAYOUT_TYPE_BLANK;
@@ -126,6 +122,10 @@ public with sharing class ltng_AdvManyToManyListCtrl {
         results.leftObjectFields = splitObjectFields(manyToManyRelationship.LeftObjectSpecificFields__c);
         results.junctionObjectFields = splitObjectFields(manyToManyRelationship.JunctionObjectSpecificFields__c);
         results.rightObjectFields = splitObjectFields(manyToManyRelationship.RightObjectSpecificFields__c);
+
+        results.showLeftObject = results.leftObjectUsesCompactLayout || !String.isEmpty(manyToManyRelationship.LeftObjectSpecificFields__c);
+        results.showJunctionObject = results.junctionObjectUsesCompactLayout || !String.isEmpty(manyToManyRelationship.JunctionObjectSpecificFields__c);
+        results.showRightObject = results.rightObjectUsesCompactLayout || !String.isEmpty(manyToManyRelationship.RightObjectSpecificFields__c);
 
         SObject[] farChildren = Database.query(expectedSOQL);
 
