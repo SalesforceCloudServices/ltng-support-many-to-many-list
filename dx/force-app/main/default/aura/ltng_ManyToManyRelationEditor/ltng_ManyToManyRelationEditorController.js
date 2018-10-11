@@ -1,31 +1,27 @@
 ({
   init : function(component, event, helper){
-    $A.log('Component initialized');
-    
-    //-- allow for defaulting while testing.
-    //component.set('v.leftObjectApiName', 'ltng_M2M_Account__c');
-    //component.set('v.junctionObjectApiName', 'ltng_M2M_AccountContactRelation__c');
-    //component.set('v.rightObjectApiName', 'ltng_M2M_Contact__c');
+    //$A.log('Component initialized');
 
 		helper.initialize(component, helper);
 		helper.retrieveSObjectList(component, helper);
   },
 
   /**
-   * Handles when the Lightning Data Service record changes
+   * Lightning Data Service handling
+   * <p>Used for the values used during 'edit' mode.</p>
    **/
   recordUpdated : function(component, event, helper){
     var changeType = event.getParams().changeType;
     
     if( changeType === "ERROR" ){
       helper.displayError('RecordUpdate Error', component, event, helper);
-      $A.error("error occurred");
+      $A.warning("error occurred when loading the record");
       //debugger;
     } else if( changeType === "LOADED" ){
-      $A.log( "recordLoaded" );
+      //$A.log( "recordLoaded" );
       helper.handleRecordLoaded(component, event, helper);
     } else if( changeType === "REMOVED" ){
-      helper.displayError('RecordUpdate Removed', component, event, helper);
+      //helper.displayError('RecordUpdate Removed', component, event, helper);
       //debugger;
     } else if( changeType === "CHANGED" ){
       //-- called when updated internally
@@ -35,22 +31,26 @@
       //debugger;
     }
 	},
-	
+  
+  /**
+   * Handle when either the left or the right side objects are selected.
+   */
 	handleLeftRightSelected : function(component, event, helper){
-		$A.log('sObject was selected');
 		var leftSObject = component.find('leftObjectSelector').get('v.value');
 		var rightSObject = component.find('rightObjectSelector').get('v.value');
 		
 		helper.retrieveJunctionObjects(component, helper, leftSObject, rightSObject);
 	},
 
+  /**
+   * Handle when the junction object has been chosen.
+   * <p>Junction objects are only available after the left and right are chosen.
+   */
 	handleJunctionSelected : function(component, event, helper){
     helper.noop();
 
-    $A.log('junction was selected');
     var junctionSObject = component.find('junctionObjectSelector').get('v.value');
 
-    var junctionOptions = component.get('v.junctionList');
     var junctionOption = helper.findJunction(component, helper, junctionSObject);
     if (junctionOption) {
       component.set('v.selectedJunctionOption', junctionOption);
@@ -59,12 +59,18 @@
     return;
 	},
   
+  /**
+   * Handles the Help Section button toggle.
+   */
   handleToggleHelpSection : function(component, event, helper){
     helper.noop();
     var isExpanded = component.get('v.helpExpanded');
     component.set('v.helpExpanded', !isExpanded);
   },
 
+  /**
+   * Handles the 'Cancel' button press
+   */
   handleCancel : function(component, event, helper){
     helper.noop();
 
@@ -73,9 +79,10 @@
     navigateEvent.fire();
   },
 
+  /**
+   * Handles the 'Save' button press
+   */
   handleSave : function(component, event, helper){
-    $A.log("handling save");
-
     var relationshipAlias = component.get('v.relationshipAlias');
     var selectedJunctionOption = component.get('v.selectedJunctionOption');
 
