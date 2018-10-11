@@ -66,7 +66,10 @@ public with sharing class ltng_AdvManyToManyListCtrl {
         manyToManyRelationship = [
             SELECT Id, Name, JunctionObjectAPIName__c,
                 LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c,
-                RightObjectAPIName__c, JunctionRightObjectRelationshipField__c
+                RightObjectAPIName__c, JunctionRightObjectRelationshipField__c,
+                JunctionObjectUsesCompactLayout__c, JunctionObjectSpecificFields__c,
+                LeftObjectUsesCompactLayout__c, LeftObjectSpecificFields__c,
+                RightObjectUsesCompactLayout__c, RightObjectSpecificFields__c
             FROM ltng_M2M_Relationship__c
             WHERE Id = :relationshipId OR
                 (LeftObjectAPIName__c = :objectApiName OR RightObjectAPIName__c = :objectApiName)
@@ -99,6 +102,17 @@ public with sharing class ltng_AdvManyToManyListCtrl {
 
         results.junctionSObjectType = junctionObjectDescribe.getName();
         results.junctionSObjectLabel = junctionObjectDescribe.getLabel();
+
+        results.leftObjectUsesCompactLayout = manyToManyRelationship.LeftObjectUsesCompactLayout__c;
+        results.leftObjectSpecificFields = manyToManyRelationship.LeftObjectSpecificFields__c;
+        results.junctionObjectUsesCompactLayout = manyToManyRelationship.JunctionObjectUsesCompactLayout__c;
+        results.junctionObjectSpecificFields = manyToManyRelationship.JunctionObjectSpecificFields__c;
+        results.rightObjectUsesCompactLayout = manyToManyRelationship.RightObjectUsesCompactLayout__c;
+        results.rightObjectSpecificFields = manyToManyRelationship.RightObjectSpecificFields__c;
+
+        results.showLeftObject = results.leftObjectUsesCompactLayout || !String.isEmpty(results.leftObjectSpecificFields);
+        results.showJunctionObject = results.junctionObjectUsesCompactLayout || !String.isEmpty(results.junctionObjectSpecificFields);
+        results.showRightObject = results.rightObjectUsesCompactLayout || !String.isEmpty(results.rightObjectSpecificFields);
 
         SObject[] farChildren = Database.query(expectedSOQL);
 
@@ -144,6 +158,27 @@ public with sharing class ltng_AdvManyToManyListCtrl {
 
         @AuraEnabled
         public ChildEntry[] childrenList;
+
+        @AuraEnabled
+        public Boolean leftObjectUsesCompactLayout;
+        @AuraEnabled
+        public Boolean rightObjectUsesCompactLayout;
+        @AuraEnabled
+        public Boolean junctionObjectUsesCompactLayout;
+
+        @AuraEnabled
+        public String leftObjectSpecificFields;
+        @AuraEnabled
+        public String rightObjectSpecificFields;
+        @AuraEnabled
+        public String junctionObjectSpecificFields;
+
+        @AuraEnabled
+        public Boolean showLeftObject;
+        @AuraEnabled
+        public Boolean showRightObject;
+        @AuraEnabled
+        public Boolean showJunctionObject;
 
         public FarChildrenList(){
             this.childrenList = new ChildEntry[]{};

@@ -52,9 +52,14 @@ public with sharing class ltng_AdvManyToManyUtil {
 
             relationship.LeftObjectAPIName__c = relationshipClone.RightObjectAPIName__c;
             relationship.JunctionLeftObjectRelationshipField__c = relationshipClone.JunctionRightObjectRelationshipField__c;
+            relationship.LeftObjectUsesCompactLayout__c = relationshipClone.RightObjectUsesCompactLayout__c;
+            relationship.LeftObjectSpecificFields__c = relationshipClone.RightObjectSpecificFields__c;
 
             relationship.RightObjectAPIName__c = relationshipClone.LeftObjectAPIName__c;
             relationship.JunctionRightObjectRelationshipField__c = relationshipClone.JunctionLeftObjectRelationshipField__c;
+            relationship.RightObjectUsesCompactLayout__c = relationshipClone.LeftObjectUsesCompactLayout__c;
+            relationship.RightObjectSpecificFields__c = relationshipClone.LeftObjectSpecificFields__c;
+
             results = relationship;
         }
 
