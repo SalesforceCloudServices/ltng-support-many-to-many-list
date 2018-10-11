@@ -6,3 +6,5 @@ package.xml
 **.profile*
 
 **/Security.settings*
+*.appMenu*
+**/*.appMenu*
