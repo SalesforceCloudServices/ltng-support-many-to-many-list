@@ -17,7 +17,7 @@
     <aura:attribute name="numFormColumns" type="Integer" />
     <aura:attribute name="includeJunctionButtons" type="Boolean" />
     <!-- private attributes -->
-    <aura:attribute name="junctionFields" type="String[]" default="Name,CreatedDate" access="private" />
+    <aura:attribute name="objectFields" type="String[]" default="Name,ProductCode" access="private" />
     <!-- handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     <!-- events -->
@@ -41,13 +41,44 @@
         </header>
         </div>
         <div class="slds-card__body slds-card__body_inner">
+            <!--
+            <lightning:recordForm
+                recordId="{!v.recordId}"
+                objectApiName="{!v.objectApiName}"
+                fields="{#v.objectFields}"
+                columns="{#v.numFormColumns}"
+                mode="readonly"
+            />
+            -->
+            <!--
             <lightning:recordForm
                 recordId="{!v.junctionId}"
                 objectApiName="{!v.junctionApiName}"
-                fields="{#v.junctionFields}"
-                columns="{!v.numFormColumns}"
-                mode="readonly"
+                layoutType="Compact"
+                columns="{#v.numFormColumns}"
+                mode="view"
             />
+            -->
+            <lightning:accordion aura:id="contentAccordion" activeSectionName="junction">
+                <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
+                    <lightning:recordForm
+                        recordId="{!v.junctionId}"
+                        objectApiName="{!v.junctionApiName}"
+                        layoutType="Compact"
+                        columns="{#v.numFormColumns}"
+                        mode="view"
+                    />
+                </lightning:accordionSection>
+                <lightning:accordionSection name="child" label="{#v.objectLabel}">
+                    <lightning:recordForm
+                        recordId="{!v.recordId}"
+                        objectApiName="{!v.objectApiName}"
+                        layoutType="Compact"
+                        columns="{#v.numFormColumns}"
+                        mode="view"
+                    />
+                </lightning:accordionSection>
+            </lightning:accordion>
             <!-- 
                 fields="AccountId__c, ContactId__c" -->
         </div>
