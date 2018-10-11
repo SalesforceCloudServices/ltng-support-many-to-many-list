@@ -8,3 +8,6 @@ package.xml
 **/Security.settings*
 *.appMenu*
 **/*.appMenu*
+**/*Opportunity*
+**/Opportunity*
+*Opportunity*

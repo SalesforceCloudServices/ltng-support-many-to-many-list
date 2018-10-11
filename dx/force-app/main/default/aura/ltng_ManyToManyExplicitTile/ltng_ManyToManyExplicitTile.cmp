@@ -17,6 +17,7 @@
     <aura:attribute name="numFormColumns" type="Integer" />
     <aura:attribute name="includeJunctionButtons" type="Boolean" />
     <!-- private attributes -->
+    <aura:attribute name="junctionFields" type="String[]" default="Name,CreatedDate" access="private" />
     <!-- handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     <!-- events -->
@@ -43,10 +44,12 @@
             <lightning:recordForm
                 recordId="{!v.junctionId}"
                 objectApiName="{!v.junctionApiName}"
-                layoutType="Compact"
+                fields="{#v.junctionFields}"
                 columns="{!v.numFormColumns}"
                 mode="readonly"
             />
+            <!-- 
+                fields="AccountId__c, ContactId__c" -->
         </div>
         <footer class="slds-card__footer">
             <lightning:button variant="Neutral"
