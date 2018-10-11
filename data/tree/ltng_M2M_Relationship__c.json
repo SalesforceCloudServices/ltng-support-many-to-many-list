@@ -5,24 +5,45 @@
                 "type": "ltng_M2M_Relationship__c",
                 "referenceId": "ltng_M2M_Relationship__cRef1"
             },
-            "JunctionLeftObjectRelationshipField__c": "ContactId__c",
+            "Name": "Account Contacts",
             "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
-            "JunctionRightObjectRelationshipField__c": "AccountId__c",
-            "LeftObjectAPIName__c": "ltng_M2M_Contact__c",
+            "JunctionObjectUsesCompactLayout__c": false,
+            "LeftObjectAPIName__c": "ltng_M2M_Account__c",
+            "JunctionLeftObjectRelationshipField__c": "AccountId__c",
+            "LeftObjectUsesCompactLayout__c": false,
+            "RightObjectAPIName__c": "ltng_M2M_Contact__c",
+            "JunctionRightObjectRelationshipField__c": "ContactId__c",
+            "RightObjectUsesCompactLayout__c": false
+        },
+        {
+            "attributes": {
+                "type": "ltng_M2M_Relationship__c",
+                "referenceId": "ltng_M2M_Relationship__cRef2"
+            },
             "Name": "Contact Accounts",
-            "RightObjectAPIName__c": "ltng_M2M_Account__c"
+            "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
+            "JunctionObjectUsesCompactLayout__c": false,
+            "LeftObjectAPIName__c": "ltng_M2M_Contact__c",
+            "JunctionLeftObjectRelationshipField__c": "ContactId__c",
+            "LeftObjectUsesCompactLayout__c": false,
+            "RightObjectAPIName__c": "ltng_M2M_Account__c",
+            "JunctionRightObjectRelationshipField__c": "AccountId__c",
+            "RightObjectUsesCompactLayout__c": false
         },
         {
             "attributes": {
                 "type": "ltng_M2M_Relationship__c",
                 "referenceId": "ltng_M2M_Relationship__cRef3"
             },
-            "JunctionLeftObjectRelationshipField__c": "AccountId__c",
-            "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
-            "JunctionRightObjectRelationshipField__c": "ContactId__c",
-            "LeftObjectAPIName__c": "ltng_M2M_Account__c",
-            "Name": "Account Contacts",
-            "RightObjectAPIName__c": "ltng_M2M_Contact__c"
+            "Name": "Opportunity Products",
+            "JunctionObjectAPIName__c": "OpportunityLineItem",
+            "JunctionObjectUsesCompactLayout__c": false,
+            "LeftObjectAPIName__c": "Opportunity",
+            "JunctionLeftObjectRelationshipField__c": "OpportunityId",
+            "LeftObjectUsesCompactLayout__c": false,
+            "RightObjectAPIName__c": "Product2",
+            "JunctionRightObjectRelationshipField__c": "Product2Id",
+            "RightObjectUsesCompactLayout__c": false
         }
     ]
 }

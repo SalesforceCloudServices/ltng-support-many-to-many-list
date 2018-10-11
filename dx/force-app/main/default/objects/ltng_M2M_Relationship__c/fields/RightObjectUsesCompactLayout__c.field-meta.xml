@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RightObjectUsesCompactLayout__c</fullName>
+    <defaultValue>true</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>If checked and looking at the &quot;Right Object&quot; in the relationship, then the compact layout is shown.</inlineHelpText>
+    <label>Right Object Uses Compact Layout</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

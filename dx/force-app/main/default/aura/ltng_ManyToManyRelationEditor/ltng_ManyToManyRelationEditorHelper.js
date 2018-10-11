@@ -107,6 +107,15 @@
    * @param selectedJunctionOption (ltng_ManyToManyCtrl.ManyToManyRelationOption) - the relationship information.
    */
   saveRecord : function(component, helper, relationshipAlias, selectedJunctionOption){
+
+    var leftObjectUsesCompactLayout = component.find('leftObjectFields').get('v.useCompactLayout');
+    var leftObjectSpecificFields = component.find('leftObjectFields').get('v.specificFields');
+
+    var junctionObjectUsesCompactLayout = component.find('junctionObjectFields').get('v.useCompactLayout');
+    var junctionObjectSpecificFields = component.find('junctionObjectFields').get('v.specificFields');
+    
+    var rightObjectUsesCompactLayout = component.find('rightObjectFields').get('v.useCompactLayout');
+    var rightObjectSpecificFields = component.find('rightObjectFields').get('v.specificFields');
     
     var relation = {
       "Name": relationshipAlias,
@@ -114,7 +123,15 @@
       "JunctionLeftObjectRelationshipField__c": selectedJunctionOption.leftObjectJunctionField.optionApiName,
       "JunctionObjectAPIName__c": selectedJunctionOption.junctionObjectOption.optionApiName,
       "RightObjectAPIName__c": selectedJunctionOption.rightObjectOption.optionApiName,
-      "JunctionRightObjectRelationshipField__c": selectedJunctionOption.rightObjectJunctionField.optionApiName
+      "JunctionRightObjectRelationshipField__c": selectedJunctionOption.rightObjectJunctionField.optionApiName,
+      
+      
+      "LeftObjectUsesCompactLayout__c": leftObjectUsesCompactLayout,
+      "LeftObjectSpecificFields__c": leftObjectSpecificFields,
+      "JunctionObjectUsesCompactLayout__c": junctionObjectUsesCompactLayout,
+      "JunctionObjectSpecificFields__c": junctionObjectSpecificFields,
+      "RightObjectUsesCompactLayout__c": rightObjectUsesCompactLayout,
+      "RightObjectSpecificFields__c": rightObjectSpecificFields
     };
 
     //-- only assign the record if on an edit
@@ -187,11 +204,25 @@
 		var leftObjectApiName = component.get('v.currentRelationship.LeftObjectAPIName__c');
 		var rightObjectApiName = component.get('v.currentRelationship.RightObjectAPIName__c');
     var junctionObjectApiName = component.get('v.currentRelationship.JunctionObjectAPIName__c');
+
+    var leftObjectUsesCompactLayout = component.get('v.currentRelationship.LeftObjectUsesCompactLayout__c');
+    var leftObjectSpecificFields = component.get('v.currentRelationship.LeftObjectSpecificFields__c');
+    var junctionObjectUsesCompactLayout = component.get('v.currentRelationship.JunctionObjectUsesCompactLayout__c');
+    var junctionObjectSpecificFields = component.get('v.currentRelationship.JunctionObjectSpecificFields__c');
+    var rightObjectUsesCompactLayout = component.get('v.currentRelationship.RightObjectUsesCompactLayout__c');
+    var rightObjectSpecificFields = component.get('v.currentRelationship.RightObjectSpecificFields__c');
     
     component.set('v.relationshipAlias', relationshipAlias);
     component.set('v.leftObjectApiName', leftObjectApiName);
     component.set('v.rightObjectApiName', rightObjectApiName);
     component.set('v.junctionObjectApiName', junctionObjectApiName);
+
+    component.set('v.leftObjectUsesCompactLayout', leftObjectUsesCompactLayout);
+    component.set('v.leftObjectSpecificFields', leftObjectSpecificFields);
+    component.set('v.junctionObjectUsesCompactLayout', junctionObjectUsesCompactLayout);
+    component.set('v.junctionObjectSpecificFields', junctionObjectSpecificFields);
+    component.set('v.rightObjectUsesCompactLayout', rightObjectUsesCompactLayout);
+    component.set('v.rightObjectSpecificFields', rightObjectSpecificFields);
 
     helper.retrieveJunctionObjects(component, helper, leftObjectApiName, rightObjectApiName, junctionObjectApiName);
   },

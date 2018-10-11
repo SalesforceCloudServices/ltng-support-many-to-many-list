@@ -17,7 +17,7 @@
         recordId="{!v.recordId}"
         layoutType="FULL"
         targetFields="{!v.currentRelationship}"
-        fields="Id,Name,LeftObjectAPIName__c,JunctionLeftObjectRelationshipField__c,JunctionObjectAPIName__c,JunctionRightObjectRelationshipField__c,RightObjectAPIName__c"
+        fields="Id,Name,LeftObjectAPIName__c,JunctionLeftObjectRelationshipField__c,JunctionObjectAPIName__c,JunctionRightObjectRelationshipField__c,RightObjectAPIName__c,LeftObjectUsesCompactLayout__c,LeftObjectSpecificFields__c,JunctionObjectUsesCompactLayout__c,JunctionObjectSpecificFields__c,RightObjectUsesCompactLayout__c,RightObjectSpecificFields__c"
         mode="EDIT"
         recordUpdated="{!c.recordUpdated}"
     />
@@ -28,10 +28,19 @@
     <aura:attribute name="junctionList" type="Object[]" access="private" />
     <aura:attribute name="selectedJunctionOption" type="Object" access="private" />
 
+    <!-- @TODO: investigate using all fields off the currentRelationship instead of explicit fields like below -->
+
     <aura:attribute name="relationshipAlias" type="String" access="private" />
     <aura:attribute name="leftObjectApiName" type="String" access="private" />
     <aura:attribute name="rightObjectApiName" type="String" access="private" />
     <aura:attribute name="junctionObjectApiName" type="String" access="private" />
+
+    <aura:attribute name="leftObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="leftObjectSpecificFields" type="String" access="private" />
+    <aura:attribute name="junctionObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="junctionObjectSpecificFields" type="String" access="private" />
+    <aura:attribute name="rightObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="rightObjectSpecificFields" type="String" access="private" />
 
     <aura:attribute name="helpExpanded" type="Boolean" default="false" access="private" />
     <!-- handlers -->
@@ -94,7 +103,7 @@
 
     <!--form -->
     <div class="slds-box slds-theme_default">
-        <lightning:layout>
+        <lightning:layout class="slds-wrap">
             <lightning:layoutItem padding="around-small" size="6">
                 <div aria-labelledby="m2m-relation-form">
                     <form class="slds-form--stacked">
@@ -181,6 +190,34 @@
                     </div>
                 </aura:if>
             </lightning:layoutItem>
+            <aura:if isTrue="{!v.selectedJunctionOption}">
+                <lightning:layoutItem padding="around-small" size="12">
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                        aura:id="leftObjectFields"
+                        sectionTitle="Left Object"
+                        sObjectLabel="{!v.selectedJunctionOption.leftObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.leftObjectOption.optionApiName}"
+                        useCompactLayout="{!v.leftObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.leftObjectSpecificFields}"
+                    />
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                    aura:id="junctionObjectFields"
+                        sectionTitle="Junction Object"
+                        sObjectLabel="{!v.selectedJunctionOption.junctionObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.junctionObjectOption.optionApiName}"
+                        useCompactLayout="{!v.junctionObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.junctionObjectSpecificFields}"
+                    />
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                    aura:id="rightObjectFields"
+                        sectionTitle="Right Object"
+                        sObjectLabel="{!v.selectedJunctionOption.rightObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.rightObjectOption.optionApiName}"
+                        useCompactLayout="{!v.rightObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.rightObjectSpecificFields}"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
         </lightning:layout>   
     </div>
 

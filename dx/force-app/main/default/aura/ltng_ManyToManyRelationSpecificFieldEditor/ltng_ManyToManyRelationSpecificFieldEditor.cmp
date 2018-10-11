@@ -1,0 +1,63 @@
+<!--
+/**
+* Form that allows the user to select whether the compact layout is shown,
+* or to specify the exact fields to use instead.
+* @component: ltng_ManyToManyRelationSpecificFieldEditor
+**/
+-->
+<aura:component
+    controller="ltng_AdvManyToManyRelationEditorCtrl"
+    access="global"
+>
+    <!-- attributes -->
+    <aura:attribute name="sectionTitle" type="String" access="global" />
+    <aura:attribute name="sObjectLabel" type="String" access="global" />
+    <aura:attribute name="sObjectApiName" type="String" access="global" />
+    <aura:attribute name="useCompactLayout" type="Boolean" default="true" access="global" />
+    <aura:attribute name="specificFields" type="String" access="global" />
+    <aura:attribute name="preSelectedFields" type="String" access="global" />
+    <!-- private attributes -->
+    <aura:attribute name="isExpanded" type="Boolean" default="true" access="private" />
+    <aura:attribute name="preSelectedOptions" type="List" access="private" />
+    <aura:attribute name="specificFieldOptions" type="List" access="private" />
+    <aura:attribute name="fieldDelimiter" type="String" default=";" access="private" />
+    <!-- handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:handler name="change" value="{!v.sObjectApiName}" action="{!c.handleSObjectChanged}" />
+    <aura:handler name="change" value="{!v.preSelectedFields}" action="{!c.handlePreSelectedFieldsChanged}" />
+    <!-- events -->
+    <!-- methods -->
+    <aura:method name="refreshSelectedValues" action="{!c.executeRefreshSelectedValues}" />
+    <!-- elements -->
+    <aura:if isTrue="{!v.sObjectApiName}">
+        <div class="{! if(v.isExpanded, 'slds-is-open','slds-is-closed') + ' slds-section'}">
+            <div class="slds-is-open slds-section'}">
+                <h3 class="slds-section__title">
+                    <button 
+                        onclick="{!c.handleSectionHeaderClicked}"
+                        aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action"
+                    >
+                        <lightning:icon size="xx-small" iconName="{! if(v.isExpanded,'utility:chevrondown','utility:chevronright') }" />
+                        <span class="slds-truncate slds-m-left_medium" title="{!v.sObjectLabel}">{!v.sObjectLabel}</span>
+                    </button>
+                </h3>
+                <div aria-hidden="false" class="slds-section__content help-content" id="expando-unique-id">
+                    <form class="slds-form--stacked">
+                        <ui:inputCheckbox
+                            aura:id="useCompactLayout" name="useCompactLayout"
+                            label="Use Compact Layout?"
+                            value="{!v.useCompactLayout}"
+                        />
+                        <aura:if isTrue="{!not(v.useCompactLayout)}">
+                            <lightning:dualListbox aura:id="specificFields" name="specificFields"
+                                label="Specific Fields"
+                                options="{!v.specificFieldOptions}"
+                                value="{!v.preSelectedOptions}"
+                            />
+                        </aura:if>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

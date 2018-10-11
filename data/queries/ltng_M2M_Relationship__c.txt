@@ -1,2 +1,4 @@
-select JunctionLeftObjectRelationshipField__c, JunctionObjectAPIName__c, JunctionRightObjectRelationshipField__c, LeftObjectAPIName__c, Name, RightObjectAPIName__c from ltng_M2M_Relationship__c
-
+select Name, JunctionObjectAPIName__c, JunctionObjectUsesCompactLayout__c, JunctionObjectSpecificFields__c,
+    LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c, LeftObjectUsesCompactLayout__c, LeftObjectSpecificFields__c,
+    RightObjectAPIName__c, JunctionRightObjectRelationshipField__c, RightObjectUsesCompactLayout__c, RightObjectSpecificFields__c
+from ltng_M2M_Relationship__c

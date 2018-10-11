@@ -165,9 +165,61 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
         return(results);
     }
 
+    /**
+     * Determines the list of fields to choose from on a given sObject
+     * @param sObjectApiName (String)
+     * @return DualListBoxOption[]
+     **/
+    /**
+     * Description for method
+     **/
+    @AuraEnabled
+    public static DualListBoxOption[] getSObjectFieldOptions(String sObjectApiName) {
+        DualListBoxOption[] results = new DualListBoxOption[]{};
+
+        Schema.DescribeSObjectResult objectDescribe = ltng_AdvManyToManyUtil.getSObjectDescription(sObjectApiName);
+        Map<String, Schema.SObjectField> objectFields = objectDescribe.fields.getMap();
+        Schema.DescribeFieldResult fieldDescribe;
+        Set<String> fieldNames = objectFields.keySet();
+        DualListBoxOption option;
+
+        for (String fieldName : fieldNames){
+            fieldDescribe = objectFields.get(fieldName).getDescribe();
+            results.add(new DualListBoxOption(
+                fieldDescribe.getLabel() + ' (' + fieldDescribe.getName() + ')',
+                fieldDescribe.getName()
+            ));
+        }
+
+        try {
+            
+        } catch(Exception err){
+            throw new AuraHandledException('Exception occurred when processing: getSObjectFieldOptions');
+        }
+        
+        return(results);
+    }
+    
+
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
     //-- Internal Classes used for communication
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
+    /**
+     * Represents an option for the Dual List Box
+     */
+    public class DualListBoxOption {
+        @AuraEnabled
+        public String label;
+
+        @AuraEnabled
+        public String value;
+
+        public DualListBoxOption(String label, String value){
+            this.label = label;
+            this.value = value;
+        }
+    }
 
     /**
      * Represents an SObject option

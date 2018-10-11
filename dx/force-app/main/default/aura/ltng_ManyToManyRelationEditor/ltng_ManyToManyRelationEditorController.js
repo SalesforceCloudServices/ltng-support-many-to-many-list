@@ -90,6 +90,10 @@
       return;
     }
 
+    component.find('leftObjectFields').refreshSelectedValues();
+    component.find('junctionObjectFields').refreshSelectedValues();
+    component.find('rightObjectFields').refreshSelectedValues();
+
     helper.saveRecord(component, helper, relationshipAlias, selectedJunctionOption);
   }
 })
