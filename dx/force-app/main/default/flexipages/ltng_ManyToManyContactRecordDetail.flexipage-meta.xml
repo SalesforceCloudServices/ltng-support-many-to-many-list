@@ -30,7 +30,7 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
-            <componentName>ltng_ManyToManyList</componentName>
+            <componentName>ltng_AdvManyToManyList</componentName>
         </componentInstances>
         <name>Facet-da20e1d4-5ebb-438c-aaf4-ee0bda989b47</name>
         <type>Facet</type>

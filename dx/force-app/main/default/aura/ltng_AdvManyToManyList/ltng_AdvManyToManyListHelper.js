@@ -34,7 +34,7 @@
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						//helper.log('action success');
+						//$A.log('action success');
 						var results = response.getReturnValue();
 						
 						if (results && results.length > 0) {
@@ -97,7 +97,7 @@
 			helper.displayError('Unknown Response', 'Action failure');
 		}
 		
-		helper.error(errorMessages);
+		$A.warning(errorMessages);
 	},
 	
 	/**
@@ -120,8 +120,5 @@
 	},
 
 	//-- convenience methods
-	noop : function(){},
-	log : function(){},
-	info : function(){},
-	error : function(){}
+	noop : function(){}
 })

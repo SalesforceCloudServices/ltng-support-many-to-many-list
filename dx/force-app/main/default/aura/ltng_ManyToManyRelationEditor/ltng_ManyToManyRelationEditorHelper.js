@@ -19,12 +19,12 @@
     action.setCallback(this, function(response){
       var state = response.getState();
       if( state === 'SUCCESS' ){
-        helper.log('action success');
+        $A.log('action success');
 				var results = response.getReturnValue();
         component.set('v.sobjectList', results);
         //component.set('v.junctionList', results);
       } else {
-        helper.log('Error occurred from Action');
+        $A.log('Error occurred from Action');
         
         //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
         var errors = response.getError();
@@ -60,7 +60,7 @@
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						helper.log('action success');
+						$A.log('action success');
             var results = response.getReturnValue();
             component.set('v.junctionList', results);
             
@@ -73,7 +73,7 @@
               }
             }
 				} else {
-						helper.log('Error occurred from Action');
+						$A.log('Error occurred from Action');
 						
 						//-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
 						var errors = response.getError();
@@ -133,11 +133,11 @@
         if( state === 'SUCCESS' ){
             helper.info('action success');
             var results = response.getReturnValue();
-            helper.log(results);
+            $A.log(results);
 
             helper.goBack(component, helper);
         } else {
-            helper.error('Error occurred from Action');
+            $A.error('Error occurred from Action');
             
             //-- https://developer.salesforce.com/blogs/2017/09/error-handling-best-practices-lightning-apex.html
             var errors = response.getError();
@@ -215,7 +215,7 @@
       helper.displayError('Unknown Response', 'Action failure');
   	}
   	
-  	helper.log(errorMessages);
+  	$A.log(errorMessages);
   },
   
   /**
@@ -262,7 +262,7 @@
   noop : function(){},
 
   log : function(msg){
-    console.log(msg);
+    $A.log(msg);
   },
   info : function(msg){
     console.info(msg);

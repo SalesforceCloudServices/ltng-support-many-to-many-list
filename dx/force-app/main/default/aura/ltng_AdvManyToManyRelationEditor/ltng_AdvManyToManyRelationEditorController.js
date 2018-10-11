@@ -1,6 +1,6 @@
 ({
   init : function(component, event, helper){
-    //helper.log('Component initialized');
+    //$A.log('Component initialized');
 
 		helper.initialize(component, helper);
 		helper.retrieveSObjectList(component, helper);
@@ -15,17 +15,17 @@
     
     if( changeType === "ERROR" ){
       helper.displayError('RecordUpdate Error', component, event, helper);
-      helper.log("error occurred");
+      $A.warning("error occurred when loading the record");
       //debugger;
     } else if( changeType === "LOADED" ){
-      helper.log( "recordLoaded" );
+      //$A.log( "recordLoaded" );
       helper.handleRecordLoaded(component, event, helper);
     } else if( changeType === "REMOVED" ){
       //helper.displayError('RecordUpdate Removed', component, event, helper);
       //debugger;
     } else if( changeType === "CHANGED" ){
       //-- called when updated internally
-      //helper.log( "record was changed" );
+      //$A.log( "record was changed" );
     } else {
       helper.displayError('Unexpected RecordUpdate:' + changeType, component, event, helper);
       //debugger;
@@ -36,7 +36,7 @@
    * Handle when either the left or the right side objects are selected.
    */
 	handleLeftRightSelected : function(component, event, helper){
-		helper.log('sObject was selected');
+		//$A.log('sObject was selected');
 		var leftSObject = component.find('leftObjectSelector').get('v.value');
 		var rightSObject = component.find('rightObjectSelector').get('v.value');
 		
@@ -50,7 +50,7 @@
 	handleJunctionSelected : function(component, event, helper){
     helper.noop();
 
-    helper.log('junction was selected');
+    $A.log('junction was selected');
     var junctionSObject = component.find('junctionObjectSelector').get('v.value');
 
     var junctionOption = helper.findJunction(component, helper, junctionSObject);
@@ -85,7 +85,7 @@
    * Handles the 'Save' button press
    */
   handleSave : function(component, event, helper){
-    helper.log("handling save");
+    $A.log("handling save");
 
     var relationshipAlias = component.get('v.relationshipAlias');
     var selectedJunctionOption = component.get('v.selectedJunctionOption');

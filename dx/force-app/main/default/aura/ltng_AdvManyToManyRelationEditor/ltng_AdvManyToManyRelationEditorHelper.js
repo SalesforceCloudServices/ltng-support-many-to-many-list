@@ -17,7 +17,7 @@
     action.setCallback(this, function(response){
       var state = response.getState();
       if( state === 'SUCCESS' ){
-        //helper.log('action success');
+        //$A.log('action success');
 				var results = response.getReturnValue();
         component.set('v.sobjectList', results);
       } else {
@@ -56,7 +56,7 @@
 		action.setCallback(this, function(response){
 				var state = response.getState();
 				if( state === 'SUCCESS' ){
-						//helper.log('action success');
+						//$A.log('action success');
             var results = response.getReturnValue();
             component.set('v.junctionList', results);
             
@@ -131,7 +131,7 @@
         if( state === 'SUCCESS' ){
             //helper.info('action success');
             //var results = response.getReturnValue();
-            //helper.log(results);
+            //$A.log(results);
 
             // Display popup confirmation to the user
             var resultsToast = $A.get("e.force:showToast");
@@ -215,7 +215,7 @@
       helper.displayError('Unknown Response', 'Action failure');
   	}
   	
-  	helper.log(errorMessages);
+  	$A.warning(errorMessages);
   },
   
   /**
@@ -240,21 +240,5 @@
   
   //-- convenience methods
 
-  noop : function(){},
-
-  log : function(){},
-  info : function(){},
-  error : function(){}
-
-  /*
-  log : function(msg){
-    console.log(msg);
-  },
-  info : function(msg){
-    console.info(msg);
-  },
-  error : function(msg){
-    console.error(msg);
-  }
-  */
+  noop : function(){}
 })
