@@ -1,3 +1,6 @@
 <design:component>
-	
+    <design:attribute name='initialChildSection' label='Initial Child Section'
+        default='child' datasource="junction,child"
+        description='Which section should we show first?'
+    />
 </design:component>

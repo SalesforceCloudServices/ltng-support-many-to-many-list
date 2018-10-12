@@ -11,7 +11,7 @@
 >
     <!-- attributes -->
     <aura:attribute name="recordId" type="String" />
-    <aura:attribute name="includeJunctionButtons" type="Boolean" default="true" />
+    <aura:attribute name="initialChildSection" type="String" default="child" />
     <!-- private attributes -->
     <aura:attribute name="isDesktop" type="Boolean" access="private" />
     <aura:attribute name="numFormColumns" type="Integer" default="2" access="private" />
@@ -55,8 +55,8 @@
             <c:ltng_ManyToManyExplicitTile
                 recordId="{!farChild.childId}"
                 junctionId="{!farChild.junctionId}"
-                includeJunctionButtons="{!v.includeJunctionButtons}"
                 numFormColumns="{!v.numFormColumns}"
+                preferredSection="{!v.initialChildSection}"
                 
                 childrenRelationship="{!v.children}"
 
