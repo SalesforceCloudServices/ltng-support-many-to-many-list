@@ -1,7 +1,7 @@
 ({
 	init : function(component, event, helper){
-			//console.info('Component initialized');
-			helper.noop();
+			$A.log('Component initialized');
+			helper.initializeComponent(component, helper);
 	},
 
 	handleObjectClick : function(component, event, helper){

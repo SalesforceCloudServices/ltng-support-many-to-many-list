@@ -30,6 +30,10 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
+            <componentInstanceProperties>
+                <name>initialChildSection</name>
+                <value>child</value>
+            </componentInstanceProperties>
             <componentName>ltng_AdvManyToManyList</componentName>
         </componentInstances>
         <name>Facet-a3a4a53d-1dbe-4ec8-8072-1e3dbc716de4</name>

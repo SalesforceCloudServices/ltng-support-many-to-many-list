@@ -20,12 +20,12 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
 	//-- set the values that specific to your project
 	
     //-- The Name of your Permission Set
-    //--	(e.g.: SELECT Id, Name FROM PermissionSet WHERE Name = 'ManyToManyDemoParticipant')
+    //--	(e.g.: SELECT Id, Name FROM PermissionSet WHERE Name = 'ManyToManyDemoAdmin')
     //--    ex: LightningSupportDemoParticipant
     //--	We should use Permission Sets for all Demos, instead of modifying Profiles.
     
     /** Developer Name for the Permission Set **/
-    global static final String PERMISSION_SET_NAME = 'ManyToManyDemoParticipant';
+    global static final String PERMISSION_SET_NAME = 'ManyToManyDemoAdmin';
     
     
     //-- @CHANGE: replace YOUR_SOBJECT_API_NAME with the SObject Durable Name
@@ -422,6 +422,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             RightObjectAPIName__c = 'ltng_M2M_Contact__c'
         ));
         
+        /*
         relationshipRecords.add(new ltng_M2M_Relationship__c(
             JunctionLeftObjectRelationshipField__c = 'ContactId__c',
             JunctionObjectAPIName__c = 'ltng_M2M_AccountContactRelationship__c',
@@ -430,6 +431,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             Name = 'Contact Accounts',
             RightObjectAPIName__c = 'ltng_M2M_Account__c'
         ));
+        */
         
         //-- finally add in the records
         

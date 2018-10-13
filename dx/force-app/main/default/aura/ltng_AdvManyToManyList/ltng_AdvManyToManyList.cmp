@@ -52,7 +52,7 @@
         </div>
         -->
         <aura:iteration items="{!v.children.childrenList}" var="farChild" >
-            <c:ltng_ManyToManyExplicitTile
+            <c:ltng_AdvManyToManyListTile
                 recordId="{!farChild.childId}"
                 junctionId="{!farChild.junctionId}"
                 numFormColumns="{!v.numFormColumns}"
