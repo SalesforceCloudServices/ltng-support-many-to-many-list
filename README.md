@@ -273,24 +273,97 @@ sfdx force:user:display -u USERNAME
 
 # Overview
 
-Overview_of_what_the_project_represents
+A Many-to-Many relationship is a relationship between two things where the relationship isn't exclusive.
+
+In Salesforce terms for example, an Opportunity (representing a possible sale) can involve multiple types of products.
+
+Yet that same type of product may be sold on other Opportunities.
+
+The goal of this demo is to make it simple to navigate (or even to see and edit the data) quickly and easily in desktop and mobile.
 
 **Please note: sample code (metadata api and dx formats) are available in the [mdapi](./mdapi) and [dx](./dx) folders above**
 
 # Demo
 
-![Gif Demo](docs/images/demo.gif)
+A Many-to-Many relationship is a relationship between two things where the relationship isn't exclusive.
 
-What_the_demo_demonstrates_and_why_we_care
+In Salesforce terms for example, an Opportunity (representing a possible sale) can involve multiple types of products.
+
+Yet that same type of product may be sold on other Opportunities.
+
+This can be quite difficult to do from Mobile.
+
+![Video of the click path](docs/images/ManyToManyTraditionalSF1.gif)
+
+## Is there a way we can get there faster?
+
+![Video of far children](docs/images/ManyToManyFarChildren.gif)
+
+## From 5 clicks to near instant..
+
+![Traditional Salesforce1](docs/images/ManyToManyTraditionalSF1.png)
+
+![Far Child Screens](docs/images/ManyToManyFarChildren.png)
+
+(1 click to get to the compact layout, 2 to get to the full layout)
+
+.
+
+All in a way that is configurable <br />
+and can be exposed in Quick Actions or App Builder pages
+
+![Configuration Demo](docs/images/farChildConfig.gif)
+
+and works in both Desktop and Mobile
+(through Quick Actions, App Builder pages, and so on...)
+
+![Availble in QuickAction or App Builder Pages](docs/images/appBuilderQuickAction.gif)
 
 # How to Use
 
-How_do_you_use_this_demo
+A **One-to-Many relationship** is when one type record can relate to multiples of another type of record.
+
+For example: a Book can have many Pages.
+
+In this case, a single Page can't belong to more than one Book, otherwise it would be hard to read.
+
+A **Many-to-Many relationship** is when the relationship isn't exclusive.
+
+For example a Book can have many Authors, but an Author may also have written many Books.
+
+A **CRM example of a Many-to-Many Relationship** would be: <br />
+you can have Opportunities with more than one Product, but that same Product can be used in other Opportunities.
+
+In this case, we use a **Junction Object** to link them: an OpportunityProduct - aka. OpportunityLineItem.
+
+This special object references both the Opportunity along with the Product, and contains information that would apply only for this instance of a Product on this Opportunity. Such as the Number of Products to be ordered.
+
+## Play with the Provided Demo
+
+**1. Find the Many to Many Demo app in the App Launcher**
+
+![Screenshot of app launcher](docs/images/appInLauncher_help.png)
+
+**2. Run the `Setup` button on the `Many to Many Demo Setup` tab**
+
+![Screenshot](docs/images/demoSetup1.png)
+
+**3. See the Far Children under any of the provided M2M Accounts or Contacts
+
+@TODO - run a metadata refresh and push it.
+
+## Extend it to other areas
+
+**1. 
+
+
+## Add the Component to App Builder
+
+![Screenshot of app builder](docs/images/AddToAppBuilder.png)
 
 # TLDR How
 
 * Bullet_points_of_how_this_was_done
-
 ---
 
 # Install
