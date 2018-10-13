@@ -1,0 +1,233 @@
+<!--
+/**
+* Form to create child records.
+* @component: ltng_ManyToManyRelationEditor
+**/
+-->
+<aura:component
+    controller="ltng_AdvManyToManyRelationEditorCtrl"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction,lightning:actionOverride"
+    access="global"
+>
+    <!-- attributes -->
+    <aura:attribute name="recordId" type="String" />
+
+    <!-- data - @TODO: review lightning:RecordForm -->
+    <force:recordData aura:id="forceRecord"
+        recordId="{!v.recordId}"
+        layoutType="FULL"
+        targetFields="{!v.currentRelationship}"
+        fields="Id,Name,LeftObjectAPIName__c,JunctionLeftObjectRelationshipField__c,JunctionObjectAPIName__c,JunctionRightObjectRelationshipField__c,RightObjectAPIName__c,LeftObjectUsesCompactLayout__c,LeftObjectSpecificFields__c,JunctionObjectUsesCompactLayout__c,JunctionObjectSpecificFields__c,RightObjectUsesCompactLayout__c,RightObjectSpecificFields__c"
+        mode="EDIT"
+        recordUpdated="{!c.recordUpdated}"
+    />
+
+    <!-- private attributes -->
+    <aura:attribute name="currentRelationship" type="ltng_M2M_Relationship__c" access="private" />
+    <aura:attribute name="sobjectList" type="Object[]" access="private" />
+    <aura:attribute name="junctionList" type="Object[]" access="private" />
+    <aura:attribute name="selectedJunctionOption" type="Object" access="private" />
+
+    <!-- @TODO: investigate using all fields off the currentRelationship instead of explicit fields like below -->
+
+    <aura:attribute name="relationshipAlias" type="String" access="private" />
+    <aura:attribute name="leftObjectApiName" type="String" access="private" />
+    <aura:attribute name="rightObjectApiName" type="String" access="private" />
+    <aura:attribute name="junctionObjectApiName" type="String" access="private" />
+
+    <aura:attribute name="leftObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="leftObjectSpecificFields" type="String" access="private" />
+    <aura:attribute name="junctionObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="junctionObjectSpecificFields" type="String" access="private" />
+    <aura:attribute name="rightObjectUsesCompactLayout" type="Boolean" default="true" access="private" />
+    <aura:attribute name="rightObjectSpecificFields" type="String" access="private" />
+
+    <aura:attribute name="helpExpanded" type="Boolean" default="false" access="private" />
+    <!-- handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <!-- events -->
+    <!-- elements -->
+
+    <!-- PAGE HEADER -->
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem>
+            <lightning:icon iconName="standard:forecasts" alternativeText="M2M Relation"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">M2M Relation</h1>
+                <h2 class="slds-text-heading--medium">{! if(v.recordId, 'Edit Record', 'Create Record') }</h2>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <!-- Information -->
+    <div class="{! if(v.helpExpanded, 'slds-is-open','slds-is-closed') + ' slds-section'}">
+        <h3 class="slds-section__title">
+            <button 
+                onclick="{!c.handleToggleHelpSection}"
+                aria-controls="expando-unique-id" aria-expanded="true" class="slds-button slds-section__title-action"
+            >
+                <lightning:icon size="xx-small" iconName="{! if(v.helpExpanded,'utility:chevrondown','utility:chevronright') }" />
+                <span class="slds-truncate slds-m-left_medium" title="Help">Help</span>
+            </button>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content help-content" id="expando-unique-id">
+            <div class="slds-box slds-theme_default">
+                <p>A <b>One-to-Many relationship</b> is when one type record can relate to multiples of another type of record.</p>
+                
+                <p>For example: a Book can have many Pages.<br />
+                    In this case, a single Page can&apos;t belong to more than one Book, otherwise it would be hard to read.</p>
+                
+                <p>A <b>Many-to-Many relationship</b> is when the relationship isn&apos;t exclusive.</p>
+
+                <p>For example a Book can have many Authors, but an Author may also have written many Books.</p>
+
+                <p>A <b>CRM example of a Many-to-Many Relationship</b> would be: you can have Opportunities with more than one Product,
+                    but that same Product can be used in other Opportunities.</p>
+
+                <p>In this case, we use a <b>Junction Object</b> to link them: an OpportunityProduct - aka. OpportunityLineItem.</p>
+
+                <p>This special object references both the Opportunity along with the Product,
+                    and contains information that would apply only for this instance of a Product on this Opportunity.
+                    Such as the Number of Products to be ordered.</p>
+                
+                <hr />
+
+                <p>What you define here is not to create the relationship, but simply that this relationship is special to you -
+                    and that you want to make it easy to navigate between the two objects quickly.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--form -->
+    <div class="slds-box slds-theme_default">
+        <lightning:layout class="slds-wrap">
+            <lightning:layoutItem padding="around-small" size="6">
+                <div aria-labelledby="m2m-relation-form">
+                    <form class="slds-form--stacked">
+                        <lightning:input aura:id="relationshipName" name="relationshipName" label="Relationship Alias"
+                            required="true" value="{!v.relationshipAlias}"
+                            minlength="3" maxlength="50"
+                        />
+                        <lightning:select aura:id="leftObjectSelector" name="leftObjectSelector" label="What is one object in Many to Many relationship?"
+                            required="true"
+                            onchange="{!c.handleLeftRightSelected}"
+                        >
+                            <aura:iteration items="{!v.sobjectList}" var="sobject">
+                                <!-- sobject.QualifiedApiName == v.currentRelationship.LeftObjectAPIName__c -->
+                                <option text="{!sobject.optionLabel}" value="{!sobject.optionApiName}"
+                                    selected="{!sobject.optionApiName == v.leftObjectApiName}"
+                                ></option>
+                            </aura:iteration>
+                        </lightning:select>
+                        <lightning:select aura:id="rightObjectSelector" name="rightObjectSelector" label="What is the other object in the Many to Many relationship?"
+                            required="true"
+                            onchange="{!c.handleLeftRightSelected}"
+                        >
+                            <aura:iteration items="{!v.sobjectList}" var="sobject">
+                                <!-- sobject.QualifiedApiName == v.currentRelationship.RightObjecsfdtAPIName__c -->
+                                <option text="{!sobject.optionLabel}" value="{!sobject.optionApiName}"
+                                    selected="{!sobject.optionApiName == v.rightObjectApiName}"
+                                ></option>
+                            </aura:iteration>
+                        </lightning:select>
+                        <!-- show only after the user selects the two sides -->
+                        <lightning:select aura:id="junctionObjectSelector" name="junctionObjectSelector"
+                            label="Which of the following is the junction object?"
+                            required="true"
+                            disabled="{!!v.junctionList || v.junctionList.length == 0}"
+                            onchange="{!c.handleJunctionSelected}"
+                        >
+                            <aura:iteration items="{!v.junctionList}" var="junctionOption">
+                                <!-- sobject.QualifiedApiName == v.currentRelationship.LeftObjectAPIName__c -->
+                                <option text="{!junctionOption.optionLabel}" value="{!junctionOption.optionApiName}"
+                                ></option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </form>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="6">
+                <aura:if isTrue="{!and( v.selectedJunctionOption, v.selectedJunctionOption.junctionObjectOption)}">
+                    <div class="slds-box slds-theme_default">
+                      <table>
+                        <tr>
+                            <th>Label</th><th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>leftObject.Label</td><td>{!v.selectedJunctionOption.leftObjectOption.optionLabel}</td>
+                        </tr>
+                        <tr>
+                            <td>leftObject.Name</td><td>{!v.selectedJunctionOption.leftObjectOption.optionApiName}</td>
+                        </tr>
+                        <tr>
+                            <td>rightObject.Label</td><td>{!v.selectedJunctionOption.rightObjectOption.optionLabel}</td>
+                        </tr>
+                        <tr>
+                            <td>rightObject.Name</td><td>{!v.selectedJunctionOption.rightObjectOption.optionApiName}</td>
+                        </tr>
+                        <tr>
+                            <td>junctionObject.Label</td><td>{!v.selectedJunctionOption.junctionObjectOption.optionLabel}</td>
+                        </tr>
+                        <tr>
+                            <td>junctionObject.Name</td><td>{!v.selectedJunctionOption.junctionObjectOption.optionApiName}</td>
+                        </tr>
+                        <tr>
+                            <td>leftObjectJunctionField.Label</td><td>{!v.selectedJunctionOption.leftObjectJunctionField.optionLabel}</td>
+                        </tr>
+                        <tr>
+                            <td>leftObjectJunctionField.Name</td><td>{!v.selectedJunctionOption.leftObjectJunctionField.optionApiName}</td>
+                        </tr>
+                        <tr>
+                            <td>rightObjectJunctionField.Label</td><td>{!v.selectedJunctionOption.rightObjectJunctionField.optionLabel}</td>
+                        </tr>
+                        <tr>
+                            <td>rightObjectJunctionField.Name</td><td>{!v.selectedJunctionOption.rightObjectJunctionField.optionApiName}</td>
+                        </tr>
+                      </table>
+                    </div>
+                </aura:if>
+            </lightning:layoutItem>
+            <aura:if isTrue="{!v.selectedJunctionOption}">
+                <lightning:layoutItem padding="around-small" size="12">
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                        aura:id="leftObjectFields"
+                        sectionTitle="Left Object"
+                        sObjectLabel="{!v.selectedJunctionOption.leftObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.leftObjectOption.optionApiName}"
+                        useCompactLayout="{!v.leftObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.leftObjectSpecificFields}"
+                    />
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                    aura:id="junctionObjectFields"
+                        sectionTitle="Junction Object"
+                        sObjectLabel="{!v.selectedJunctionOption.junctionObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.junctionObjectOption.optionApiName}"
+                        useCompactLayout="{!v.junctionObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.junctionObjectSpecificFields}"
+                    />
+                    <c:ltng_ManyToManyRelationSpecificFieldEditor
+                    aura:id="rightObjectFields"
+                        sectionTitle="Right Object"
+                        sObjectLabel="{!v.selectedJunctionOption.rightObjectOption.optionLabel}"
+                        sObjectApiName="{!v.selectedJunctionOption.rightObjectOption.optionApiName}"
+                        useCompactLayout="{!v.rightObjectUsesCompactLayout}"
+                        preSelectedFields="{!v.rightObjectSpecificFields}"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
+        </lightning:layout>   
+    </div>
+
+    <!-- footer -->
+    <div style="height: 180px;">
+        <div class="slds-docked-form-footer">
+            <lightning:button label="Cancel" title="Cancel" variant="neutral" onclick="{!c.handleCancel}" />
+            <lightning:button label="Save" title="Save" variant="brand" disabled="{!or(not(v.selectedJunctionOption),not(v.relationshipAlias))}"
+                onclick="{!c.handleSave}"
+            />
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>Basic</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Relationship between a select M2M Contact and an M2M Account.
+
+In this example, an Account can have many Contacts - just as Contacts can have relationships in many Accounts.
+(John Doe is an influencer at XYZ corp, but a gatekeeper at ABC inc.)</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>M2M AccountContactRelation</label>
+    <nameField>
+        <displayFormat>ACR-{00000}</displayFormat>
+        <label>Account Contact Relationship Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>M2M AccountContactRelations</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+    <fields>
+        <fullName>AccountId__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Account that this relation is built to</inlineHelpText>
+        <label>M2M Account</label>
+        <referenceTo>ltng_M2M_Account__c</referenceTo>
+        <relationshipLabel>M2M AccountContactRelations</relationshipLabel>
+        <relationshipName>M2M_AccountContactRelations</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>ContactId__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact that this relation is built to</inlineHelpText>
+        <label>M2M Contact</label>
+        <referenceTo>ltng_M2M_Contact__c</referenceTo>
+        <relationshipLabel>M2M AccountContactRelations</relationshipLabel>
+        <relationshipName>M2M_AccountContactRelations</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>EndDate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The date a relationship between a contact and account ended. Use with the Start Date to keep a history of the relationship.</inlineHelpText>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>IsActive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether relationship is active (true) or not (false).</inlineHelpText>
+        <label>Is Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>IsDirect__c</fullName>
+        <externalId>false</externalId>
+        <formula>ContactId__r.AccountId__c = AccountId__c</formula>
+        <inlineHelpText>Indicates whether the account associated with the contact is the contact&#39;s primary account (true) or not (false).</inlineHelpText>
+        <label>Is Direct</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Roles__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The contact’s participating role in the account.</inlineHelpText>
+        <label>Roles</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Business User</fullName>
+                    <default>false</default>
+                    <label>Business User</label>
+                </value>
+                <value>
+                    <fullName>Decision Maker</fullName>
+                    <default>false</default>
+                    <label>Decision Maker</label>
+                </value>
+                <value>
+                    <fullName>Economic Buyer</fullName>
+                    <default>false</default>
+                    <label>Economic Buyer</label>
+                </value>
+                <value>
+                    <fullName>Economic Decision Maker</fullName>
+                    <default>false</default>
+                    <label>Economic Decision Maker</label>
+                </value>
+                <value>
+                    <fullName>Evaluator</fullName>
+                    <default>false</default>
+                    <label>Evaluator</label>
+                </value>
+                <value>
+                    <fullName>Executive Sponsor</fullName>
+                    <default>false</default>
+                    <label>Executive Sponsor</label>
+                </value>
+                <value>
+                    <fullName>Influencer</fullName>
+                    <default>false</default>
+                    <label>Influencer</label>
+                </value>
+                <value>
+                    <fullName>Technical Buyer</fullName>
+                    <default>false</default>
+                    <label>Technical Buyer</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>StartDate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The date a relationship between a contact and account began. Use with the End Date to keep a history of the relationship.</inlineHelpText>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <compactLayouts>
+        <fullName>Basic</fullName>
+        <fields>Name</fields>
+        <fields>AccountId__c</fields>
+        <fields>ContactId__c</fields>
+        <fields>IsActive__c</fields>
+        <fields>IsDirect__c</fields>
+        <fields>StartDate__c</fields>
+        <fields>EndDate__c</fields>
+        <label>Basic</label>
+    </compactLayouts>
+</CustomObject>

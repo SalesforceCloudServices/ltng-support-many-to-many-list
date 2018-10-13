@@ -4,3 +4,6 @@ createTemplateProject.sh
 *.profile*
 **/.vscode
 **/Security.settings*
+mdapiRefresh
+mdapiRefresh/**
+

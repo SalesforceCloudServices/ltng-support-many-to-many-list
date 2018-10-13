@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>ltng_ManyToManyRelationEditor</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>LightningComponent</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>ltng_ManyToManyRelationEditor</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>LightningComponent</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>A description of any Many to Many relationship
+
+For example, Account can have many Contacts - just as Contacts can have relationships in many Accounts.
+Both of these are linked through a common object: AccountContactRelation (with an Account and Contact lookup)
+to link the two together.
+
+This Object would describe that relation, with the object on the left (ex: Account)
+the object on the right (ex: Contact)
+and the junction object - that relates the two.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>M2M Relationship</label>
+    <nameField>
+        <label>M2M Relationship Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>M2M Relationships</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>LeftObjectAPIName__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>JunctionObjectAPIName__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RightObjectAPIName__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>LeftObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>JunctionObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RightObjectAPIName__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LeftObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>JunctionObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RightObjectAPIName__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>LeftObjectAPIName__c</searchFilterFields>
+        <searchFilterFields>JunctionObjectAPIName__c</searchFilterFields>
+        <searchFilterFields>RightObjectAPIName__c</searchFilterFields>
+        <searchResultsAdditionalFields>LeftObjectAPIName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>JunctionObjectAPIName__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RightObjectAPIName__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+    <fields>
+        <fullName>JunctionLeftObjectRelationshipField__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>API Name of the field used to relate the Junction Object to the Left Object</inlineHelpText>
+        <label>Junction Left Object Relationship Field</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>JunctionObjectAPIName__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The Junction object between the two objects.</inlineHelpText>
+        <label>Junction Object API Name</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>JunctionObjectSpecificFields__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The individual fields to show if the compact layout is not shown.
+(Note, the record is not shown if not using compact layout and no fields selected)</inlineHelpText>
+        <label>Junction Object Specific Fields</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>JunctionObjectUsesCompactLayout__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked and looking at the &quot;Junction Object&quot; in the relationship, then the compact layout is shown.</inlineHelpText>
+        <label>Junction Object Uses Compact Layout}</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>JunctionRightObjectRelationshipField__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>API Name of the field used to relate the Junction Object to the Right Object</inlineHelpText>
+        <label>Junction Right Object Relationship Field</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LeftObjectAPIName__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The API Name of an object in a many to many relationship</inlineHelpText>
+        <label>Left Object API Name</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LeftObjectSpecificFields__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The individual fields to show if the compact layout is not shown.
+(Note, the record is not shown if not using compact layout and no fields selected)</inlineHelpText>
+        <label>Left Object Specific Fields</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LeftObjectUsesCompactLayout__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked and looking at the &quot;Left Object&quot; in the relationship, then the compact layout is shown.</inlineHelpText>
+        <label>Left Object Uses Compact Layout</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>RightObjectAPIName__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The API Name of an object in a many to many relationship</inlineHelpText>
+        <label>Right Object API Name</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>RightObjectSpecificFields__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The individual fields to show if the compact layout is not shown.
+(Note, the record is not shown if not using compact layout and no fields selected)</inlineHelpText>
+        <label>Right Object Specific Fields</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>RightObjectUsesCompactLayout__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked and looking at the &quot;Right Object&quot; in the relationship, then the compact layout is shown.</inlineHelpText>
+        <label>Right Object Uses Compact Layout</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>LeftObjectAPIName__c</columns>
+        <columns>JunctionObjectAPIName__c</columns>
+        <columns>RightObjectAPIName__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+</CustomObject>

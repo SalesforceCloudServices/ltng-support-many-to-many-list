@@ -1,0 +1,115 @@
+<!--
+/**
+* Tile used to display info for a specific child in the Many to Many List
+* @component: ltng_AdvManyToManyListTile
+**/
+-->
+<aura:component
+    access="global"
+>
+    <!-- attributes -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="junctionId" type="String" />
+    <aura:attribute name="numFormColumns" type="Integer" />
+    <aura:attribute name="preferredSection" type="String" />
+
+    <aura:attribute name="childrenRelationship" type="Object" />
+
+    <aura:attribute name="objectApiName" type="String" />
+    <aura:attribute name="objectLabel" type="String" />
+    <aura:attribute name="junctionApiName" type="String" />
+    <aura:attribute name="junctionLabel" type="String" />
+    <!-- private attributes -->
+    <aura:attribute name="objectFields" type="String[]" default="Name,ProductCode" access="private" />
+    <aura:attribute name="junctionFields" type="List" access="private" />
+    <!-- handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <!-- events -->
+    <!-- elements -->
+    <article class="slds-card many-many-tile">
+        <!-- header -->
+        <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+                <span class="slds-icon_container slds-icon-standard-account" title="account">
+                    <lightning:icon iconName="custom:custom39" alternativeText="Icon for Many to Many Child Record" />
+                    <span class="slds-assistive-text">Icon for Many to Many Child Record</span>
+                </span>
+            </div>
+            <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="{!v.objectLabel}">
+                    <span class="slds-text-heading_small">{!v.objectLabel}</span>
+                    </a>
+                </h2>
+            </div>
+        </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning:accordion aura:id="contentAccordion" activeSectionName="{!v.preferredSection}">
+                <!-- use this if using compact layouts -->
+                <aura:if isTrue="{!v.childrenRelationship.showJunctionObject}">
+                    <lightning:accordionSection name="junction" label="{#v.junctionLabel}">
+                        <aura:if isTrue="{!v.childrenRelationship.junctionLayoutType}">
+                            <lightning:recordForm
+                                recordId="{!v.junctionId}"
+                                objectApiName="{!v.junctionApiName}"
+                                layoutType="{!v.childrenRelationship.junctionLayoutType}"
+                                columns="{#v.numFormColumns}"
+                                mode="view"
+                            />
+                        </aura:if>
+                        <aura:if isTrue="{!not(v.childrenRelationship.junctionLayoutType)}">
+                            <lightning:recordForm
+                                recordId="{!v.junctionId}"
+                                objectApiName="{!v.junctionApiName}"
+                                fields="{!v.childrenRelationship.junctionObjectFields}"
+                                columns="{#v.numFormColumns}"
+                                mode="view"
+                            />
+                        </aura:if>
+                        <footer class="slds-card__footer">
+                            <lightning:button variant="Neutral"
+                                class="{! if(v.includeJunctionButtons,'','slds-hide') + ' slds-m-bottom_medium'}"
+                                label="{! 'Visit ' + v.junctionLabel + ' Record'}"
+                                title="{! 'Visit ' + v.junctionLabel + ' Record'}"
+                                onclick="{!c.handleJunctionClick}"
+                            />
+                        </footer>
+                    </lightning:accordionSection>
+                </aura:if>
+                <!-- used if using explicit fields - separated due to layoutType bug -->
+                <aura:if isTrue="{!v.childrenRelationship.showRightObject}">
+                    <lightning:accordionSection name="child" label="{#v.objectLabel}">
+                        <aura:if isTrue="{!v.childrenRelationship.rightLayoutType}">
+                            <lightning:recordForm
+                                recordId="{!v.recordId}"
+                                objectApiName="{!v.objectApiName}"
+                                layoutType="{!v.childrenRelationship.rightLayoutType}"
+                                columns="{#v.numFormColumns}"
+                                mode="view"
+                            />
+                        </aura:if>
+                        <aura:if isTrue="{!not(v.childrenRelationship.rightLayoutType)}">
+                            <lightning:recordForm
+                                recordId="{!v.recordId}"
+                                objectApiName="{!v.objectApiName}"
+                                fields="{!v.childrenRelationship.rightObjectFields}"
+                                columns="{#v.numFormColumns}"
+                                mode="view"
+                            />
+                        </aura:if>
+                        <footer class="slds-card__footer">
+                            <lightning:button variant="Neutral"
+                                class="slds-m-bottom_medium"
+                                label="{! 'Visit ' + v.objectLabel + ' Record'}"
+                                title="{! 'Visit ' + v.objectLabel + ' Record'}"
+                                onclick="{!c.handleObjectClick}"
+                            />
+                        </footer>
+                    </lightning:accordionSection>
+                </aura:if>
+            </lightning:accordion>
+        </div>
+    </article>
+</aura:component>

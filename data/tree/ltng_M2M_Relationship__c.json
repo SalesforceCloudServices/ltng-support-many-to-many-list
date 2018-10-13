@@ -8,39 +8,26 @@
             "Name": "Account Contacts",
             "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
             "JunctionObjectUsesCompactLayout__c": false,
+            "JunctionObjectSpecificFields__c": "AccountId__c;ContactId__c;IsActive__c;StartDate__c;EndDate__c;Roles__c",
             "LeftObjectAPIName__c": "ltng_M2M_Account__c",
             "JunctionLeftObjectRelationshipField__c": "AccountId__c",
-            "LeftObjectUsesCompactLayout__c": false,
+            "LeftObjectUsesCompactLayout__c": true,
             "RightObjectAPIName__c": "ltng_M2M_Contact__c",
             "JunctionRightObjectRelationshipField__c": "ContactId__c",
-            "RightObjectUsesCompactLayout__c": false
+            "RightObjectUsesCompactLayout__c": true
         },
         {
             "attributes": {
                 "type": "ltng_M2M_Relationship__c",
                 "referenceId": "ltng_M2M_Relationship__cRef2"
             },
-            "Name": "Contact Accounts",
-            "JunctionObjectAPIName__c": "ltng_M2M_AccountContactRelationship__c",
-            "JunctionObjectUsesCompactLayout__c": false,
-            "LeftObjectAPIName__c": "ltng_M2M_Contact__c",
-            "JunctionLeftObjectRelationshipField__c": "ContactId__c",
-            "LeftObjectUsesCompactLayout__c": false,
-            "RightObjectAPIName__c": "ltng_M2M_Account__c",
-            "JunctionRightObjectRelationshipField__c": "AccountId__c",
-            "RightObjectUsesCompactLayout__c": false
-        },
-        {
-            "attributes": {
-                "type": "ltng_M2M_Relationship__c",
-                "referenceId": "ltng_M2M_Relationship__cRef3"
-            },
             "Name": "Opportunity Products",
             "JunctionObjectAPIName__c": "OpportunityLineItem",
             "JunctionObjectUsesCompactLayout__c": false,
+            "JunctionObjectSpecificFields__c": "OpportunityId;PricebookEntryId;Quantity;UnitPrice;Subtotal;Discount;TotalPrice",
             "LeftObjectAPIName__c": "Opportunity",
             "JunctionLeftObjectRelationshipField__c": "OpportunityId",
-            "LeftObjectUsesCompactLayout__c": false,
+            "LeftObjectUsesCompactLayout__c": true,
             "RightObjectAPIName__c": "Product2",
             "JunctionRightObjectRelationshipField__c": "Product2Id",
             "RightObjectUsesCompactLayout__c": false

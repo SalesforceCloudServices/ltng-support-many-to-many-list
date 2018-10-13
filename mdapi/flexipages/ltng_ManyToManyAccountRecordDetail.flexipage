@@ -32,11 +32,11 @@
         <componentInstances>
             <componentInstanceProperties>
                 <name>initialChildSection</name>
-                <value>junction</value>
+                <value>child</value>
             </componentInstanceProperties>
             <componentName>ltng_AdvManyToManyList</componentName>
         </componentInstances>
-        <name>Facet-da20e1d4-5ebb-438c-aaf4-ee0bda989b47</name>
+        <name>Facet-a3a4a53d-1dbe-4ec8-8072-1e3dbc716de4</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -73,7 +73,7 @@
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>body</name>
-                <value>Facet-da20e1d4-5ebb-438c-aaf4-ee0bda989b47</value>
+                <value>Facet-a3a4a53d-1dbe-4ec8-8072-1e3dbc716de4</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>title</name>
@@ -102,9 +102,9 @@
         <name>sidebar</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Many To Many Contact Record Detail</masterLabel>
+    <masterLabel>Many To Many Account Record Detail</masterLabel>
     <parentFlexiPage>flexipage__default_rec_L</parentFlexiPage>
-    <sobjectType>ltng_M2M_Contact__c</sobjectType>
+    <sobjectType>ltng_M2M_Account__c</sobjectType>
     <template>
         <name>flexipage:recordHomeTemplateDesktop</name>
     </template>
