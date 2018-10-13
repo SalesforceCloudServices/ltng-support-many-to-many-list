@@ -55,6 +55,10 @@ and works in both Desktop and Mobile
 
 ![Availble in QuickAction or App Builder Pages](docs/images/appBuilderQuickAction.gif)
 
+From any object, like showing (and editing) Opportunity Products - on mobile.
+
+![Video of Opportunity Products on Mobile](docs/images/opportunityProductInMobile.gif)
+
 # How to run the demo
 
 **1. Find the Many to Many Demo app in the App Launcher**
