@@ -80,17 +80,19 @@ Account
 
 **1. [Installation](#install) the app**
 
-**2. Setup a M2M Relationship record**
+**2. [Setup a M2M Relationship record](#define-the-relationship-to-show)**
 
 This doesn't create the relationship, but defines which ones we want to show - and how we want to show it (like defining which fields)
 
 For example: [Account](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_account.htm) and [Contact](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_contact.htm) (with [Account Contact Relation](https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_accountcontactrelation.htm))
 
-**3. Reference it on a Lightning App Builder Page or through a QuickAction**
+**3. Reference it [on a Lightning App Builder Page](#add-the-component-to-any-app-builder-page) or [through a QuickAction](#or-create-a-quick-action)**
 
-**4. See it in action**
+**4. [See it in action](#see-it-in-action)**
 
-(Continuing the example above, by exposing out the component on the Account page layouts / app builder page, the component knows which Relation to use and orients it to show the Contacts and Account Contact Relations)
+(Continuing the example above, by exposing out the component on the Contact page layouts / app builder page, the component knows which Relation to use and orients it to show the Accounts and Account Contact Relations)
+
+![Screenshot of Contact](docs/images/farChildrenContact.png)
 
 # Show me how to Make It My Own
 
