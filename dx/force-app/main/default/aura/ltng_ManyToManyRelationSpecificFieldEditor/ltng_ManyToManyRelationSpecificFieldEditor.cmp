@@ -51,6 +51,8 @@
                         <aura:if isTrue="{!not(v.useCompactLayout)}">
                             <lightning:dualListbox aura:id="specificFields" name="specificFields"
                                 label="Specific Fields"
+                                sourceLabel="Available Fields"
+                                selectedLabel="Selected Fields"
                                 options="{!v.specificFieldOptions}"
                                 value="{!v.preSelectedOptions}"
                             />
