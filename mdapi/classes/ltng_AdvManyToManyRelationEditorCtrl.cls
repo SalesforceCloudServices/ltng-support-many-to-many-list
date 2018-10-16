@@ -191,6 +191,8 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
             ));
         }
 
+        results.sort();
+
         try {
             
         } catch(Exception err){
@@ -208,7 +210,7 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
     /**
      * Represents an option for the Dual List Box
      */
-    public class DualListBoxOption {
+    public class DualListBoxOption implements Comparable{
         @AuraEnabled
         public String label;
 
@@ -218,6 +220,21 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
         public DualListBoxOption(String label, String value){
             this.label = label;
             this.value = value;
+        }
+
+        public Integer compareTo(Object otherComparable) {
+            if (otherComparable == null || !(otherComparable instanceOf DualListBoxOption)) {
+                return (1);
+            } else {
+                DualListBoxOption otherOption = (DualListBoxOption)otherComparable;
+                if (this.label == otherOption.label) {
+                    return 0;
+                } else if (this.label > otherOption.label){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
         }
     }
 

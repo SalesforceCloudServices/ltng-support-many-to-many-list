@@ -70,7 +70,7 @@
                         </aura:if>
                         <footer class="slds-card__footer">
                             <lightning:button variant="Neutral"
-                                class="{! if(v.includeJunctionButtons,'','slds-hide') + ' slds-m-bottom_medium'}"
+                                class="slds-m-bottom_medium"
                                 label="{! 'Visit ' + v.junctionLabel + ' Record'}"
                                 title="{! 'Visit ' + v.junctionLabel + ' Record'}"
                                 onclick="{!c.handleJunctionClick}"
