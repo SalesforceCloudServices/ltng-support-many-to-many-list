@@ -245,6 +245,58 @@ Account
 
 ---
 
+# Supporting Opportunity Products on Mobile
+
+Wait. What is that about Products on Salesforce Mobile?
+
+Currently Products (Product2) is not supported in Salesforce Mobile.
+
+![Screenshot](docs/images/productNotSupported.png)
+
+## So how did you demo having Opportunities on Mobile?
+Is it supported?
+
+![Video of Opportunity Products on Mobile](docs/images/opportunityProductInMobile.gif)
+
+In this demonstration, we we actually are doing something slight, but important.
+
+* We hide the Product2 recod in the component list
+* We expose any Product Specific info on the Opportunity Product.
+
+As only Product (Product2) and not Opportunity Products have this limitation, this may work in most cases.
+
+However, please follow up with your team as necessary.
+
+-----
+
+**1. We hide the Product2 record in the component list**
+
+This is describe above in the [Define the Relationship to Show section above](#define-the-relationship-to-show)
+
+Specifically, if the `Use Compact Layout?` is not checked and no fields are selected, then that object won't be shown.
+
+This can be helpful for special occasions, like hiding Product for Opportunity Products on Mobile
+
+**2. We expose the Product Information we need on the Opportunity Product** 
+
+In this example, we don't really show any information from the Product (like Product Family, Category, etc.) but there are times that is needed.
+
+As the Opportunity Product - the junction object - looks at both the Opportunity and the Product, we know the records that we want to show information from.
+
+There are a couple options on how this can be done, and may deserve further discussions with your team.
+
+Such as:
+
+* Formula Fields
+  * Will always show the current value on Product - if it changes frequently
+  * [Will count against your Object Spanning References](https://help.salesforce.com/articleView?id=000006372&type=1), but these are distinct objects, so multiple fields pointing to Product will count as one spanning relationship. [See here for more](https://help.salesforce.com/articleView?id=000006372&type=1)
+* Flows / Triggers on Opportunity Product
+  * Will copy the information from the Product associated onto the Opportunity Product when Product2 is defined.
+  * Works well if Product information doesn't change frequently, but may require further development effort (possibly batch) to update if needed at a later date.
+
+
+
+
 # Install
 
 There are three methods available for you to install this demo, so you can play around with it:
