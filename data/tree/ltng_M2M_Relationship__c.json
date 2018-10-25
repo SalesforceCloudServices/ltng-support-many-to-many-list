@@ -15,22 +15,6 @@
             "RightObjectAPIName__c": "ltng_M2M_Contact__c",
             "JunctionRightObjectRelationshipField__c": "ContactId__c",
             "RightObjectUsesCompactLayout__c": true
-        },
-        {
-            "attributes": {
-                "type": "ltng_M2M_Relationship__c",
-                "referenceId": "ltng_M2M_Relationship__cRef2"
-            },
-            "Name": "Opportunity Products",
-            "JunctionObjectAPIName__c": "OpportunityLineItem",
-            "JunctionObjectUsesCompactLayout__c": false,
-            "JunctionObjectSpecificFields__c": "OpportunityId;PricebookEntryId;Quantity;UnitPrice;Subtotal;Discount;TotalPrice",
-            "LeftObjectAPIName__c": "Opportunity",
-            "JunctionLeftObjectRelationshipField__c": "OpportunityId",
-            "LeftObjectUsesCompactLayout__c": true,
-            "RightObjectAPIName__c": "Product2",
-            "JunctionRightObjectRelationshipField__c": "Product2Id",
-            "RightObjectUsesCompactLayout__c": false
         }
     ]
 }

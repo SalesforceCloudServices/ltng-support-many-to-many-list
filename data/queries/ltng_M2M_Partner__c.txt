@@ -1,0 +1,3 @@
+SELECT AccountFromId__c, AccountToId__c, Role__c
+FROM ltng_M2M_Partner__c
+
