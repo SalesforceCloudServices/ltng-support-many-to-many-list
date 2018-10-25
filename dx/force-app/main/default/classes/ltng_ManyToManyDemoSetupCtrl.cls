@@ -243,6 +243,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ltng_M2M_Contact__c[] contactRecords = new ltng_M2M_Contact__c[]{};
         ltng_M2M_AccountContactRelationship__c[] junctionRecords = new ltng_M2M_AccountContactRelationship__c[]{};
         ltng_M2M_Relationship__c[] relationshipRecords = new ltng_M2M_Relationship__c[]{};
+        ltng_M2M_Partner__c[] partnerRecords = new ltng_M2M_Partner__c[]{};
         
         accountRecords.add(new ltng_M2M_Account__c(
             ExternalId__c = 'Vand',
@@ -446,6 +447,12 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             RightObjectUsesCompactLayout__c = true,
             JunctionRightObjectRelationshipField__c = 'ContactId__c'
         ));
+
+        //-- partners
+
+        partnerRecords.add(new ltng_M2M_Partner__c(
+            Role__c = 'Consultant'
+        ));
         
         /*
         relationshipRecords.add(new ltng_M2M_Relationship__c(
@@ -523,7 +530,21 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             insert junctionRecords;
             //step.seeMore = baseRecords[0].Id;
         } catch( Exception err){
-            step.errMsg = 'error occurred while creating base records';
+            step.errMsg = 'error occurred while creating relationship records';
+            step.devErrMsg = err.getMessage();
+            System.debug(step.errMsg);
+        }
+
+        partnerRecords[0].AccountFromId__c = accountRecords[0].Id;
+        partnerRecords[0].AccountToId__c = accountRecords[1].Id;
+
+        System.debug('partnerRecords');
+        System.debug(partnerRecords);
+        
+        try {
+            insert partnerRecords;
+        } catch( Exception err){
+            step.errMsg = 'error occurred while creating partner records';
             step.devErrMsg = err.getMessage();
             System.debug(step.errMsg);
         }
