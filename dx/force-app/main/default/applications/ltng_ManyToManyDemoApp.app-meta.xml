@@ -24,6 +24,7 @@
     <tabs>ltng_ManyToManyDemoSetup</tabs>
     <tabs>ltng_M2M_Account__c</tabs>
     <tabs>ltng_M2M_Contact__c</tabs>
+    <tabs>ltng_M2M_Partner__c</tabs>
     <tabs>ltng_M2M_Relationship__c</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

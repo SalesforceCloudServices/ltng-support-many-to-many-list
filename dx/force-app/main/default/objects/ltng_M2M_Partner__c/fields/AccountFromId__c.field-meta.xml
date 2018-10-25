@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AccountFromId__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>ID of the main Account in a partner relationship between two accounts. Specifying this field when creating a Partner record creates two AccountPartner objects, one for each direction of the relationship.</inlineHelpText>
+    <label>Account From</label>
+    <referenceTo>ltng_M2M_Account__c</referenceTo>
+    <relationshipLabel>Partners From</relationshipLabel>
+    <relationshipName>PartnersFrom</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

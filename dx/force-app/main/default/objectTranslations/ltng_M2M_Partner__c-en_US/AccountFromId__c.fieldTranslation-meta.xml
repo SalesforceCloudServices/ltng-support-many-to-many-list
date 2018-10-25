@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help><!-- ID of the main Account in a partner relationship between two accounts. Specifying this field when creating a Partner record creates two AccountPartner objects, one for each direction of the relationship. --></help>
+    <label><!-- Account From --></label>
+    <name>AccountFromId__c</name>
+    <relationshipLabel><!-- Partners From --></relationshipLabel>
+</CustomFieldTranslation>
