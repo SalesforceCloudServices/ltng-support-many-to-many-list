@@ -100,24 +100,13 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         //-- 	(the following is an example set of code)
         
         try {
+            //-- should be empty
             delete [
                 SELECT Id
-                FROM ltng_M2M_Account__c
+                FROM ltng_M2M_Relationship__c
             ];
         } catch(Exception err){
-            step.errMsg = 'Error occurred while attempting to delete all m2m accounts';
-            step.devErrMsg = err.getMessage();
-            //-- do nothing for now.
-            System.debug(step.errMsg);
-        }
-        
-        try {
-            delete [
-                SELECT Id
-                FROM ltng_M2M_Contact__c
-            ];
-        } catch(Exception err){
-            step.errMsg = 'Error occurred while attempting to delete all m2m contacts';
+            step.errMsg = 'Error occurred while attempting to delete all m2m relationships';
             step.devErrMsg = err.getMessage();
             //-- do nothing for now.
             System.debug(step.errMsg);
@@ -140,10 +129,34 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
             //-- should be empty
             delete [
                 SELECT Id
-                FROM ltng_M2M_Relationship__c
+                FROM ltng_M2M_Partner__c
             ];
         } catch(Exception err){
-            step.errMsg = 'Error occurred while attempting to delete all m2m relationships';
+            step.errMsg = 'Error occurred while attempting to delete all m2m Partners';
+            step.devErrMsg = err.getMessage();
+            //-- do nothing for now.
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            delete [
+                SELECT Id
+                FROM ltng_M2M_Account__c
+            ];
+        } catch(Exception err){
+            step.errMsg = 'Error occurred while attempting to delete all m2m accounts';
+            step.devErrMsg = err.getMessage();
+            //-- do nothing for now.
+            System.debug(step.errMsg);
+        }
+        
+        try {
+            delete [
+                SELECT Id
+                FROM ltng_M2M_Contact__c
+            ];
+        } catch(Exception err){
+            step.errMsg = 'Error occurred while attempting to delete all m2m contacts';
             step.devErrMsg = err.getMessage();
             //-- do nothing for now.
             System.debug(step.errMsg);
@@ -232,6 +245,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ltng_M2M_Relationship__c[] relationshipRecords = new ltng_M2M_Relationship__c[]{};
         
         accountRecords.add(new ltng_M2M_Account__c(
+            ExternalId__c = 'Vand',
             AnnualRevenue__c = 600000000,
             BillingAddress__c = '3418 Poplar Ave\r\nShelby, TN 38111\r\nUSA',
             HasOptedOutOfEmail__c = false,
@@ -246,6 +260,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         accountRecords.add(new ltng_M2M_Account__c(
+            ExternalId__c = 'Datanet',
             AnnualRevenue__c = 10000000,
             BillingAddress__c = '310 Henry St\r\nNew York, NY 10002\r\nUSA',
             HasOptedOutOfEmail__c = false,
@@ -263,6 +278,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         //-- Contacts
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Arthur',
             Department__c = 'Finance',
             DoNotCall__c = false,
             FirstName__c = 'Arthur',
@@ -277,6 +293,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Chris',
             Department__c = 'Legal',
             DoNotCall__c = false,
             FirstName__c = 'Chris',
@@ -291,6 +308,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Billy',
             Department__c = 'Legal',
             DoNotCall__c = false,
             FirstName__c = 'Billy',
@@ -305,6 +323,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Brenda',
             Department__c = 'Exec',
             DoNotCall__c = false,
             FirstName__c = 'Brenda',
@@ -319,6 +338,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Bill',
             Department__c = 'Ops',
             DoNotCall__c = false,
             FirstName__c = 'Bill',
@@ -333,6 +353,7 @@ global with sharing class ltng_ManyToManyDemoSetupCtrl {
         ));
         
         contactRecords.add(new ltng_M2M_Contact__c(
+            ExternalId__c = 'Bree',
             Department__c = 'Sales',
             DoNotCall__c = false,
             FirstName__c = 'Bree',
