@@ -1,0 +1,25 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "ltng_M2M_Partner__c",
+                "referenceId": "ltng_M2M_Partner__cRef1"
+            },
+            "AccountFromId__r": {
+                "attributes": {
+                    "type": "ltng_M2M_Account__c",
+                    "url": "/services/data/v44.0/sobjects/ltng_M2M_Account__c/a01S000000ErblYIAR"
+                },
+                "ExternalId__c": "Vand"
+            },
+            "AccountToId__r": {
+                "attributes": {
+                    "type": "ltng_M2M_Account__c",
+                    "url": "/services/data/v44.0/sobjects/ltng_M2M_Account__c/a01S000000ErblZIAR"
+                },
+                "ExternalId__c": "Datanet"
+            },
+            "Role__c": "Consultant"
+        }
+    ]
+}

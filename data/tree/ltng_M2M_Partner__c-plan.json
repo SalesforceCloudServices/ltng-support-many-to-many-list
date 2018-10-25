@@ -1,0 +1,10 @@
+[
+    {
+        "sobject": "ltng_M2M_Partner__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "ltng_M2M_Partner__cs.json"
+        ]
+    }
+]

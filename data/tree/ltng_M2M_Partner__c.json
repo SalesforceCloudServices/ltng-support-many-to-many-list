@@ -1,1 +1,30 @@
-{"status":0,"result":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"ltng_M2M_Partner__c","url":"/services/data/v44.0/sobjects/ltng_M2M_Partner__c/a04S0000007WivHIAS"},"AccountFromId__c":"a01S000000ErbbsIAB","AccountToId__c":"a01S000000ErbbrIAB","Role__c":"Consultant"}]}}
+{
+  "status": 0,
+  "result": {
+    "totalSize": 1,
+    "done": true,
+    "records": [
+      {
+        "attributes": {
+          "type": "ltng_M2M_Partner__c",
+          "url": "/services/data/v44.0/sobjects/ltng_M2M_Partner__c/a04S0000007WiznIAC"
+        },
+        "AccountFromId__r": {
+          "attributes": {
+            "type": "ltng_M2M_Account__c",
+            "url": "/services/data/v44.0/sobjects/ltng_M2M_Account__c/a01S000000ErblYIAR"
+          },
+          "ExternalId__c": "Vand"
+        },
+        "AccountToId__r": {
+          "attributes": {
+            "type": "ltng_M2M_Account__c",
+            "url": "/services/data/v44.0/sobjects/ltng_M2M_Account__c/a01S000000ErblZIAR"
+          },
+          "ExternalId__c": "Datanet"
+        },
+        "Role__c": "Consultant"
+      }
+    ]
+  }
+}
