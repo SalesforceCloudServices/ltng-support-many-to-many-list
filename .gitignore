@@ -7,3 +7,4 @@ createTemplateProject.sh
 mdapiRefresh
 mdapiRefresh/**
 
+/ltng-support-many-to-many-list.code-workspace
