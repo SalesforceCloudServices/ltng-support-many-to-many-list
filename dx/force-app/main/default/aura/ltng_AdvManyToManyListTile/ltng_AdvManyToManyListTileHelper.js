@@ -8,9 +8,25 @@
 		if ( childRelationship) {
 			var fields = childRelationship.junctionObjectFields;
 			$A.log(fields);
-			var junctionFields = component.get('v.childrenRelationship.junctionObjectSpecificFields').split(';');
+			var junctionFields = helper.safeSplit(
+				component.get('v.childrenRelationship.junctionObjectSpecificFields'),
+				';'
+			);
 			component.set('v.junctionFields', junctionFields);
 		}
+	},
+
+	/**
+	 * Safely split a string by a delimiter
+	 */
+	safeSplit : function(str, delimiter){
+		var results = [];
+
+		if (str){
+			results = str.split(delimiter);
+		}
+
+		return results;
 	},
 	
 	/**
