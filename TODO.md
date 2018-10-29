@@ -1,5 +1,13 @@
 # Overview
 
+**-1. ensure relationships on the same object work**
+
+**-1. support permissions to filter the relationships**
+
+**-1. support filters on when to show relationships**
+
+For example, use this relationship on this record type.
+
 **1. Support multiple ways to sort**
 
 Currently, we are running the list of records back, but we don't specify the fields to use for sorting.
