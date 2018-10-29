@@ -41,7 +41,7 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>Base</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Stand in for a partner relationship between two account records.</description>
     <enableActivities>false</enableActivities>
