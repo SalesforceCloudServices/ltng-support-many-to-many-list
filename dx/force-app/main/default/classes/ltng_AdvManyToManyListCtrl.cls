@@ -95,6 +95,14 @@ public with sharing class ltng_AdvManyToManyListCtrl {
 
         results = determineFarChildList(manyToManyRelationship, recordId);
 
+        //-- try flipping if it is the same object relation
+        if (results.childrenList == null || results.childrenList.size() < 1) {
+            if (ltng_AdvManyToManyUtil.isReflectiveRelationship(manyToManyRelationship)) {
+                manyToManyRelationship = ltng_AdvManyToManyUtil.flipRelationship(manyToManyRelationship);
+                results = determineFarChildList(manyToManyRelationship, recordId);
+            }
+        }
+
         return(results);
     }
 

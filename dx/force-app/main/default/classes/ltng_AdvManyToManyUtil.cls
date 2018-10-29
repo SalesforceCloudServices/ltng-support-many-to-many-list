@@ -54,6 +54,29 @@ public with sharing class ltng_AdvManyToManyUtil {
     }
 
     /**
+     * Determines if the same object is used on both the left and right of the relationship.
+     * <p>It is a many to many relationship on the same object</p>
+     * @param relationship (ltng_M2M_Relationship__c)
+     * @return (Boolean)
+     */
+    public static Boolean isReflectiveRelationship(ltng_M2M_Relationship__c relationship){
+        Boolean results = false;
+
+        if (relationship != null) {
+            if (relationship.LeftObjectAPIName__c == relationship.RightObjectAPIName__c) {
+                results = true;
+            } else {
+                results = (
+                    relationship.LeftObjectApiName__c != null &&
+                    relationship.LeftObjectAPIName__c.equals(relationship.RightObjectAPIName__c)
+                );
+            }
+        }
+
+        return results;
+    }
+
+    /**
      * Flips the relationship between the left and right sides.
      * <p>Thinking about a many to many relationship, we have Opportunities and Products
      * with OpportunityProducts as the junction object.</p>
