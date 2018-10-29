@@ -47,23 +47,38 @@ public with sharing class ltng_AdvManyToManyUtil {
             results = relationship;
         } else {
             System.debug('relationship is out of alignment');
-            relationshipClone = relationship.clone(false, false, false, false);
-            System.debug('relationshipClone'); System.debug(relationshipClone);
-
-            relationship.LeftObjectAPIName__c = relationshipClone.RightObjectAPIName__c;
-            relationship.JunctionLeftObjectRelationshipField__c = relationshipClone.JunctionRightObjectRelationshipField__c;
-            relationship.LeftObjectUsesCompactLayout__c = relationshipClone.RightObjectUsesCompactLayout__c;
-            relationship.LeftObjectSpecificFields__c = relationshipClone.RightObjectSpecificFields__c;
-
-            relationship.RightObjectAPIName__c = relationshipClone.LeftObjectAPIName__c;
-            relationship.JunctionRightObjectRelationshipField__c = relationshipClone.JunctionLeftObjectRelationshipField__c;
-            relationship.RightObjectUsesCompactLayout__c = relationshipClone.LeftObjectUsesCompactLayout__c;
-            relationship.RightObjectSpecificFields__c = relationshipClone.LeftObjectSpecificFields__c;
-
-            results = relationship;
+            results = flipRelationship(relationship);
         }
 
         return results;
+    }
+
+    /**
+     * Flips the relationship between the left and right sides.
+     * <p>Thinking about a many to many relationship, we have Opportunities and Products
+     * with OpportunityProducts as the junction object.</p>
+     * <p>Whether Opportunities is considered the 'left' or the 'right'
+     *  - doesn't make much difference. So this method allows for swapping them</p>
+     * @param relationship (ltng_M2M_Relationship__c) - a Many to Many Relationship to be switched.
+     * @return ltng_M2M_Relationship__c - the flipped relation.
+     **/
+    public static ltng_M2M_Relationship__c flipRelationship(ltng_M2M_Relationship__c relationship){
+        ltng_M2M_Relationship__c relationshipClone;
+
+        relationshipClone = relationship.clone(false, false, false, false);
+        System.debug('relationshipClone'); System.debug(relationshipClone);
+
+        relationship.LeftObjectAPIName__c = relationshipClone.RightObjectAPIName__c;
+        relationship.JunctionLeftObjectRelationshipField__c = relationshipClone.JunctionRightObjectRelationshipField__c;
+        relationship.LeftObjectUsesCompactLayout__c = relationshipClone.RightObjectUsesCompactLayout__c;
+        relationship.LeftObjectSpecificFields__c = relationshipClone.RightObjectSpecificFields__c;
+
+        relationship.RightObjectAPIName__c = relationshipClone.LeftObjectAPIName__c;
+        relationship.JunctionRightObjectRelationshipField__c = relationshipClone.JunctionLeftObjectRelationshipField__c;
+        relationship.RightObjectUsesCompactLayout__c = relationshipClone.LeftObjectUsesCompactLayout__c;
+        relationship.RightObjectSpecificFields__c = relationshipClone.LeftObjectSpecificFields__c;
+
+        return relationship;
     }
 
     //--    -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
