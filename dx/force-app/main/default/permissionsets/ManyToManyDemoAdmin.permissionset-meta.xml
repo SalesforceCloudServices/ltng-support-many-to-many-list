@@ -7,11 +7,6 @@
     <description>Someone that can manage Many To Many Demo records</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ltng_M2M_Partner__c.Role__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>ltng_M2M_AccountContactRelationship__c.EndDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -53,6 +48,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ltng_M2M_Account__c.DunsNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ltng_M2M_Account__c.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -162,6 +162,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ltng_M2M_Contact__c.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ltng_M2M_Contact__c.Fax__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -217,6 +222,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ltng_M2M_Partner__c.Role__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ltng_M2M_Relationship__c.JunctionObjectSpecificFields__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -252,15 +262,6 @@
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>ltng_M2M_Partner__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>ltng_M2M_AccountContactRelationship__c</object>
         <viewAllRecords>false</viewAllRecords>
@@ -289,19 +290,28 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>ltng_M2M_Partner__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>ltng_M2M_Relationship__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <tabSettings>
-        <tab>ltng_M2M_Partner__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
     <tabSettings>
         <tab>ltng_M2M_Account__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
         <tab>ltng_M2M_Contact__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>ltng_M2M_Partner__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
