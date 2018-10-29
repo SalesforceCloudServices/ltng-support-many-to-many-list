@@ -136,7 +136,18 @@ public class ltng_AdvManyToManyRelationEditorCtrl {
                             currentRelationshipOption.leftObjectJunctionField.optionApiName + FIELD_DELIMITER +
                             currentRelationshipOption.rightObjectJunctionField.optionApiName;
                         
-                        results.add(currentRelationshipOption);
+                        //-- don't add if the same object and field are used
+                        if (
+                            !currentRelationshipOption.leftObjectOption.optionApiName.equals(
+                                currentRelationshipOption.leftObjectOption.optionApiName
+                            ) ||
+                            !currentRelationshipOption.leftObjectJunctionField.optionApiName.equals(
+                                currentRelationshipOption.rightObjectJunctionField.optionApiName
+                            )
+                        ){
+                            results.add(currentRelationshipOption);
+                        }
+                        
                     }
                 }
             }

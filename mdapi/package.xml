@@ -35,13 +35,19 @@
     <members>ltng_M2M_AccountContactRelationship__c-M2M AccountContactRelation Layout</members>
     <members>ltng_M2M_Account__c-M2M Account Layout</members>
     <members>ltng_M2M_Contact__c-M2M Contact Layout</members>
+    <members>ltng_M2M_Partner__c-M2M Partner Layout</members>
     <members>ltng_M2M_Relationship__c-M2M Relationship Layout</members>
+  </types>
+  <types>
+    <name>CustomObjectTranslation</name>
+    <members>ltng_M2M_Partner__c-en_US</members>
   </types>
   <types>
     <name>CompactLayout</name>
     <members>ltng_M2M_AccountContactRelationship__c.Basic</members>
     <members>ltng_M2M_Account__c.Basic</members>
     <members>ltng_M2M_Contact__c.Basic</members>
+    <members>ltng_M2M_Partner__c.Base</members>
   </types>
   <types>
     <name>CustomField</name>
@@ -56,6 +62,7 @@
     <members>ltng_M2M_Account__c.BillingAddress__c</members>
     <members>ltng_M2M_Account__c.Description__c</members>
     <members>ltng_M2M_Account__c.DunsNumber__c</members>
+    <members>ltng_M2M_Account__c.ExternalId__c</members>
     <members>ltng_M2M_Account__c.Fax__c</members>
     <members>ltng_M2M_Account__c.HasOptedOutOfEmail__c</members>
     <members>ltng_M2M_Account__c.Industry__c</members>
@@ -77,6 +84,7 @@
     <members>ltng_M2M_Contact__c.Description__c</members>
     <members>ltng_M2M_Contact__c.DoNotCall__c</members>
     <members>ltng_M2M_Contact__c.Email__c</members>
+    <members>ltng_M2M_Contact__c.ExternalId__c</members>
     <members>ltng_M2M_Contact__c.Fax__c</members>
     <members>ltng_M2M_Contact__c.FirstName__c</members>
     <members>ltng_M2M_Contact__c.HasOptedOutOfEmail__c</members>
@@ -89,6 +97,9 @@
     <members>ltng_M2M_Contact__c.Phone__c</members>
     <members>ltng_M2M_Contact__c.Salutation__c</members>
     <members>ltng_M2M_Contact__c.Title__c</members>
+    <members>ltng_M2M_Partner__c.AccountFromId__c</members>
+    <members>ltng_M2M_Partner__c.AccountToId__c</members>
+    <members>ltng_M2M_Partner__c.Role__c</members>
     <members>ltng_M2M_Relationship__c.JunctionLeftObjectRelationshipField__c</members>
     <members>ltng_M2M_Relationship__c.JunctionObjectAPIName__c</members>
     <members>ltng_M2M_Relationship__c.JunctionObjectSpecificFields__c</members>
@@ -106,10 +117,14 @@
     <members>ltng_M2M_AccountContactRelationship__c</members>
     <members>ltng_M2M_Account__c</members>
     <members>ltng_M2M_Contact__c</members>
+    <members>ltng_M2M_Partner__c</members>
     <members>ltng_M2M_Relationship__c</members>
   </types>
   <types>
     <name>ListView</name>
+    <members>ltng_M2M_Account__c.All</members>
+    <members>ltng_M2M_Contact__c.All</members>
+    <members>ltng_M2M_Partner__c.All</members>
     <members>ltng_M2M_Relationship__c.All</members>
   </types>
   <types>
@@ -121,11 +136,13 @@
     <name>QuickAction</name>
     <members>ltng_M2M_Account__c.ltng_FarChildren</members>
     <members>ltng_M2M_Contact__c.ltng_FarChildren</members>
+    <members>ltng_M2M_Relationship__c.RotateRelationship</members>
   </types>
   <types>
     <name>CustomTab</name>
     <members>ltng_M2M_Account__c</members>
     <members>ltng_M2M_Contact__c</members>
+    <members>ltng_M2M_Partner__c</members>
     <members>ltng_M2M_Relationship__c</members>
     <members>ltng_ManyToManyDemoSetup</members>
   </types>

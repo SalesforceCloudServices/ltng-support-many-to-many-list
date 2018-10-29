@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>Salutation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ExternalId__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -195,13 +199,25 @@
         <fields>Title__c</fields>
         <relatedList>ltng_M2M_Contact__c.AccountId__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>AccountToId__c</fields>
+        <fields>Role__c</fields>
+        <relatedList>ltng_M2M_Partner__c.AccountFromId__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>AccountFromId__c</fields>
+        <fields>Role__c</fields>
+        <relatedList>ltng_M2M_Partner__c.AccountToId__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1F000000hMnS</masterLabel>
+        <masterLabel>00hS0000000ou1F</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

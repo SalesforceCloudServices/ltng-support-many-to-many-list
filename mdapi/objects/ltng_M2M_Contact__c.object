@@ -65,7 +65,21 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <type>Text</type>
     </nameField>
     <pluralLabel>M2M Contacts</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>AccountId__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Title__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Department__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>AccountId__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Title__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Department__c</lookupDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>AccountId__c</searchFilterFields>
+        <searchFilterFields>Title__c</searchFilterFields>
+        <searchFilterFields>Department__c</searchFilterFields>
+        <searchResultsAdditionalFields>AccountId__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Title__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Department__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <fields>
@@ -149,6 +163,18 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <trackTrending>false</trackTrending>
         <type>Email</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ExternalId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <inlineHelpText>External Id for easier loading</inlineHelpText>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>Fax__c</fullName>
@@ -308,4 +334,13 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <fields>Department__c</fields>
         <label>Basic</label>
     </compactLayouts>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>AccountId__c</columns>
+        <columns>Title__c</columns>
+        <columns>Department__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>All</label>
+    </listViews>
 </CustomObject>

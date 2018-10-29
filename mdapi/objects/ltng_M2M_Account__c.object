@@ -65,7 +65,34 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <type>Text</type>
     </nameField>
     <pluralLabel>M2M Accounts</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>Site__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Industry__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>AnnualRevenue__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>NumberOfEmployees__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Site__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Industry__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Type__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>AnnualRevenue__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>NumberOfEmployees__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Site__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Industry__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Type__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>AnnualRevenue__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>NumberOfEmployees__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Site__c</searchFilterFields>
+        <searchFilterFields>Industry__c</searchFilterFields>
+        <searchFilterFields>Type__c</searchFilterFields>
+        <searchFilterFields>AnnualRevenue__c</searchFilterFields>
+        <searchFilterFields>NumberOfEmployees__c</searchFilterFields>
+        <searchResultsAdditionalFields>Site__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Industry__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>AnnualRevenue__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>NumberOfEmployees__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <fields>
@@ -107,6 +134,18 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ExternalId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <inlineHelpText>External Id for easier loading</inlineHelpText>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>Fax__c</fullName>
@@ -323,4 +362,15 @@ In this example, an Account can have many Contacts - just as Contacts can have r
         <fields>NumberOfEmployees__c</fields>
         <label>Basic</label>
     </compactLayouts>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Site__c</columns>
+        <columns>Industry__c</columns>
+        <columns>Type__c</columns>
+        <columns>AnnualRevenue__c</columns>
+        <columns>NumberOfEmployees__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>All</label>
+    </listViews>
 </CustomObject>

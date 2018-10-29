@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>M2M Partner</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>M2M Partners</value>
+    </caseValues>
+    <startsWith>Consonant</startsWith>
+    <fields>
+        <help><!-- ID of the main Account in a partner relationship between two accounts. Specifying this field when creating a Partner record creates two AccountPartner objects, one for each direction of the relationship. --></help>
+        <label><!-- Account From --></label>
+        <name>AccountFromId__c</name>
+        <relationshipLabel><!-- Partners From --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Required. ID of the Partner Account related to either an opportunity or an account. You must specify this field when creating an opportunity Partner or an Account Partner. --></help>
+        <label><!-- Account To --></label>
+        <name>AccountToId__c</name>
+        <relationshipLabel><!-- Partners To --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- UserRole that the account has towards the related opportunity or account, such as consultant or distributor. --></help>
+        <label><!-- Role --></label>
+        <name>Role__c</name>
+        <picklistValues>
+            <masterLabel>Consultant</masterLabel>
+            <translation><!-- Consultant --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Distributor</masterLabel>
+            <translation><!-- Distributor --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Reseller</masterLabel>
+            <translation><!-- Reseller --></translation>
+        </picklistValues>
+    </fields>
+</CustomObjectTranslation>

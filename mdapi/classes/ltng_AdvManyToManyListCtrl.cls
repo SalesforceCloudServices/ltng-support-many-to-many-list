@@ -66,22 +66,49 @@ public with sharing class ltng_AdvManyToManyListCtrl {
         String objectLabel = recordObjectType.getLabel();
         ltng_M2M_Relationship__c[] manyToManyRelationships;
         ltng_M2M_Relationship__c manyToManyRelationship;
-        System.debug('objectApiName:' + objectApiName);
         
-        manyToManyRelationship = [
-            SELECT Id, Name, JunctionObjectAPIName__c,
-                LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c,
-                RightObjectAPIName__c, JunctionRightObjectRelationshipField__c,
-                JunctionObjectUsesCompactLayout__c, JunctionObjectSpecificFields__c,
-                LeftObjectUsesCompactLayout__c, LeftObjectSpecificFields__c,
-                RightObjectUsesCompactLayout__c, RightObjectSpecificFields__c
-            FROM ltng_M2M_Relationship__c
-            WHERE Id = :relationshipId OR
-                (LeftObjectAPIName__c = :objectApiName OR RightObjectAPIName__c = :objectApiName)
-            LIMIT 1
-        ];
+        if (relationshipId != null) {
+            manyToManyRelationship = [
+                SELECT Id, Name, JunctionObjectAPIName__c,
+                    LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c,
+                    RightObjectAPIName__c, JunctionRightObjectRelationshipField__c,
+                    JunctionObjectUsesCompactLayout__c, JunctionObjectSpecificFields__c,
+                    LeftObjectUsesCompactLayout__c, LeftObjectSpecificFields__c,
+                    RightObjectUsesCompactLayout__c, RightObjectSpecificFields__c
+                FROM ltng_M2M_Relationship__c
+                WHERE Id = :relationshipId
+            ];
+        } else {
+            manyToManyRelationship = [
+                SELECT Id, Name, JunctionObjectAPIName__c,
+                    LeftObjectAPIName__c, JunctionLeftObjectRelationshipField__c,
+                    RightObjectAPIName__c, JunctionRightObjectRelationshipField__c,
+                    JunctionObjectUsesCompactLayout__c, JunctionObjectSpecificFields__c,
+                    LeftObjectUsesCompactLayout__c, LeftObjectSpecificFields__c,
+                    RightObjectUsesCompactLayout__c, RightObjectSpecificFields__c
+                FROM ltng_M2M_Relationship__c
+                WHERE (LeftObjectAPIName__c = :objectApiName OR RightObjectAPIName__c = :objectApiName)
+            ];
+        }
 
         manyToManyRelationship = ltng_AdvManyToManyUtil.orientRelationship(manyToManyRelationship, objectApiName);
+
+        results = determineFarChildList(manyToManyRelationship, recordId);
+
+        //-- try flipping if it is the same object relation
+        if (results.childrenList == null || results.childrenList.size() < 1) {
+            if (ltng_AdvManyToManyUtil.isReflectiveRelationship(manyToManyRelationship)) {
+                manyToManyRelationship = ltng_AdvManyToManyUtil.flipRelationship(manyToManyRelationship);
+                results = determineFarChildList(manyToManyRelationship, recordId);
+            }
+        }
+
+        return(results);
+    }
+
+    private static FarChildrenList determineFarChildList(ltng_M2M_Relationship__c manyToManyRelationship, Id recordId
+    ){
+        FarChildrenList results = null;
 
         String targetRelationshipField = manyToManyRelationship.JunctionRightObjectRelationshipField__c;
         String sourceRelationshipField = manyToManyRelationship.JunctionLeftObjectRelationshipField__c;
